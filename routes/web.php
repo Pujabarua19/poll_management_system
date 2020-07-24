@@ -40,10 +40,11 @@ Route::get('loginstore', 'mainController@loginstore');
 
 
 
-// Route::group(['middleware'=> 'Ulogged'],function(){
 // User panel route
-Route::get('addpoll', 'pollController@addpoll');
+Route::group(['middleware'=> 'Uislogged'],function(){
 
+Route::get('addpoll', 'pollController@addpoll');
+});
 
 Route::get('index', 'indexController@index');
 Route::get('userlogin', 'indexController@userlogin');
