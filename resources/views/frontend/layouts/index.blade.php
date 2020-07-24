@@ -78,6 +78,7 @@
                                     <ul class="submenu">
                                 <li><a href="{{ url('/register') }}">Register</a></li>
                                 <li> <a href="{{ url('/userlogin') }}">log in</a></li>
+                                <li> <a href="{{ url('/userlogin') }}">log out</a></li>
                                         <!-- <li><a href="elements.html">Elements</a></li> -->
                                     </ul>
                                 </li>
