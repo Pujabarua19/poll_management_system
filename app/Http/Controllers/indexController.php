@@ -63,7 +63,9 @@ use App\Register;
     return redirect('/register')->with('message','successfully Inserted.');
     }
       
-
+public function about(){
+  return view('frontend.pages.about');
+}
 
 
 

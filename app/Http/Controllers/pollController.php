@@ -14,7 +14,7 @@ class pollController extends Controller
     }
 
    
-    public function U_logout(Request $request){
+    public function logout(Request $request){
         if($request->session()->has('user_email')){
             echo 'user found';
         $request->session()->flush();

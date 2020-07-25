@@ -65,24 +65,25 @@
                 <div class="menu-wrapper d-flex align-items-center justify-content-between">
                     <!-- Logo -->
                     <div class="logo">
-                       <h1>Poll Management System</h1>
+                       <h1><strong><b>Poll Management System</b></strong></h1>
                     </div>
                     <!-- Main-menu -->
                     <div class="main-menu f-right d-none d-lg-block">
                       <nav>
                             <ul id="navigation">
                                 <li><a href="{{ url('/index') }}">Home</a></li>
+                                 <li><a href="{{ url('/about') }}">About</a></li>
                                 <li><a href="{{ url('/addpoll') }}">Poll</a></li>
                               
                                 <li><a href="#">Login</a>
                                     <ul class="submenu">
                                 <li><a href="{{ url('/register') }}">Register</a></li>
                                 <li> <a href="{{ url('/userlogin') }}">log in</a></li>
-                                <li> <a href="{{ url('/userlogin') }}">log out</a></li>
+                                <!-- <li> <a href="{{ url('/userlogin') }}">log out</a></li> -->
                                         <!-- <li><a href="elements.html">Elements</a></li> -->
                                     </ul>
                                 </li>
-                                <li><a href="#">Contact</a></li>
+                               
                             </ul>
                         </nav>
                     </div>          
@@ -117,7 +118,7 @@
  <footer>
    
    <div>
-       <p>To evaluate the functions of a web-based poll management system</p>
+       <p><h1>To evaluate the functions of a web-based poll management system</h1></p>
    </div>
     <!-- Footer End-->
 </footer>

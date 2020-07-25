@@ -51,5 +51,5 @@ Route::get('userlogin', 'indexController@userlogin');
 Route::get('userloginstore', 'indexController@userloginstore');
 Route::get('register', 'indexController@register');
 Route::post('registerStore', 'indexController@registerStore');
-
+Route::get('about', 'indexController@about');
 // });

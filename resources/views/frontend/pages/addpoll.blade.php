@@ -10,7 +10,7 @@
                 <h3>
                     <span class="title_text"> Manage Poll</span>
                 </h3>
-                <!-- <li> <a href="{{ url('/userlogin') }}">log out</a></li> -->
+                <li> <a href="{{ url('/userlogin') }}">log out</a></li>
                 <fieldset>
                     <div class="fieldset-content">
                         <div class="form-group">
@@ -63,14 +63,14 @@
   <div class="container">
     <div class="row">
       <!-- Free Tier -->
-      <div class="col-lg-3">
+      <div class="col-lg-4">
         <div class="card mb-5 mb-lg-0">
           <div class="card-body">
-            <h5 class="card-title text-muted text-uppercase text-center">Package name</h5>
+            <h5 class="card-title text-muted text-uppercase text-center">Package </h5>
             
             <hr>
             <ul class="fa-ul">
-              <!-- <li><span class="fa-li"><i class="fas fa-check"></i></span><strong>Unlimited Users</strong></li> -->
+              <li><span class="fa-li"><i class="fas fa-check"></i></span><strong>Name</strong></li>
              <li><span class="fa-li"><i class="fas fa-check"></i></span>Quentity</li>
               <li><span class="fa-li"><i class="fas fa-check"></i></span>price</li>
              
@@ -80,14 +80,14 @@
         </div>
       </div>
       <!-- Plus Tier -->
-     <div class="col-lg-3">
+     <div class="col-lg-4">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title text-muted text-uppercase text-center">Package name</h5>
+            <h5 class="card-title text-muted text-uppercase text-center">Package</h5>
             
             <hr>
             <ul class="fa-ul">
-              <!-- <li><span class="fa-li"><i class="fas fa-check"></i></span><strong>Unlimited Users</strong></li> -->
+              <li><span class="fa-li"><i class="fas fa-check"></i></span><strong>Name</strong></li>
               <li><span class="fa-li"><i class="fas fa-check"></i></span>Quentity</li>
               <li><span class="fa-li"><i class="fas fa-check"></i></span>price</li>
              
@@ -97,14 +97,14 @@
         </div>
       </div>
        
-      <div class="col-lg-3">
+      <div class="col-lg-4">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title text-muted text-uppercase text-center">Package name</h5>
+            <h5 class="card-title text-muted text-uppercase text-center">Package </h5>
             
             <hr>
             <ul class="fa-ul">
-              <!-- <li><span class="fa-li"><i class="fas fa-check"></i></span><strong>Unlimited Users</strong></li> -->
+              <li><span class="fa-li"><i class="fas fa-check"></i></span><strong>Name</strong></li>
              <li><span class="fa-li"><i class="fas fa-check"></i></span>Quentity</li>
               <li><span class="fa-li"><i class="fas fa-check"></i></span>price</li>
              
