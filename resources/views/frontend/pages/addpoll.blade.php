@@ -163,6 +163,12 @@
                                          <option>--Please select--</option>
                                          <option>Chawkbazar</option>
                                          <option>Muradpur </option>
+                                         <option>2 no. Gate</option>
+                                         <option>Jamalkhan </option>
+                                         <option>Kazir Dewri</option>
+                                         <option>Halishohor </option>
+                                         <option>Probortok more</option>
+                                        
                                        </select>  
                                 </div>
                     </div>
