@@ -8,7 +8,6 @@ A web-based poll is the collection of data through a self-administered electroni
 </p>
 
 
-</section>
 
 
 

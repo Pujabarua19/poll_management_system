@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -78,7 +77,7 @@
         <div class="info-container">
             <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Admin</div>
             <div class="email">admin@example.com</div>
-            <div class="btn-group user-helper-dropdown"> <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="button"> keyboard_arrow_down </i>
+<div class="btn-group user-helper-dropdown"> <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="button"> keyboard_arrow_down </i>
                 <ul class="dropdown-menu pull-right">
                     <li><a href="profile.html"><i class="material-icons">person</i>Profile</a></li>
                     <li class="divider"></li>
@@ -147,7 +146,7 @@
 
 
 <script src="{{asset('assets/js/pages/forms/form-wizard.js')}}"></script>
-<script src="{{asset('assets/js/pages/payment/payment.js')}}"></script>
+<!-- <script src="{{asset('assets/js/pages/payment/payment.js')}}"></script> -->
 <!-- Custom Js --> 
  
 

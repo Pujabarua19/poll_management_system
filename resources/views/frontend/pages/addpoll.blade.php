@@ -32,10 +32,10 @@
                                     <label for="sel1">Enter number of option:</label>
                                        <input type="text" class="form-control" id="sel1">
                                      </div>
-                                      <div class="form-group form-float">
+                                     <!--  <div class="form-group form-float">
                                     <label for="sel1">Enter Title:</label>
                                        <input type="text" class="form-control" id="sel1">
-                                     </div>
+                                     </div> -->
 
                                      <div class="form-group">
                                        <label >Select Additional Field:</label>

@@ -19,29 +19,11 @@
     <link rel="stylesheet" href="{{asset('assets(a)/css/nice-select.css')}}">
     <link rel="stylesheet" href="{{asset('assets(a)/css/style.css')}}">
      <link rel="stylesheet" href="{{asset('asset1/fonts/material-icon/css/material-design-iconic-font.min.css')}}">
-
-<link rel="stylesheet" href="{{asset('assets/css/package.css')}}">
+ 
+     <link rel="stylesheet" href="{{asset('assets/css/package.css')}}">
     <!-- Main css -->
     <link rel="stylesheet" href="{{asset('asset1/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets(a)/css/payment.css')}}">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </head>
 
@@ -75,7 +57,7 @@
                                  <li><a href="{{ url('/about') }}">About</a></li>
                                 <li><a href="{{ url('/addpoll') }}">Poll</a></li>
                               
-                                <li><a href="#">Login</a>
+                                <li><a href="#">Login / Register</a>
                                     <ul class="submenu">
                                 <li><a href="{{ url('/register') }}">Register</a></li>
                                 <li> <a href="{{ url('/userlogin') }}">log in</a></li>
@@ -177,7 +159,7 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
 
-<!-- <script type="text/javascript" src="https://js.stripe.com/v2/"></script> -->
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     
 </body>
 </html>

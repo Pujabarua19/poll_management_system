@@ -62,17 +62,18 @@
                 </div>
                 <div class="col-lg-12 m-t-20">
                     <a class="" href="forgot-password.html">Forgot Password?</a>
-                </div>                    
-            </div>
-        </div>
-    </div>
-</div>
-<br>
+                    <br>
                     @if(Session::has('message'))
                     <div class="alert alert-success">
                     {{Session::get('message')}}
                     </div>
                     @endif
+                </div>                    
+            </div>
+        </div>
+    </div>
+</div>
+
  </form>
 
 <script src="{{asset('assets/bundles/libscripts.bundle.js')}}"></script>    
