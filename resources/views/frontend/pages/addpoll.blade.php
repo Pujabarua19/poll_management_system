@@ -10,7 +10,7 @@
                 <h3>
                     <span class="title_text"> Manage Poll</span>
                 </h3>
-                <li> <a href="{{ url('/userlogin') }}">log out</a></li>
+                <!-- <li> <a href="{{ url('/userlogin') }}">log out</a></li> -->
                 <fieldset>
                     <div class="fieldset-content">
                         <div class="form-group">
