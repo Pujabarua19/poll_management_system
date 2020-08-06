@@ -284,5 +284,6 @@
     </div>
   </fieldset>
 </form>
+</div>
 </section>
 @stop

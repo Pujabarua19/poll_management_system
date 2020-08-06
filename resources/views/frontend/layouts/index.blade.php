@@ -84,12 +84,12 @@
             <!-- Single Slider -->
     <div class="single-slider slider-height hero-overly d-flex align-items-center">
                
-                <div class="container">
+               
               
                 @yield('content')
                
-                   
-                    </div>
+                  </div> 
+                    
                 </div>
             </div>
  

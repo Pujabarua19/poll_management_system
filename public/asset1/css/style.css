@@ -116,7 +116,7 @@ body {
   font-weight: 900;
   font-family: 'Roboto Slab';
   margin: 0px;
-  background-image: url("../images/body-bg.jpg");
+  /*background-image: url("../images/body-bg.jpg");*/
   background-repeat: no-repeat;
   background-size: cover;
   -moz-background-size: cover;
@@ -132,7 +132,7 @@ body {
   width: 850px;
   position: relative;
   margin: 0 auto;
-  background: #fff;
+  background: #E6E6FA;
   box-shadow: 0px 5px 9.5px 0.5px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0px 5px 9.5px 0.5px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0px 5px 9.5px 0.5px rgba(0, 0, 0, 0.1);
@@ -145,7 +145,7 @@ body {
   -ms-border-radius: 10px; }
 
 .signup-form {
-  padding: 0 20px;
+  padding: 0 0px;
   position: relative; }
 
 .form-group, .form-select, .form-radio, .form-textarea, .form-date {
