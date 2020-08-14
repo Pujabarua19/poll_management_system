@@ -25,24 +25,6 @@
     <link rel="stylesheet" href="{{asset('asset1/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets(a)/css/payment.css')}}">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </head>
 
 <body class="body-bg">
@@ -176,6 +158,8 @@
 
 
 <!-- <script type="text/javascript" src="https://js.stripe.com/v2/"></script> -->
+
+@yield('scripts')
     
 </body>
 </html>
