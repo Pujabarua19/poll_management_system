@@ -497,14 +497,11 @@
     hrline = '<hr>'
     $("#options").append(hrline)
   }
-
-<<<<<<< HEAD
     </div>
   </fieldset>
 </form>
 </div>
 </section>
-=======
   function generateTextbox(options_number) {
     $("#options").html("");
   }
@@ -512,5 +509,5 @@
     $("#options").html("");
   } 
 </script>
->>>>>>> 898bad03a7b82291882d9c22b4c489fdf0f8e1ba
+
 @stop
