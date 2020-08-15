@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/', function () {
    // return view('welcome');
 //});
+
+
 Route::group(['middleware'=> 'logged'],function(){
 // Route::get('default', 'mainController@default');
 Route::get('default', 'mainController@default');
