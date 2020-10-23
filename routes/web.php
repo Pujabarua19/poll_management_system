@@ -62,8 +62,10 @@ Route::post('pollStore', 'pollController@pollStore')->name('pollStore');
 Route::get('createPoll', 'pollController@createPoll');
 // });
 
+Route::get('profile', 'pollController@profile');
 
 
-// Route::get('stripe', 'StripePaymentController@stripe');
+Route::get('stripe', 'StripePaymentController@stripe');
 Route::post('stripe', 'StripePaymentController@stripePost')->name('stripe.post');
+
 

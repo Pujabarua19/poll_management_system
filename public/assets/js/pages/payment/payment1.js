@@ -1,3 +1,4 @@
+
 $(function() {
     var $form         = $(".require-validation");
   $('form.require-validation').bind('submit', function(e) {
@@ -50,3 +51,6 @@ $(function() {
     }
   
 });
+
+
+

@@ -48,7 +48,7 @@ text-align: center;
   position: relative;
   width: 80px;
   height: 80px;
-  color: #fff1;
+  color: #0000ff;
   background: #000;
   display: flex;
   justify-content: center;
@@ -62,13 +62,13 @@ text-align: center;
 
 .container1 .box:nth-child(1) .icon1
 {
-  box-shadow: 0 0 0 0 #e91e63;
+  box-shadow: 0 0 0 0 #B0E0E6;
   background: #e91e63;
 }
 
 .container1 .box:nth-child(1):hover .icon1
 {
- box-shadow: 0 0 0 400px #e91e63; 
+ box-shadow: 0 0 0 400px #B0E0E6; 
 }
 .container1 .box:nth-child(2) .icon1
 {

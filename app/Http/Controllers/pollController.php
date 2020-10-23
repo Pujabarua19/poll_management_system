@@ -34,6 +34,7 @@ class pollController extends Controller
         $addpolls->poll_title = $request->poll_title;
         $addpolls->option_num = $request->option_num;
         $addpolls->option_type= $request->option_type;
+        
 
         $options= $request->options;
         $addpolls->options = implode(',',$options);
@@ -78,6 +79,9 @@ public function  createPoll(){
     return view('backend.pages.createPoll');
 }
 
+public function  profile(){
+    return view('frontend.pages.profile');
+}
 
 
 

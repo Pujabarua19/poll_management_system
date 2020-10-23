@@ -6,13 +6,32 @@
 <link rel="stylesheet" type="text/css" href='https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap'>
   <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 <link rel="stylesheet" href="{{asset('asset1/css/style.css')}}">
-<link rel="stylesheet" href="{{asset('assets/css/payment.css')}}">
+<!-- <link rel="stylesheet" href="{{asset('assets/css/payment.css')}}"> -->
 <link rel="stylesheet" href="{{asset('asset1/fonts/material-icon/css/material-design-iconic-font.min.css')}}">
  <link rel="stylesheet" href="{{asset('assets/css/package1.css')}}">
     <!-- Main css -->
-   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style type="text/css">
+        .panel-title {
+        display: inline;
+        font-weight: bold;
+        }
+        .display-table {
+            display: table;
+        }
+        .display-tr {
+            display: table-row;
+        }
+        .display-td {
+            display: table-cell;
+            vertical-align: middle;
+            width: 61%;
+        }
+    </style>  
     
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
 </head>
 <body>
@@ -118,7 +137,7 @@
                         <p>Quantity :{{$package->quantity}}<br>
                          Price: {{$package->price}}
                         </p>
-                    <button type="button" class="btn btn-primary btn-lg btn-block Valid" onclick="addPackage({{ $package->id }})">Select Package</button>
+                    <button type="button" class="btn btn-primary  Valid" onclick="addPackage({{ $package->id }})">Select Package</button>
 
                       <!-- <a id="package_id">Select Package</a> -->
 
@@ -180,89 +199,105 @@
       <fieldset>
               <div class="fieldset-content">
                   <div class="form-group">
-                    <div class="container">
-                          <div class="panel panel-default credit-card-box">
-                            <div class="panel-heading display-table" >
-                                <div class="row display-tr" >
-                                    <h3 class="panel-title display-td" >Payment Details</h3>
-                                    <div class="display-td" >                            
-                                        <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
-                                    </div>
-                                </div>                    
-                            </div>
-                            <div class="panel-body">
-              <form role="form" id="payment-form" method="POST" action="{{URL::to('/stripe.post')}}">
-                         {{csrf_field()}}
-                                    <div class="row">
-                                        <div class="col-xs-8">
-                                            <div class="form-group">
-                                                <label for="cardNumber">CARD NUMBER</label>
-                                                <div class="input-group">
-                                                    <input 
-                                                        type="tel"
-                                                        class="form-control"
-                                                        name="cardNumber"
-                                                        placeholder="Valid Card Number"
-                                                        autocomplete="cc-number"
-                                                      
-                                                    />
-                                                    <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
-                                                </div>
-                                            </div>                            
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-7 col-md-7">
-                                            <div class="form-group">
-                                                <label for="cardExpiry"><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label>
-                                                <input type="tel" class="form-control" name="cardExpiry"
-                                                    placeholder="MM / YY"
-                                                    autocomplete="cc-exp"
-                                                  
-                                                />
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-5 col-md-5 pull-right">
-                                            <div class="form-group">
-                                                <label for="cardCVC">CV CODE</label>
-                                                <input 
-                                                    type="tel" 
-                                                    class="form-control"
-                                                    name="cardCVC"
-                                                    placeholder="CVC"
-                                                    autocomplete="cc-csc"
-                                                  
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div class="form-group">
-                                                <label for="couponCode">COUPON CODE</label>
-                                                <input type="text" class="form-control" name="couponCode" />
-                                            </div>
-                                        </div>                        
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                              <button class="subscribe btn btn-success btn-lg btn-block" type="button" >Start Subscription</button>
+                    
                         
-                                        </div>
-                                    </div>
-                                    <div class="row" style="display:none;">
-                                        <div class="col-xs-12">
-                                            <p class="payment-errors"></p>
-                                        </div>
-                                    </div>
+  
+<div class="container">
+        <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-default credit-card-box">
+                <div class="panel-heading display-table" >
+                    <div class="row display-tr" >
+                        <h2 class="panel-title display-td" >Payment Details</h2>
+                        <div class="display-td" >                            
+                            <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
+                        </div>
+                    </div>                    
+                </div>
+                <div class="panel-body">
+  
+                    @if (Session::has('success'))
+                        <div class="alert alert-success text-center">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                            <p>{{ Session::get('success') }}</p>
+                        </div>
+                    @endif
+  
+                  <form role="form" action="{{ URL::to('/stripe.post') }}" method="post" class="require-validation"
+                    data-cc-on-file="false"
+                    data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
+                    id="payment-form">
+                       {{csrf_field()}}
+  
+                        <div class='form-row1 row1'>
 
-                                </form>
+                            <div class='col-xs-12 form-group required'>
+                                <label class='control-label'>Name on Card</label> <input
+                                    class='form-control' size='4' type='text'>
                             </div>
-                          </div>
-              
-       </div>
-     </div>
-   </div>
+                        </div>
+  
+                        <div class='form-row1 row1'>
+                            <div class='col-xs-12 form-group card required'>
+                                <label class='control-label'>Card Number</label> <input
+                                    autocomplete='off' class='form-control card-number' size='20'
+                                    type='text'>
+                            </div>
+                        </div>
+  
+                        <div class='form-row1 row1'>
+                            <div class='col-xs-2 col-md-4 form-group cvc required'>
+                                <label class='control-label'>CVC</label> <input autocomplete='off'
+                                    class='form-control card-cvc' placeholder='ex. 311' size='8'
+                                    type='text'>
+                            </div>
+                            <div class='col-xs-2 col-md-4 form-group expiration required'>
+                                <label class='control-label'>Expiration Month</label> <input
+                                    class='form-control card-expiry-month' placeholder='MM' size='4'
+                                    type='text'>
+                            </div>
+                            <div class='col-xs-2 col-md-4 form-group expiration required'>
+                                <label class='control-label'>Expiration Year</label> <input
+                                    class='form-control card-expiry-year' placeholder='YYYY' size='8'
+                                    type='text'>
+                            </div>
+                        </div>
+  
+                        <div class='form-row1 row1'>
+                            <div class='col-md-12 error form-group hide'>
+                                <div class='alert-danger alert'>Please correct the errors and try
+                                    again.</div>
+                            </div>
+                        </div>
+  
+                        <div class="row1">
+                            <div class="col-xs-12">
+                      <button class="btn btn-success btn-lg btn-block" id="payment-form" type="submit" ">start subscription </button>
+                      <!-- <input type="button" name="submit" id="submit" value="pay" ></input> -->
+                            </div>
+                        </div>
+                          
+                    </form>
+                  <!--  <script type="text/javascript">
+ 
+$(document).ready(function(){
+  $("#payment-form").submit(function(event){
+    
+    alert(test);
+  })
+})
+</script> -->
+
+
+
+                </div>
+            </div>        
+        </div>
+    </div>
+      
+<!-- </div> -->
+  
+
                   
                     </div>
                   </div>
@@ -279,8 +314,10 @@
       </div>
     </div>
 </div>
+ 
 
 
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
      <script src="{{asset('asset1/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('asset1/vendor/jquery-validation/dist/jquery.validate.min.js')}}"></script>
@@ -290,9 +327,8 @@
     <script src="{{asset('asset1/vendor/jquery.pwstrength/jquery.pwstrength.js')}}"></script>
     <script src="{{asset('asset1/js/main.js')}}"></script>
     
-   <script src="{{asset('assets/js/pages/payment/payment.js')}}"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script src="{{asset('assets/js/pages/payment/payment1.js')}}"></script>
+   
  
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script src="{{asset('assets/js/option.js')}}"></script>
@@ -305,10 +341,22 @@
   }
 
 </script>
-
-
-
-
+<!-- 
+<script type="text/javascript">
+ 
+$(document).ready(function(){
+  $("#payment-form").submit(function(event){
+    
+    alert(test);
+  })
+  // var postdata=$("#payment-form").serialize();
+  // $.post("stripe.post", postdata,function(response){
+  //   $("#resp").show().html("submited");
+  // })
+  //  return false;
+  // })
+})
+</script> -->
 
 
 
