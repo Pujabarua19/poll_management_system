@@ -223,7 +223,7 @@
                         </div>
                     @endif
   
-                  <form role="form" action="{{ URL::to('/stripe.post') }}" method="post" class="require-validation"
+                  <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation"
                     data-cc-on-file="false"
                     data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
                     id="payment-form">
