@@ -17,6 +17,7 @@ class Uislogged
     {
         if(!Session::has('user_email')){
            return redirect('/userlogin');
+            // echo "not found";
         }
         return $next($request);
     }

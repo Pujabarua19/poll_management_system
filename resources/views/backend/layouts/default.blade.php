@@ -102,9 +102,10 @@
                     <li><a href="{{ url('/addPackage') }}">Add New</a> </li>
                      <li><a href="{{ url('/allPackages') }}">All Packages</a> </li>
                 </ul>
-               <!--  <li><a href="{{ url('/addPoll') }}" class="waves-effect waves-block"><i class="zmdi zmdi-label col-green"></i><span>Create a new poll</span></a></li> -->
+                <li><a href="{{ url('/viewPoll') }}" class="waves-effect waves-block"><i class="zmdi zmdi-label col-green"></i><span>View polls</span></a></li>
             </li> 
-            
+            <li><a href="{{ url('/createPoll') }}" class="waves-effect waves-block"><i class="zmdi zmdi-label col-green"></i><span>Create polls</span></a></li>
+            </li> 
         </ul>
     </div>
     <!-- #Menu --> 

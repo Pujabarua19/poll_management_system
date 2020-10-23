@@ -27,6 +27,8 @@ Route::get('allPackages', 'packageController@allPackages');
 Route::post('update/{id}','packageController@update')->name('update');
 Route::get('edit/{id}', 'packageController@edit')->name('edit');
 Route::get('delete/{id}','packageController@delete')->name('delete');
+Route::get('viewPoll', 'pollController@viewPoll');
+
 });
 
 
@@ -45,7 +47,7 @@ Route::get('loginstore', 'mainController@loginstore');
 // User panel route
 Route::group(['middleware'=> 'Uislogged'],function(){
 
-Route::get('addpoll', 'pollController@addpoll');
+Route::get('addpoll', 'pollController@addpoll')->name('addpoll');
 });
 
 Route::get('index', 'indexController@index');
@@ -54,4 +56,14 @@ Route::get('userloginstore', 'indexController@userloginstore');
 Route::get('register', 'indexController@register');
 Route::post('registerStore', 'indexController@registerStore');
 Route::get('about', 'indexController@about');
+Route::post('pollStore', 'pollController@pollStore')->name('pollStore');
+
+
+Route::get('createPoll', 'pollController@createPoll');
 // });
+
+
+
+// Route::get('stripe', 'StripePaymentController@stripe');
+Route::post('stripe', 'StripePaymentController@stripePost')->name('stripe.post');
+

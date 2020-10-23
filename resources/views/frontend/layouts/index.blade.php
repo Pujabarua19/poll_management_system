@@ -54,7 +54,7 @@
                       <nav>
                             <ul id="navigation">
                                 <li><a href="{{ url('/index') }}">Home</a></li>
-                                 <li><a href="{{ url('/about') }}">About</a></li>
+                                <li><a href="{{ url('/about') }}">About</a></li>
                                 <li><a href="{{ url('/addpoll') }}">Poll</a></li>
                               
                                 <li><a href="#">Login / Register</a>
@@ -164,7 +164,7 @@
  
 <!-- <script type="text/javascript" src="https://js.stripe.com/v2/"></script> -->
 
-@yield('scripts')
+<!-- @yield('scripts') -->
     
 </body>
 </html>

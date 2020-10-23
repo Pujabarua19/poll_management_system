@@ -31,11 +31,17 @@ use App\Register;
         $userlogin   = Register::where('email','=',$email)
                       ->where('password','=',$password)
                       ->first();
+      
         if($userlogin)
         {
             Session::put('userid',$userlogin->id);
+            Session::put('user_firstname',$userlogin->firstname);
+            Session::put('user_lastname',$userlogin->lastname);
             Session::put('user_email',$userlogin->email);
+            Session::put('user_location',$userlogin->location);
+            
             return redirect('/addpoll');
+ 
         }
         else{
             

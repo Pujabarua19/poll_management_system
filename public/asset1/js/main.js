@@ -23,6 +23,7 @@
             $(element).valid();
         },
     });
+    
     form.steps({
         headerTag: "h3",
         bodyTag: "fieldset",
@@ -30,26 +31,26 @@
         labels: {
             previous: 'Previous',
             next: 'Next',
-            finish: 'Finish',
+            Finish: 'Submit',
             current: ''
         },
         titleTemplate: '<div class="title"><span class="number">#index#</span>#title#</div>',
         onStepChanging: function(event, currentIndex, newIndex) {
             form.validate().settings.ignore = ":disabled,:hidden";
-            // console.log(form.steps("getCurrentIndex"));
+            console.log(form.steps("getCurrentIndex"));
             return form.valid();
         },
         onFinishing: function(event, currentIndex) {
             form.validate().settings.ignore = ":disabled";
-            console.log(getCurrentIndex);
+            // console.log(getCurrentIndex);
             return form.valid();
         },
         onFinished: function(event, currentIndex) {
-            alert('Sumited');
+            // alert('Submited');
+            document.getElementById("signup-form").submit();
+
         },
-        // onInit : function (event, currentIndex) {
-        //     event.append('demo');
-        // }
+       
     });
 
     jQuery.extend(jQuery.validator.messages, {

@@ -112,10 +112,10 @@ h2 {
 body {
   font-size: 14px;
   line-height: 1.6;
-  color: #222;
+  color: #FFFFFF;
   font-weight: 900;
   font-family: 'Roboto Slab';
-  margin: 0px;
+  margin: 40px;
   /*background-image: url("../images/body-bg.jpg");*/
   background-repeat: no-repeat;
   background-size: cover;
@@ -129,10 +129,10 @@ body {
   padding: 95px 0; }
 
 .container {
-  width: 850px;
-  position: relative;
+  width: 800px;
+  position: inherit;
   margin: 0 auto;
-  background: #E6E6FA;
+  background:#FFFFFF;
   box-shadow: 0px 5px 9.5px 0.5px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0px 5px 9.5px 0.5px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0px 5px 9.5px 0.5px rgba(0, 0, 0, 0.1);
@@ -146,7 +146,7 @@ body {
 
 .signup-form {
   padding: 0 0px;
-  position: relative; }
+  position: inherit; }
 
 .form-group, .form-select, .form-radio, .form-textarea, .form-date {
   align-items: center;
@@ -755,3 +755,13 @@ fieldset {
     height: 750px; } }
 
 /*# sourceMappingURL=style.css.map */
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
