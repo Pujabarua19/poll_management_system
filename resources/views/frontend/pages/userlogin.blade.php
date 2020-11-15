@@ -36,6 +36,12 @@
                    </button>
                     <a href="{{ url('/register') }}"  class="btn btn-raised btn-default waves-effect">SIGN UP</a>                        
                 </div>
+                 <br>
+                    @if(Session::has('message'))
+                    <div class="alert alert-success">
+                    {{Session::get('message')}}
+                    </div>
+                    @endif 
                 <div class="col-lg-12 m-t-20">
                     <a class="" href="forgot-password.html">Forgot Password?</a>
                 </div>                    

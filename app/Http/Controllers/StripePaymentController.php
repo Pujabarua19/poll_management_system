@@ -25,7 +25,7 @@ class StripePaymentController extends Controller
      */
     public function stripePost(Request $request)
     {
-        $packages= Package::all();
+        // $packages= Package::all();
         Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
         Stripe\Charge::create ([
                 "amount" => 100 * 100,

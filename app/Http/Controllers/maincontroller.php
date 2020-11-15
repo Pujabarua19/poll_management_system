@@ -7,6 +7,7 @@ use Session;
 use App\User;
 use DB;
 use App\Package;
+
 class maincontroller extends Controller
 {
     public function default()

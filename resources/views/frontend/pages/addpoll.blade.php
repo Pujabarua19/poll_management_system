@@ -2,37 +2,21 @@
 <html>
 <head>
   <title>POll</title>
+
 <link rel="stylesheet" href="{{asset('assets/css/nav.css')}}">
 <link rel="stylesheet" type="text/css" href='https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap'>
   <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 <link rel="stylesheet" href="{{asset('asset1/css/style.css')}}">
-<!-- <link rel="stylesheet" href="{{asset('assets/css/payment.css')}}"> -->
 <link rel="stylesheet" href="{{asset('asset1/fonts/material-icon/css/material-design-iconic-font.min.css')}}">
  <link rel="stylesheet" href="{{asset('assets/css/package1.css')}}">
-    <!-- Main css -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   
+
 
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <style type="text/css">
-        .panel-title {
-        display: inline;
-        font-weight: bold;
-        }
-        .display-table {
-            display: table;
-        }
-        .display-tr {
-            display: table-row;
-        }
-        .display-td {
-            display: table-cell;
-            vertical-align: middle;
-            width: 61%;
-        }
-    </style>  
-    
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+   
 </head>
 <body>
 <div class="wrapper">
@@ -44,21 +28,21 @@
             <li><a href="#"><i class="fas fa-envelope-open"></i>{{session::get('user_email')}}</a></li>
             <li><a href="#"><i class="fas fa-location-arrow"></i>{{session::get('user_location')}}</a></li>
             <li><a href="{{ url('/userlogin') }}"><i class="fas fa-sign-out-alt"></i></i>Logout</a></li>
+            <li><a href="{{ url('/stripe') }}"><i class="fas fa-sign-out-alt"></i></i>Payment</a></li>
         </ul> 
-       <!--  <div class="social_media">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-      </div> -->
+    
     </div>
     <div class="main_content">
         <div class="header">Welcome!! Have a nice day.</div>  
         <div class="info">
-          
-  <div class="container">
+      <!-- wizard from started     -->
+     <div class="container">
       <h2><strong>Create A Poll </strong></h2>
       <form method="POST" id="signup-form" class="signup-form" action= "{{ URL::to('/pollStore') }}" >
+         
          {{csrf_field()}}
+     
+         <!-- poll question step started -->
           <h3>
             <span class="title_text"> Manage Poll</span>
           </h3>
@@ -98,64 +82,14 @@
                   
                   </div>
                   
-                  
-                  <!-- <div class="form-group" id="options"> 
-                  </div> -->
-                  
-                  
-
-                  <!-- <div class="form-group">
-                    <label >Select Additional Field:</label>
-                    <select class="form-control show-tick">
-                      <option>--Please select--</option>
-                      <option>Textarea</option>
-                      <option>Text </option>
-                    </select>  
-                  </div>      -->
-                  
-              </div>
+            </div>
               <div class="fieldset-footer">
-                  <span>Step 1 of 4</span>
+                  <span>Step 1 of 2</span>
               </div>
           </fieldset>
-          <h3>
-            <span class="title_text">Choose Package</span>
-          </h3>
-          <fieldset>
-          
-             <div class="fieldset-content">
-             
-                <div class="form-group">
-               @foreach($packages as $package)
-                   <div class="container1">
-                    <div class="box">
-                      <div class="icon1">  
-              </div>
-                      <div class="content">
-                       
-                        <h4>{{$package->packageName}}</h4>
-                        <p>Quantity :{{$package->quantity}}<br>
-                         Price: {{$package->price}}
-                        </p>
-                    <button type="button" class="btn btn-primary  Valid" onclick="addPackage({{ $package->id }})">Select Package</button>
 
-                      <!-- <a id="package_id">Select Package</a> -->
-
-                    </div>
-                  
-                    </div> 
-
-                </div>
-                @endforeach
-                </div>
-
-                <input type="hidden" name="package_id" id="selectedPackage">
-            </div>
-
-            <div class="fieldset-footer">
-                <span>Step 2 of 4</span>
-            </div>
-          </fieldset>
+          <!-- Package selection step started -->
+                   <!-- manage filter step started -->
             <h3>
               <span class="title_text">Manage Filter</span>
           </h3>
@@ -190,125 +124,11 @@
                   </div>
               </div>
               <div class="fieldset-footer">
-                  <span>Step 3 of 4</span>
+                  <span>Step 2 of 2</span>
               </div>
           </fieldset>
-          <h3>
-            <span class="title_text">Select Payment</span>
-          </h3>
-      <fieldset>
-              <div class="fieldset-content">
-                  <div class="form-group">
-                    
-                        
-  
-<div class="container">
-        <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-default credit-card-box">
-                <div class="panel-heading display-table" >
-                    <div class="row display-tr" >
-                        <h2 class="panel-title display-td" >Payment Details</h2>
-                        <div class="display-td" >                            
-                            <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
-                        </div>
-                    </div>                    
-                </div>
-                <div class="panel-body">
-  
-                    @if (Session::has('success'))
-                        <div class="alert alert-success text-center">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                            <p>{{ Session::get('success') }}</p>
-                        </div>
-                    @endif
-                    
-  
-                  <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation"
-                    data-cc-on-file="false"
-                    data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
-                    id="payment-form">
-                       {{csrf_field()}}
-  
-                        <div class='form-row1 row1'>
-
-                            <div class='col-xs-12 form-group required'>
-                                <label class='control-label'>Name on Card</label> <input
-                                    class='form-control' size='4' type='text'>
-                            </div>
-                        </div>
-  
-                        <div class='form-row1 row1'>
-                            <div class='col-xs-12 form-group card required'>
-                                <label class='control-label'>Card Number</label> <input
-                                    autocomplete='off' class='form-control card-number' size='20'
-                                    type='text'>
-                            </div>
-                        </div>
-  
-                        <div class='form-row1 row1'>
-                            <div class='col-xs-2 col-md-4 form-group cvc required'>
-                                <label class='control-label'>CVC</label> <input autocomplete='off'
-                                    class='form-control card-cvc' placeholder='ex. 311' size='8'
-                                    type='text'>
-                            </div>
-                            <div class='col-xs-2 col-md-4 form-group expiration required'>
-                                <label class='control-label'>Expiration Month</label> <input
-                                    class='form-control card-expiry-month' placeholder='MM' size='4'
-                                    type='text'>
-                            </div>
-                            <div class='col-xs-2 col-md-4 form-group expiration required'>
-                                <label class='control-label'>Expiration Year</label> <input
-                                    class='form-control card-expiry-year' placeholder='YYYY' size='8'
-                                    type='text'>
-                            </div>
-                        </div>
-  
-                        <div class='form-row1 row1'>
-                            <div class='col-md-12 error form-group hide'>
-                                <div class='alert-danger alert'>Please correct the errors and try
-                                    again.</div>
-                            </div>
-                        </div>
-  
-                        <div class="row1">
-                            <div class="col-xs-12">
-                      <button class="btn btn-success btn-lg btn-block" id="payment-form" type="submit" ">start subscription </button>
-                      <!-- <input type="button" name="submit" id="submit" value="pay" ></input> -->
-                            </div>
-                        </div>
-                          
-                    </form>
-                  <!--  <script type="text/javascript">
- 
-$(document).ready(function(){
-  $("#payment-form").submit(function(event){
-    
-    alert(test);
-  })
-})
-</script> -->
 
 
-
-                </div>
-            </div>        
-        </div>
-    </div>
-      
-<!-- </div> -->
-  
-
-                  
-                    </div>
-                  </div>
-              </div>
-              <div class="fieldset-footer">
-                  <span>Step 3 of 4</span>
-              </div>
-
-                       
-          </fieldset>
      </form>
   </div>
 
@@ -318,7 +138,7 @@ $(document).ready(function(){
  
 
 
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
      <script src="{{asset('asset1/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('asset1/vendor/jquery-validation/dist/jquery.validate.min.js')}}"></script>
@@ -331,10 +151,16 @@ $(document).ready(function(){
    <script src="{{asset('assets/js/pages/payment/payment1.js')}}"></script>
    
  
-<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-<script src="{{asset('assets/js/option.js')}}"></script>
+   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+   <script src="{{asset('assets/js/option.js')}}"></script>
 
-<script>
+
+
+
+
+
+<!-- select package script -->
+<!-- <script>
   function addPackage(package_id)
   {
     let package = package_id;
@@ -342,22 +168,8 @@ $(document).ready(function(){
   }
 
 </script>
-<!-- 
-<script type="text/javascript">
- 
-$(document).ready(function(){
-  $("#payment-form").submit(function(event){
-    
-    alert(test);
-  })
-  // var postdata=$("#payment-form").serialize();
-  // $.post("stripe.post", postdata,function(response){
-  //   $("#resp").show().html("submited");
-  // })
-  //  return false;
-  // })
-})
-</script> -->
+ -->
+
 
 
 

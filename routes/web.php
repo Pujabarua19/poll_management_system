@@ -13,11 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/', function () {
-   // return view('welcome');
-//});
 
 
+ // admin panel route
 Route::group(['middleware'=> 'logged'],function(){
 // Route::get('default', 'mainController@default');
 Route::get('default', 'mainController@default');
@@ -55,17 +53,20 @@ Route::get('userlogin', 'indexController@userlogin');
 Route::get('userloginstore', 'indexController@userloginstore');
 Route::get('register', 'indexController@register');
 Route::post('registerStore', 'indexController@registerStore');
+Route::get('contact', 'indexController@contact');
 Route::get('about', 'indexController@about');
+
 Route::post('pollStore', 'pollController@pollStore')->name('pollStore');
 
 
 Route::get('createPoll', 'pollController@createPoll');
 // });
 
-Route::get('profile', 'pollController@profile');
+
 
 
 Route::get('stripe', 'StripePaymentController@stripe');
+
 Route::post('stripe', 'StripePaymentController@stripePost')->name('stripe.post');
 
 

@@ -73,13 +73,13 @@
 <aside id="leftsidebar" class="sidebar"> 
     <!-- User Info -->
     <div class="user-info">
-        <div class="image"> <img src="assets/images/black.jpg" width="48" height="48" alt="User" /> </div>
+        <div class="image"> <img src="{{asset('assets/images/black.jpg')}}" width="48" height="48" alt="User" /> </div>
         <div class="info-container">
             <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Admin</div>
-            <div class="email">admin@example.com</div>
-<div class="btn-group user-helper-dropdown"> <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="button"> keyboard_arrow_down </i>
+            <div class="email">{{session::get('u_email')}}</div>
+             <div class="btn-group user-helper-dropdown"> <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="button"> keyboard_arrow_down </i>
                 <ul class="dropdown-menu pull-right">
-                    <li><a href="profile.html"><i class="material-icons">person</i>Profile</a></li>
+                   
                     <li class="divider"></li>
                     <li><a href="{{ url('/login') }}"><i class="material-icons">input</i>Sign Out</a></li>
                 </ul>
@@ -102,10 +102,10 @@
                     <li><a href="{{ url('/addPackage') }}">Add New</a> </li>
                      <li><a href="{{ url('/allPackages') }}">All Packages</a> </li>
                 </ul>
-                <li><a href="{{ url('/viewPoll') }}" class="waves-effect waves-block"><i class="zmdi zmdi-label col-green"></i><span>View polls</span></a></li>
+                <!-- <li><a href="{{ url('/viewPoll') }}" class="waves-effect waves-block"><i class="zmdi zmdi-label col-green"></i><span>View polls</span></a></li> -->
             </li> 
-            <li><a href="{{ url('/createPoll') }}" class="waves-effect waves-block"><i class="zmdi zmdi-label col-green"></i><span>Create polls</span></a></li>
-            </li> 
+            <!-- <li><a href="{{ url('/createPoll') }}" class="waves-effect waves-block"><i class="zmdi zmdi-label col-green"></i><span>Create polls</span></a></li>
+            </li> --> 
         </ul>
     </div>
     <!-- #Menu --> 

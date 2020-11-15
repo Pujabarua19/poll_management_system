@@ -13,9 +13,17 @@
                         
                     </div>                        
                 </div>
-                <form class="col-lg-12" id="submit" method="POST"  action="{{ URL::to('registerStore')}}">
-                    {{csrf_field()}}
+                <form class="col-lg-12" id="submit" method="POST"  action="{{ URL::to('registerStore')}}" onsubmit="if(document.getElementById('terms').checked) { return true; } else { alert('Please indicate that you have read and agree to the Terms and Conditions and Privacy Policy'); return false; }"
+
+>
+                 {{csrf_field()}}
                     <h5 class="title">Register</h5>
+                     <br>
+                    @if(Session::has('message'))
+                    <div class="alert alert-success">
+                    {{Session::get('message')}}
+                    </div>
+                    @endif 
                     <div class="form-group form-float">
                             <div class="form-line">
                                 <input type="text" class="form-control"  id="firstName" name="firstName" required="firstName">
@@ -46,8 +54,14 @@
                                 <label class="form-label"> Password</label>
                             </div>
                         </div>
+                       <!--  <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="password" class="form-control">
+                                <label class="form-label">Confirm Password</label>
+                            </div>
+                        </div> -->
                     <div>
-                         <input type="checkbox" name="terms" id="terms" class="filled-in chk-col-pink">
+                        <input type="checkbox" name="terms"  id="terms" class="filled-in chk-col-pink">
                         <label for="terms">I read and agree to the <a href="javascript:void(0);">terms of usage</a>.</label>
                     </div>  
                     <div class="col-lg-12">
@@ -57,7 +71,8 @@
                 </div>
                 <div class="col-lg-12 m-t-20">
                     <a class="" href="forgot-password.html">Forgot Password?</a>
-                </div>                        
+                </div>  
+
                 </form>
                              
             </div>

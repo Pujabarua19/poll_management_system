@@ -7,7 +7,8 @@ use Session;
 use App\User;
 use DB;
 use App\Package;
-use App\Addpoll;
+use App\Poll;
+
 class pollController extends Controller
 {
     public function addpoll()
@@ -30,12 +31,14 @@ class pollController extends Controller
 
 
  public function pollStore(Request $request){
-        $addpolls  = new Addpoll();
+        $addpolls  = new Poll();
+       
+        // $addpolls->user_id = $request->poll_title;
         $addpolls->poll_title = $request->poll_title;
         $addpolls->option_num = $request->option_num;
         $addpolls->option_type= $request->option_type;
         
-
+    
         $options= $request->options;
         $addpolls->options = implode(',',$options);
         $addpolls->package_id= $request->package_id;
@@ -48,7 +51,7 @@ class pollController extends Controller
 
 
     public function viewPoll(){
-        $addpolls= Addpoll::all();
+        $addpolls= Poll::all();
         return view('backend.pages.viewPoll' ,compact('addpolls'));
 
 
@@ -66,7 +69,7 @@ public function stripePost(Request $request)
                 "amount" => 100 * 100,
                 "currency" => "usd",
                 "source" => $request->stripeToken,
-                // "description" => "Test payment from itsolutionstuff.com." 
+                 
         ]);
   
         Session::flash('success', 'Payment successful!');
@@ -80,7 +83,9 @@ public function  createPoll(){
 }
 
 public function  profile(){
-    return view('frontend.pages.profile');
+ // $packages= Package::all();
+return view ('frontend.pages.profile' );
+     
 }
 
 

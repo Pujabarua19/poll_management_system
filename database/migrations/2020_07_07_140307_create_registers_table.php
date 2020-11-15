@@ -17,8 +17,8 @@ class CreateRegistersTable extends Migration
             $table->bigIncrements('id');
             $table->string('firstname');
             $table->string('lastname');
-             $table->string('location');
-             $table->string('email');
+            $table->string('location');
+            $table->string('email');
             $table->integer('password');
             $table->timestamps();
         });
