@@ -42,7 +42,7 @@
 <div class="overlay"></div><!-- Search  -->
 <div class="search-bar">
     <div class="search-icon"> <i class="material-icons">search</i> </div>
-    <input type="text" placeholder="Explore Nexa...">
+    <input type="text" placeholder="Explore Nexa..." />
     <div class="close-search"> <i class="material-icons">close</i> </div>
 </div>
 
@@ -63,7 +63,6 @@
                     </li>
                 </ul>
             </li>
-
         </ul>
       
     </div>
@@ -76,10 +75,9 @@
         <div class="image"> <img src="{{asset('assets/images/black.jpg')}}" width="48" height="48" alt="User" /> </div>
         <div class="info-container">
             <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Admin</div>
-            <div class="email">{{session::get('u_email')}}</div>
+            <div class="email">{{\Illuminate\Support\Facades\Session::get('u_email')}}</div>
              <div class="btn-group user-helper-dropdown"> <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="button"> keyboard_arrow_down </i>
                 <ul class="dropdown-menu pull-right">
-                   
                     <li class="divider"></li>
                     <li><a href="{{ url('/login') }}"><i class="material-icons">input</i>Sign Out</a></li>
                 </ul>
@@ -99,12 +97,12 @@
             <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-label col-red"></i><span>Packages</span> </a>
                 <ul class="ml-menu">
                    
-                    <li><a href="{{ url('/addPackage') }}">Add New</a> </li>
-                     <li><a href="{{ url('/allPackages') }}">All Packages</a> </li>
+                    <li><a href="{{ url('/add-package') }}">Add New</a> </li>
+                     <li><a href="{{ url('/all-packages') }}">All Packages</a> </li>
                 </ul>
-                <!-- <li><a href="{{ url('/viewPoll') }}" class="waves-effect waves-block"><i class="zmdi zmdi-label col-green"></i><span>View polls</span></a></li> -->
+                <!-- <li><a href="{{ url('/view-poll') }}" class="waves-effect waves-block"><i class="zmdi zmdi-label col-green"></i><span>View polls</span></a></li> -->
             </li> 
-            <!-- <li><a href="{{ url('/createPoll') }}" class="waves-effect waves-block"><i class="zmdi zmdi-label col-green"></i><span>Create polls</span></a></li>
+            <!-- <li><a href="{{ url('/create-poll') }}" class="waves-effect waves-block"><i class="zmdi zmdi-label col-green"></i><span>Create polls</span></a></li>
             </li> --> 
         </ul>
     </div>

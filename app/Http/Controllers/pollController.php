@@ -3,153 +3,153 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Session;
-use App\User;
-use DB;
 use App\Package;
 use App\Poll;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
-class pollController extends Controller
+
+class PollController extends Controller
 {
-    public function addpoll()
+    public function addPoll($pkg = null)
     {
-        $packages= Package::all();
-        return view ('frontend.pages.addpoll' ,compact('packages'));
-    	
+        //dd($pkg);
+        $packages = Package::all();
+        return view('frontend.pages.addpoll', compact('packages'));
     }
 
-   
-    public function logout(Request $request){
-        if($request->session()->has('user_email')){
+    public function logout(Request $request)
+    {
+        if ($request->session()->has('user_email')) {
             echo 'user found';
-        $request->session()->flush();
-        }
-        else{
+            $request->session()->flush();
+        } else {
             echo 'user not found';
-        }               
+        }
     }
 
-
- public function pollStore(Request $request){
-        $addpolls  = new Poll();
-       
-        // $addpolls->user_id = $request->poll_title;
-        $addpolls->poll_title = $request->poll_title;
-        $addpolls->option_num = $request->option_num;
-        $addpolls->option_type= $request->option_type;
-        
-    
-        $options= $request->options;
-        $addpolls->options = implode(',',$options);
-        $addpolls->package_id= $request->package_id;
-        $addpolls->age= $request->age;
-        $addpolls->gender= $request->gender;
-        $addpolls->location= $request->location;
-        $addpolls->save();
-        return redirect('/addpoll')->with('message','successfully Inserted.');
-    }
-
-
-    public function viewPoll(){
-        $addpolls= Poll::all();
-        return view('backend.pages.viewPoll' ,compact('addpolls'));
-
+    private function getPollRule()
+    {
+        return [
+            'poll_title' => 'required|max:120',
+            'option_num' => 'required',
+            'option_type' => 'required',
+            'age' =>'required',
+            'gender' => 'required',
+            'location' => 'required',
+        ];
 
     }
 
+    private function getPollRuleMessage()
+    {
+        return [
+            'poll_title.required' => 'Title is required',
+            'poll_title.max' => 'Title max 120 character Long',
+            'option_num.required' => 'Option number is required',
+            'option_type' => 'Option type is required',
+            'age' => 'Age is required',
+            'gender' => 'gender is required',
+            'location' => 'location is required',
+        ];
+    }
+
+    public function pollStore(Request $request)
+    {
+
+        $this->validate($request, $this->getPollRule(), $this->getPollRuleMessage());
+
+        $addpolls = new Poll();
+        $addpolls->user_id = intval(Session::get("userid"));
+        $addpolls->poll_title = $this->filter($request->poll_title);
+        $addpolls->option_num = intval($request->option_num);
+        $addpolls->option_type = trim($request->option_type);
+        $addpolls->package_id = intval(Session::get("pkg"));
+        $addpolls->age = trim($request->age);
+        $addpolls->gender = trim($request->gender);
+        $addpolls->location = trim($request->location);
+
+        try {
+            if($addpolls->save()){
+                $options = $request->options;
+                $ans = [];
+                foreach ($options as $option){
+                    if(trim($option) != '')
+                        $ans[] = $option;
+                }
+
+                if(count($ans) == intval($request->option_num)){
+                    foreach ($ans as $ansTitle){
+                        DB::table("answeres")->insert([
+                           'poll_id' => $addpolls->id,
+                           'ans_title' => $ansTitle
+                        ]);
+                    }
+
+                    DB::table("payments")->insert([
+                        'user_id' => intval(Session::get("userid")),
+                        'poll_id' => intval($addpolls->id),
+                    ]);
+
+                    Session::put("poll_id", intval($addpolls->id));
+
+                    return redirect()->route("stripe.get");
+
+                }else{
+                    if($addpolls != null)
+                        $addpolls->delete();
+                    return redirect()->back()->with('error', 'Option at least 2 required Or Not match your options num and options');
+                }
+
+            }else{
+                return redirect()->back()->with('error', 'Inserted failed');
+            }
+        }catch (\Exception $exception){
+            //dd($exception);
+            abort(404, "Something is wrong");
+        }
+
+    }
+
+    private function filter($value){
+        return trim(strip_tags($value));
+    }
 
 
+    public function viewPoll()
+    {
+        $addpolls = Poll::all();
+        return view('backend.pages.viewPoll', compact('addpolls'));
+    }
 
 
-
-public function stripePost(Request $request)
+    public function stripePost(Request $request)
     {
         Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-        Stripe\Charge::create ([
-                "amount" => 100 * 100,
-                "currency" => "usd",
-                "source" => $request->stripeToken,
-                 
+        Stripe\Charge::create([
+            "amount" => 100 * 100,
+            "currency" => "usd",
+            "source" => $request->stripeToken,
+
         ]);
-  
+
         Session::flash('success', 'Payment successful!');
-          
+
         return back();
     }
 
 
-public function  createPoll(){
-    return view('backend.pages.createPoll');
-}
+    public function createPoll()
+    {
+        return view('backend.pages.createPoll');
+    }
 
-public function  profile(){
- // $packages= Package::all();
-return view ('frontend.pages.profile' );
-     
-}
+    public function profile()
+    {
+        // $packages= Package::all();
+        return view('frontend.pages.profile');
 
+    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
-
-    
 }

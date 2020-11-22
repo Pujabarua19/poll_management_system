@@ -19,7 +19,7 @@
                        
                     </div>
                     <div class="body">
-                        <form id="addPackage" method="post" action={{ URL::to('/store') }}>
+                        <form id="addPackage" method="post" action={{ \Illuminate\Support\Facades\URL::to('/store-package') }}>
                             {{csrf_field()}}
                         <form class="form-horizontal">
                             <div class="row clearfix">

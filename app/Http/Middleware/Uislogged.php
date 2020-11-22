@@ -3,7 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Session;
+use Illuminate\Support\Facades\Session;
+
 class Uislogged
 {
     /**
@@ -15,9 +16,12 @@ class Uislogged
      */
     public function handle($request, Closure $next)
     {
-        if(!Session::has('user_email')){
-           return redirect('/userlogin');
-            // echo "not found";
+        $pkgId = intval($request->route("pkg"));
+        if(empty($pkgId) && !Session::has('user_email'))
+            return redirect()->back()->with("message", "You must need to select package");
+        Session::put("pkg", $pkgId);
+        if(! Session::has('user_email')){
+           return redirect('/user-login');
         }
         return $next($request);
     }

@@ -63,14 +63,14 @@
                   <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
 
                   <ul class="site-menu js-clone-nav d-none d-lg-block">
-                    <li><a href="{{url('/index')}}">Home</a></li>
+                    <li><a href="{{url('/')}}">Home</a></li>
                     <li>
                       <a href="{{url('/about')}}">About</a>
                     
                     </li>
                     
                     <li><a href="{{url('/contact')}}">Contact</a></li>
-                    <li><a href="{{url('/userlogin')}}">Login</a></li>
+                    <li><a href="{{url('/user-login')}}">Login</a></li>
                     <li><a href="{{url('/register')}}">Registration</a></li>
                     
                   </ul>

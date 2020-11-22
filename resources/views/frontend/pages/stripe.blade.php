@@ -41,30 +41,30 @@
                 </div>
                 <div class="panel-body">
   
-                    @if (Session::has('success'))
+                    @if (\Illuminate\Support\Facades\Session::has('success'))
                         <div class="alert alert-success text-center">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                            <p>{{ Session::get('success') }}</p>
+                            <p>{{ \Illuminate\Support\Facades\Session::get('success') }}</p>
                         </div>
                     @endif
   
                     <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation"
                                                      data-cc-on-file="false"
-                                                    data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
+                                                    data-stripe-publishable-key="{{ env('STRIPE_PUBLISHABLE_KEY') }}"
                                                     id="payment-form">
                         @csrf
   
                         <div class='form-row row'>
                             <div class='col-xs-12 form-group required'>
                                 <label class='control-label'>Name on Card</label> <input
-                                    class='form-control' size='4' type='text'>
+                                    class='form-control' name="card_name" size='4' type='text'>
                             </div>
                         </div>
   
                         <div class='form-row row'>
                             <div class='col-xs-12 form-group card required'>
                                 <label class='control-label'>Card Number</label> <input
-                                    autocomplete='off' class='form-control card-number' size='20'
+                                    autocomplete='off' name="card_number" class='form-control card-number' size='20'
                                     type='text'>
                             </div>
                         </div>
@@ -73,16 +73,16 @@
                             <div class='col-xs-12 col-md-4 form-group cvc required'>
                                 <label class='control-label'>CVC</label> <input autocomplete='off'
                                     class='form-control card-cvc' placeholder='ex. 311' size='4'
-                                    type='text'>
+                                    type='text' name="card_cvc">
                             </div>
                             <div class='col-xs-12 col-md-4 form-group expiration required'>
                                 <label class='control-label'>Expiration Month</label> <input
-                                    class='form-control card-expiry-month' placeholder='MM' size='2'
+                                    class='form-control card-expiry-month' name="card_expire_month" placeholder='MM' size='2'
                                     type='text'>
                             </div>
                             <div class='col-xs-12 col-md-4 form-group expiration required'>
                                 <label class='control-label'>Expiration Year</label> <input
-                                    class='form-control card-expiry-year' placeholder='YYYY' size='4'
+                                    class='form-control card-expiry-year' placeholder='YYYY' name="card_expire_year" size='4'
                                     type='text'>
                             </div>
                         </div>
@@ -114,7 +114,8 @@
   
 <script type="text/javascript">
 $(function() {
-    var $form         = $(".require-validation");
+    var $form         = $("#payment-form");
+    let publishKey ="pk_test_51HH8neLFqG0kjbHlaMegvR8uVXXFEQ3WPdZLxlSHZSZAkuHln3dbFQzeCbgqXjo4NBh1bEYk6ZLQn3kuNmGttOcw00GHgRPaOV";
   $('form.require-validation').bind('submit', function(e) {
     var $form         = $(".require-validation"),
         inputSelector = ['input[type=email]', 'input[type=password]',
@@ -125,19 +126,19 @@ $(function() {
         valid         = true;
         $errorMessage.addClass('hide');
  
-        $('.has-error').removeClass('has-error');
-    $inputs.each(function(i, el) {
-      var $input = $(el);
-      if ($input.val() === '') {
-        $input.parent().addClass('has-error');
-        $errorMessage.removeClass('hide');
-        e.preventDefault();
-      }
+      $('.has-error').removeClass('has-error');
+        $inputs.each(function(i, el) {
+          var $input = $(el);
+          if ($input.val() === '') {
+            $input.parent().addClass('has-error');
+            $errorMessage.removeClass('hide');
+            e.preventDefault();
+          }
     });
   
     if (!$form.data('cc-on-file')) {
       e.preventDefault();
-      Stripe.setPublishableKey($form.data('stripe-publishable-key'));
+      Stripe.setPublishableKey(publishKey);
       Stripe.createToken({
         number: $('.card-number').val(),
         cvc: $('.card-cvc').val(),

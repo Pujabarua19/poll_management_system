@@ -1,5 +1,4 @@
-
-  $(document).ready(function(){
+$(document).ready(function(){
     $("#section_poll_type").hide();
     // option number change
     $("#option_num").change(function(){
@@ -37,7 +36,7 @@
       str = '<div class="form-group col-md-6"><label for="option'+i+'">Option '+i+':</label> <input type="text" placeholder="Enter Option" name="options[]" class="form-control" id="option'+i+'"></div>';
       $("#options").append(str);
     }
-    hrline = '<hr>'
+    hrline = '<hr>';
     $("#options").append(hrline)
   }
   function generateRadio(options_number) {
@@ -46,7 +45,7 @@
       str = '<div class="form-group col-md-6"><label for="option'+i+'">Option '+i+':</label> <input type="text" placeholder="Enter Option" name="options[]" class="form-control" id="option'+i+'"></div>';
       $("#options").append(str)
     }
-    hrline = '<hr>'
+    hrline = '<hr>';
     $("#options").append(hrline)
   }
   function generateTextbox(options_number) {

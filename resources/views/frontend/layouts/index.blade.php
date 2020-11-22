@@ -1,10 +1,9 @@
-
 @extends('frontend.layouts.layout')
 @section('content')
     
     <div class="slide-one-item home-slider owl-carousel">
       
-      <div class="site-blocks-cover inner-page overlay" style="background-image: url('assets/images/orange.jpg');" data-aos="fade" data-stellar-background-ratio="0.5">
+      <div class="site-blocks-cover inner-page overlay" style="background-image:url('assets/images/orange.jpg');" data-aos="fade" data-stellar-background-ratio="0.5">
         <div class="container">
           <div class="row align-items-center justify-content-center">
             <div class="col-md-6 text-center" data-aos="fade">
@@ -37,6 +36,9 @@
         </div>
         <center>
        <div class="row">
+           @if(\Illuminate\Support\Facades\Session::has("message"))
+               <p style="color:red;">{{\Illuminate\Support\Facades\Session::get("message")}}</p>
+           @endif
                @foreach($packages as $package)
                    <div class="container1">
                     <div class="box">
@@ -50,7 +52,7 @@
                         </p>
                   <!--   <button type="button" class="btn btn-primary  Valid" onclick="addPackage({{ $package->id }})">Select Package</button> -->
                         <br>
-                      <a href="{{url('userlogin')}}">Select Package</a>
+                      <a href="{{url('add-poll',['pkg' => $package->id])}}">Select Package</a>
 
                     </div>
                   

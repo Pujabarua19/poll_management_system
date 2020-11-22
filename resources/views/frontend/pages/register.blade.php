@@ -13,7 +13,7 @@
                         
                     </div>                        
                 </div>
-                <form class="col-lg-12" id="submit" method="POST"  action="{{ URL::to('registerStore')}}" onsubmit="if(document.getElementById('terms').checked) { return true; } else { alert('Please indicate that you have read and agree to the Terms and Conditions and Privacy Policy'); return false; }"
+                <form class="col-lg-12" id="submit" method="POST"  action="{{ URL::to('register-store')}}" onsubmit="if(document.getElementById('terms').checked) { return true; } else { alert('Please indicate that you have read and agree to the Terms and Conditions and Privacy Policy'); return false; }"
 
 >
                  {{csrf_field()}}
@@ -67,7 +67,7 @@
                     <div class="col-lg-12">
                     <button type="submit" class="btn btn-raised btn-primary" >SIGN UP
                    </button>
-                    <a href="{{ url('/userlogin') }}"  class="btn btn-raised btn-default waves-effect">SIGN IN</a>                        
+                    <a href="{{ url('/user-login') }}"  class="btn btn-raised btn-default waves-effect">SIGN IN</a>
                 </div>
                 <div class="col-lg-12 m-t-20">
                     <a class="" href="forgot-password.html">Forgot Password?</a>

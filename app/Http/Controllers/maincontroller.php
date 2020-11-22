@@ -2,50 +2,77 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Session;
 use App\User;
-use DB;
-use App\Package;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
-class maincontroller extends Controller
+class MainController extends Controller
 {
     public function default()
     {
-    	return view ('backend.layouts.default');
+        return view('backend.layouts.default');
     }
 
     public function login()
     {
-    	return view ('backend.pages.login');
+        return view('backend.pages.login');
     }
-    public function loginstore(Request $request){
 
-        $email  =$request->email;
-        $password  =$request->password;
+    private function getLoginRule()
+    {
+        return [
+            'email' => 'required|email|unique:registers,email',
+            'password' => 'required|min:8',
+        ];
 
-        $user   = User::where('email','=',$email)
-                      ->where('password','=',$password)
-                      ->first();
-        if($user)
-        {
-            Session::put('userid',$user->id);
-            Session::put('u_email',$user->email);
-            return redirect('/default');
+    }
+
+    private function getRuleMessage()
+    {
+        return [
+            'email.unique' => 'Email already exist',
+            'email.required' => 'Email required',
+        ];
+    }
+
+    public function loginStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), $this->getLoginRule(), $this->getRuleMessage());
+
+        if ($validator->failed()) {
+            return redirect()->route("admin.login")->withInput($request->only(["email"]));
         }
-        else{
-           return redirect('/login')->with('message','invalid password or email.');
-           }
+
+        if ($this->attempt($request)) {
+            return redirect()->intended("admin.default");
+        } else {
+            return redirect()->back()->with('message', 'invalid password or email.');
+        }
     }
 
-  public function logout(Request $request){
-        if($request->session()->has('u_email')){
-            echo 'user found';
+
+    private function attempt(Request $request)
+    {
+        $email = strip_tags($request->input("email"));
+        $password = strip_tags($request->input("password"));
+        $user = User::where('email', '=', $email)->first();
+        if ($user != null && Hash::check($password, $user->password)) {
+            Session::put('userid', $user->id);
+            Session::put('u_email', $user->email);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function logout(Request $request)
+    {
         $request->session()->flush();
-        }
-        else{
-            echo 'user not found';
-        }               
+        $request->session()->invalidate();
+        $request->session()->regenerate();
+        return redirect()->route("admin.login");
     }
-   
+
 }

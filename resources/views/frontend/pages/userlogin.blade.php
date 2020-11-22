@@ -11,15 +11,21 @@
                         
                         <h1>Poll User</h1>
 
-                    </div>                        
+                    </div>
+                    <br>
+                    @if(\Illuminate\Support\Facades\Session::has('message'))
+                        <div class="alert alert-success">
+                            {{\Illuminate\Support\Facades\Session::get('message')}}
+                        </div>
+                    @endif
                 </div>
-                <form class="col-lg-12" id="submit" method="get" action="{{ URL::to('userloginstore')}}">
-                   {{csrf_field()}}
 
+                <form class="col-lg-12" id="submit" method="post" action="{{ \Illuminate\Support\Facades\URL::to('user-login-store')}}">
+                   {{csrf_field()}}
                     <h5 class="title">Sign in to your Account</h5>
                     <div class="form-group form-float">
                         <div class="form-line">
-                            <input type="text" class="form-control" required="email" name="email" id="email">
+                            <input type="text" class="form-control" value="{{old("email")}}" required="email" name="email" id="email">
                             <label class="form-label">Username</label>
                         </div>
                     </div>
@@ -36,12 +42,6 @@
                    </button>
                     <a href="{{ url('/register') }}"  class="btn btn-raised btn-default waves-effect">SIGN UP</a>                        
                 </div>
-                 <br>
-                    @if(Session::has('message'))
-                    <div class="alert alert-success">
-                    {{Session::get('message')}}
-                    </div>
-                    @endif 
                 <div class="col-lg-12 m-t-20">
                     <a class="" href="forgot-password.html">Forgot Password?</a>
                 </div>                    
@@ -50,11 +50,7 @@
         </div>
      </div>
    <br>
-                    @if(Session::has('message'))
-                    <div class="alert alert-success">
-                    {{Session::get('message')}}
-                    </div>
-                    @endif
+
  </form>
 
 @endsection

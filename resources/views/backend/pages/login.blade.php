@@ -32,49 +32,45 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="header slideDown">
-                        
                         <h1>Poll Admin</h1>
-
                     </div>                        
                 </div>
-                <form class="col-lg-12" id="sign_in" method="get" action="{{ URL::to('loginstore')}}">
+                <form class="col-lg-12" id="sign_in" method="post" action="{{ \Illuminate\Support\Facades\URL::to('login-store')}}">
                 	 {{csrf_field()}}
 
                     <h5 class="title">Sign in to your Account</h5>
                     <div class="form-group form-float">
                         <div class="form-line">
-                            <input type="text" class="form-control" required="email" name="email" id="email">
+                            <input type="text" value="{{old("email")}}" class="form-control" required name="email" id="email" />
                             <label class="form-label">Username</label>
                         </div>
                     </div>
                     <div class="form-group form-float">
                         <div class="form-line">
-                            <input type="password" class="form-control" required="password" name="password" id="password">
+                            <input type="password" class="form-control" required name="password" id="password" />
                             <label class="form-label">Password</label>
                         </div>
                     </div>
-                                          
-               
-                <div class="col-lg-12">
-                    <button type="submit" class="btn btn-raised btn-primary" >SIGN IN
-                   </button>
-                    <!-- <a href="sign-up.html" class="btn btn-raised btn-default waves-effect">SIGN UP</a>    -->                     
-                </div>
+
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-raised btn-primary" >SIGN IN
+                       </button>
+                        <!-- <a href="sign-up.html" class="btn btn-raised btn-default waves-effect">SIGN UP</a>    -->
+                    </div>
+                </form>
                 <div class="col-lg-12 m-t-20">
                     <a class="" href="forgot-password.html">Forgot Password?</a>
                     <br>
-                    @if(Session::has('message'))
-                    <div class="alert alert-success">
-                    {{Session::get('message')}}
-                    </div>
+                    @if(\Illuminate\Support\Facades\Session::has('message'))
+                        <div class="alert alert-success">
+                            {{\Illuminate\Support\Facades\Session::get('message')}}
+                        </div>
                     @endif
                 </div>                    
             </div>
         </div>
     </div>
 </div>
-
- </form>
 
 <script src="{{asset('assets/bundles/libscripts.bundle.js')}}"></script>    
 <script src="{{asset('assets/bundles/vendorscripts.bundle.js')}}"></script>
