@@ -23,7 +23,7 @@ class MainController extends Controller
     private function getLoginRule()
     {
         return [
-            'email' => 'required|email|unique:registers,email',
+            'email' => 'required|email',
             'password' => 'required|min:8',
         ];
     }
