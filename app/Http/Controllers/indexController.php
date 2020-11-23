@@ -70,8 +70,8 @@ class IndexController extends Controller
 
         $isInserted = DB:: table('registers')->insert(
             [
-                'firstname' => trim(strip_tags($request->firstName)),
-                'lastname' => trim(strip_tags($request->lastName)),
+                'firstname' => trim(strip_tags($request->firstname)),
+                'lastname' => trim(strip_tags($request->lastname)),
                 'location' => trim(strip_tags($request->location)),
                 'email' => trim(strip_tags($request->email)),
                 'password' => Hash::make(trim(strip_tags($request->password))),
@@ -86,9 +86,7 @@ class IndexController extends Controller
 
     public function userLoginStore(Request $request)
     {
-
-        $validator = Validator::make($request->all(), Arr::except($this->getRegisterRule(),
-            ['firstname', 'lastname', 'location']));
+        $validator = Validator::make($request->all(), ['email' => 'required|email','password' => 'required|min:8']);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput($request->only(["email"]))->withErrors($validator);
