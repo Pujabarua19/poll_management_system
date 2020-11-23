@@ -39,6 +39,20 @@
                 	 {{csrf_field()}}
 
                     <h5 class="title">Sign in to your Account</h5>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    @if(\Illuminate\Support\Facades\Session::has('message'))
+                        <div class="alert alert-success">
+                            {{\Illuminate\Support\Facades\Session::get('message')}}
+                        </div>
+                    @endif
                     <div class="form-group form-float">
                         <div class="form-line">
                             <input type="text" value="{{old("email")}}" class="form-control" required name="email" id="email" />
@@ -61,11 +75,6 @@
                 <div class="col-lg-12 m-t-20">
                     <a class="" href="forgot-password.html">Forgot Password?</a>
                     <br>
-                    @if(\Illuminate\Support\Facades\Session::has('message'))
-                        <div class="alert alert-success">
-                            {{\Illuminate\Support\Facades\Session::get('message')}}
-                        </div>
-                    @endif
                 </div>                    
             </div>
         </div>

@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class IndexController extends Controller
-
 {
     public function index()
     {
@@ -65,8 +64,8 @@ class IndexController extends Controller
     {
         $validator = Validator::make($request->all(), $this->getRegisterRule(), $this->getRegisterMessage());
 
-        if ($validator->failed()) {
-            return redirect()->back()->withInput($request->except(["password"]));
+        if ($validator->fails()) {
+            return redirect()->back()->withInput($request->except(["password"]))->withErrors($validator);
         }
 
         $isInserted = DB:: table('registers')->insert(
@@ -91,8 +90,8 @@ class IndexController extends Controller
         $validator = Validator::make($request->all(), Arr::except($this->getRegisterRule(),
             ['firstname', 'lastname', 'location']));
 
-        if ($validator->failed()) {
-            return redirect()->back()->withInput($request->only(["email"]));
+        if ($validator->fails()) {
+            return redirect()->back()->withInput($request->only(["email"]))->withErrors($validator);
         }
 
         if ($this->attempt($request)) {

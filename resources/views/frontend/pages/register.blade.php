@@ -10,47 +10,53 @@
                     <div class="header slideDown">
                         <div class="logo"></div>
                         <h1>poll Management System</h1>
-                        
-                    </div>                        
+                    </div>
                 </div>
-                <form class="col-lg-12" id="submit" method="POST"  action="{{ URL::to('register-store')}}" onsubmit="if(document.getElementById('terms').checked) { return true; } else { alert('Please indicate that you have read and agree to the Terms and Conditions and Privacy Policy'); return false; }"
-
->
+                <form class="col-lg-12" id="submit" method="POST"  action="{{ URL::to('register-store')}}" onsubmit="if(document.getElementById('terms').checked) { return true; } else { alert('Please indicate that you have read and agree to the Terms and Conditions and Privacy Policy'); return false; }">
                  {{csrf_field()}}
                     <h5 class="title">Register</h5>
                      <br>
-                    @if(Session::has('message'))
-                    <div class="alert alert-success">
-                    {{Session::get('message')}}
-                    </div>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    @if(\Illuminate\Support\Facades\Session::has('message'))
+                        <div class="alert alert-success">
+                        {{\Illuminate\Support\Facades\Session::get('message')}}
+                        </div>
                     @endif 
                     <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="text" class="form-control"  id="firstName" name="firstName" required="firstName">
+                                <input type="text" class="form-control"  id="firstName" name="firstname" required>
                                 <label class="form-label"> First Name</label>
                             </div>
                         </div>
                          <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="text" class="form-control" id="lastName" name="lastName" required="lastName">
+                                <input type="text" class="form-control" id="lastname" name="lastname" required>
                                 <label class="form-label">Last Name</label>
                             </div>
                         </div>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="text" class="form-control" id="location" name="location" required="location">
+                                <input type="text" class="form-control" id="location" name="location" required>
                                 <label class="form-label">Location</label>
                             </div>
                         </div>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="email" class="form-control" id="email" name="email" required="email">
+                                <input type="email" class="form-control" id="email" name="email" required>
                                 <label class="form-label">Email Address</label>
                             </div>
                         </div>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="password" class="form-control" id="password" name="password" required="password">
+                                <input type="password" class="form-control" id="password" name="password" required>
                                 <label class="form-label"> Password</label>
                             </div>
                         </div>

@@ -26,7 +26,6 @@ class MainController extends Controller
             'email' => 'required|email|unique:registers,email',
             'password' => 'required|min:8',
         ];
-
     }
 
     private function getRuleMessage()
@@ -41,8 +40,8 @@ class MainController extends Controller
     {
         $validator = Validator::make($request->all(), $this->getLoginRule(), $this->getRuleMessage());
 
-        if ($validator->failed()) {
-            return redirect()->route("admin.login")->withInput($request->only(["email"]));
+        if ($validator->fails()) {
+            return redirect()->route("admin.login")->withInput($request->only(["email"]))->withErrors($validator);
         }
 
         if ($this->attempt($request)) {

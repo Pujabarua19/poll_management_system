@@ -13,16 +13,25 @@
 
                     </div>
                     <br>
-                    @if(\Illuminate\Support\Facades\Session::has('message'))
-                        <div class="alert alert-success">
-                            {{\Illuminate\Support\Facades\Session::get('message')}}
-                        </div>
-                    @endif
                 </div>
 
                 <form class="col-lg-12" id="submit" method="post" action="{{ \Illuminate\Support\Facades\URL::to('user-login-store')}}">
                    {{csrf_field()}}
                     <h5 class="title">Sign in to your Account</h5>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    @if(\Illuminate\Support\Facades\Session::has('message'))
+                        <div class="alert alert-success">
+                            {{\Illuminate\Support\Facades\Session::get('message')}}
+                        </div>
+                    @endif
                     <div class="form-group form-float">
                         <div class="form-line">
                             <input type="text" class="form-control" value="{{old("email")}}" required="email" name="email" id="email">
