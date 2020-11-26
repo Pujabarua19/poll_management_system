@@ -35,10 +35,11 @@
           </div>
         </div>
         <center>
-       <div class="row">
            @if(\Illuminate\Support\Facades\Session::has("message"))
                <p style="color:red;">{{\Illuminate\Support\Facades\Session::get("message")}}</p>
            @endif
+       <div class="row">
+          
                @foreach($packages as $package)
                    <div class="container1">
                     <div class="box">
