@@ -72,6 +72,12 @@
                     <li><a href="{{url('/contact')}}">Contact</a></li>
                     <li><a href="{{url('/user-login')}}">Login</a></li>
                     <li><a href="{{url('/register')}}">Registration</a></li>
+                     <!-- <li class="has-children">
+                      <a href="about.html">Account</a>
+                      <ul class="dropdown arrow-top">
+                        <li><a href="testimonials.html">Profile</a></li>
+                        <li><a href="gallery.html">Logout</a></li> -->
+                        
                     
                   </ul>
                 </div>

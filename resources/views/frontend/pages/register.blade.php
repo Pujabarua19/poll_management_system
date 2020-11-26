@@ -54,6 +54,12 @@
                                 <label class="form-label">Email Address</label>
                             </div>
                         </div>
+                         <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
+                                <label class="form-label">Date of Birth</label>
+                            </div>
+                        </div>
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <input type="password" class="form-control" id="password" name="password" required>

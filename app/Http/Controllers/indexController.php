@@ -57,6 +57,7 @@ class IndexController extends Controller
             'firstname' => 'First name is required',
             'lastname' =>'Last name is required',
             'location' => 'Location is required',
+            'date_of_birth' => 'date_of_birth is required'
         ];
     }
 
@@ -74,6 +75,7 @@ class IndexController extends Controller
                 'lastname' => trim(strip_tags($request->lastname)),
                 'location' => trim(strip_tags($request->location)),
                 'email' => trim(strip_tags($request->email)),
+                'date_of_birth' => trim(strip_tags($request->date_of_birth)),
                 'password' => Hash::make(trim(strip_tags($request->password))),
             ]);
 
