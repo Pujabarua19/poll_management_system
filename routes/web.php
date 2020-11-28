@@ -36,7 +36,7 @@ Route::group(['middleware' => 'logged'], function () {
     Route::post('/update/{id}', 'PackageController@update')->name('package.update');
     Route::get('/edit/{id}', 'PackageController@edit')->name('package.edit');
     Route::get('/delete/{id}', 'PackageController@delete')->name('package.delete');
-    Route::get('/all-poll', 'MainController@viewPoll');
+    Route::get('/all-poll', 'MainController@viewPoll')->name("admin.polls");
     Route::get('/poll-approved/{pollId}', 'MainController@approvedPoll');
     Route::post('/logout', 'MainController@logout')->name("admin.logout");
 });

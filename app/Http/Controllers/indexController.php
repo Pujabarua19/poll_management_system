@@ -97,7 +97,7 @@ class IndexController extends Controller
             if(Session::has("pkg"))
                 return redirect()->route("poll.add",['pkg' => Session::get("pkg")]);
             else
-                return redirect()->route("home.index");
+                return redirect()->route("user.polls");
         } else {
             return redirect()->back()->with('message', 'invalid password or email.');
         }

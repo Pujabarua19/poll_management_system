@@ -44,12 +44,13 @@
                                                 <td class="{{$payment->poll_status == "approved" ? 'text-success' : 'text-info'}}">{{$payment->poll_status}}</td>
                                                 <td>
                                                     @if($payment->payment_status == "succeeded" && $payment->poll_status != "approved")
-                                                        <a class="btn btn-primary"
+                                                        <a class="btn btn-small btn-primary"
                                                            href="{{url("/poll-approved/{$payment->poll_id}")}}">Approve Poll</a>
                                                     @endif
-                                                    {{--                                                        @if($payment->payment_status == "succeeded" && $payment->poll_status == "approved")--}}
-                                                    {{--                                                            <a class="btn btn-primary">View Poll</a>--}}
-                                                    {{--                                                        @endif--}}
+
+{{--                                                    @if($payment->poll_status == "approved")--}}
+{{--                                                        <a class="btn btn-small btn-primary">View Poll</a>--}}
+{{--                                                    @endif--}}
                                                 </td>
                                             </tr>
                                         @endforeach

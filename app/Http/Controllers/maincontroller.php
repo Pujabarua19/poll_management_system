@@ -47,7 +47,7 @@ class MainController extends Controller
         }
 
         if ($this->attempt($request)) {
-            return redirect()->route("admin.default");
+            return redirect()->route("admin.polls");
         } else {
             return redirect()->back()->with('message', 'invalid password or email.');
         }

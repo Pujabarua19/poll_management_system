@@ -36,7 +36,6 @@ class StripePaymentController extends Controller
         // $packages= Package::all();
         if ($request->isMethod("POST")
             && Session::has("pkg") && Session::has("poll_id")) {
-
             $currencyCode = "USD";
             $package = Package::where("id", intval(Session::get("pkg")))->first();
             if($package != null) {
@@ -79,7 +78,11 @@ class StripePaymentController extends Controller
                         $payment->payment_status = $result["status"];
                         $payment->payment_response = json_encode($result);
                         $payment->save();
-                        DB::table("polls")->update(['pay_status' => 'completed'])->where("poll_id", intval(Session::get("poll_id")));
+
+                        $poll = Poll::where("id", intval(Session::get("poll_id")))->first();
+                        $poll->pay_status = 'completed';
+                        $poll->save();
+
                         return redirect()->route("user.polls");
                     }else{
                         $message = "Payment Unavailable";

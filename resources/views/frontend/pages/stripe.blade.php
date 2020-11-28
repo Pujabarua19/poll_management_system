@@ -99,8 +99,14 @@
                                 <button class="btn btn-primary btn-lg btn-block" type="submit">Pay </button>
                             </div>
                         </div>
-                          
                     </form>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <a href="{{route('user.polls')}}" class="btn btn-primary btn-lg btn-block" type="submit">Cancel</a>
+                    </div>
+                </div>
                 </div>
             </div>        
         </div>

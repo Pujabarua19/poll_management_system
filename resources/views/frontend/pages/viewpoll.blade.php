@@ -32,10 +32,11 @@
     
     </div>
     <div class="main_content">
-        <div class="header">Welcome!! Have a nice day.</div>  
+        <div class="header">Welcome!! Have a nice day.</div>
         <div class="info">
       <!-- wizard from started     -->
         <div class="container">
+            <a class="btn btn-primary pull-right" href="{{route("home.index")}}">+Create Poll</a>
             <h2><strong>My Poll</strong></h2>
             <div class="table-responsive">
                 <table class="table">
@@ -57,7 +58,7 @@
                          <td>{{$payment->packageName}}</td>
                          <td>{{$payment->price}}</td>
                          <td>{{$payment->created_at}}</td>
-                         <td class="{{$payment->payment_status == "succeeded" ? 'text-primary' : 'text-info'}}">{{$payment->payment_status}}</td>
+                         <td class="{{$payment->payment_status == "succeeded" ? 'text-success' : 'text-info'}}">{{$payment->payment_status}}</td>
                          <td>
                             @if($payment->payment_status != "succeeded")
                                  <a class="btn btn-primary" href="{{url("/stripe/{$payment->package_id}/{$payment->poll_id}")}}">PayNow</a>
