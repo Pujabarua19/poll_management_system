@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
    
 use App\Package;
 use App\Payment;
+use App\Poll;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Stripe;
    
@@ -57,12 +59,14 @@ class StripePaymentController extends Controller
                         && $result['captured'] == 1 && $result['status'] == 'succeeded') {
 
                         $payment  = Payment::where("user_id", intval(Session::get("userid")))
-                                    ->where("poll_id", intval(Session::get("poll_id")))->first();
+                                    ->where("poll_id", intval(Session::get("poll_id")))
+                                    ->where("package_id", $package->id)->first();
 
                         if($payment == null) {
                             $payment = new Payment();
                             $payment->user_id = intval(Session::get("userid"));
                             $payment->poll_id = intval(Session::get("poll_id"));
+                            $payment->package_id = $package->id;
                         }
 
                         $payment->card_name = trim(strip_tags($request->get("card_name")));
@@ -75,9 +79,8 @@ class StripePaymentController extends Controller
                         $payment->payment_status = $result["status"];
                         $payment->payment_response = json_encode($result);
                         $payment->save();
-
-                        $message = "Stripe payment is completed successfully. The TXN ID is " . $result["balance_transaction"];
-
+                        DB::table("polls")->update(['pay_status' => 'completed'])->where("poll_id", intval(Session::get("poll_id")));
+                        return redirect()->route("user.polls");
                     }else{
                         $message = "Payment Unavailable";
                     }

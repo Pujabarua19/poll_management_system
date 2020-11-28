@@ -38,6 +38,7 @@ Route::group(['middleware' => 'logged'], function () {
     Route::get('/delete/{id}', 'PackageController@delete')->name('package.delete');
     Route::get('/all-poll', 'MainController@viewPoll');
     Route::get('/poll-approved/{pollId}', 'MainController@approvedPoll');
+    Route::post('/logout', 'MainController@logout')->name("admin.logout");
 });
 
 
@@ -49,7 +50,7 @@ Route::post('/login-store', 'MainController@loginStore')->name("admin.login.stor
 Route::group(['middleware' => 'Uislogged'], function () {
     Route::get('/add-poll/{pkg}', 'PollController@addPoll')->name('poll.add');
     Route::post('/user-logout', 'IndexController@userLogout')->name("home.logout");
-    Route::get('/view-poll', 'PollController@viewPoll');
+    Route::get('/view-poll', 'PollController@viewPoll')->name("user.polls");
 });
 
 

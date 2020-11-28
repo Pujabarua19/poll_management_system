@@ -79,7 +79,10 @@
              <div class="btn-group user-helper-dropdown"> <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="button"> keyboard_arrow_down </i>
                 <ul class="dropdown-menu pull-right">
                     <li class="divider"></li>
-                    <li><a href="{{ url('/login') }}"><i class="material-icons">input</i>Sign Out</a></li>
+                    <li><a href="#" onclick="document.getElementById('logout').submit(); return false;"><i class="material-icons">input</i>Sign Out</a></li>
+                    <form id="logout" method="post" action="{{ \Illuminate\Support\Facades\URL::to('/logout') }}">
+                        {{csrf_field()}}
+                    </form>
                 </ul>
             </div>
         </div>
