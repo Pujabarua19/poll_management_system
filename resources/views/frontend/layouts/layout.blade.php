@@ -69,9 +69,21 @@
                     
                     </li>
                     
-                    <li><a href="{{url('/contact')}}">Contact</a></li>
+                    <!-- <li><a href="{{url('/contact')}}">Contact</a></li> -->
+                     @if(empty(Session::get("user_email")))
                     <li><a href="{{url('/user-login')}}">Login</a></li>
                     <li><a href="{{url('/register')}}">Registration</a></li>
+                    @endif
+                     @if(Session::get("user_email"))
+                     <li class="has-children">
+                      <a href="about.html">{{\Illuminate\Support\Facades\Session::get('user_firstname')}} {{\Illuminate\Support\Facades\Session::get('user_lastname')}}</a>
+                      <ul class="dropdown arrow-top">
+                       <!--  <li><a href="testimonials.html">Profile</a></li> -->
+                        <li><a href="" onclick="document.getElementById('logout').submit(); return false;"><i class="fas fa-sign-out-alt"></i></i>Logout</a></li>
+                         <form id="logout" method="post" action="{{ \Illuminate\Support\Facades\URL::to('/user-logout') }}">
+                {{csrf_field()}}
+                    </form>
+                      @endif  
                     
                   </ul>
                 </div>

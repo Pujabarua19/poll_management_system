@@ -19,7 +19,8 @@ class CreateRegistersTable extends Migration
             $table->string('lastname');
             $table->string('location');
             $table->string('email');
-            $table->integer('password');
+            $table->string('password');
+             $table->date('date_of_birth');
             $table->timestamps();
         });
     }
