@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Payment;
 use Illuminate\Http\Request;
 use App\Package;
 use App\Poll;
