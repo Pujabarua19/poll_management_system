@@ -56,27 +56,28 @@ class MainController extends Controller
     public function viewPoll()
     {
         $query = DB::table("payments")
-            ->join("polls", "payments.poll_id","=", "polls.id")
-            ->join("packages", "payments.package_id","=", "packages.id");
+            ->join("polls", "payments.poll_id", "=", "polls.id")
+            ->join("packages", "payments.package_id", "=", "packages.id");
 
-        $query->select("payments.*","polls.poll_title","polls.pay_status AS poll_status", "packages.packageName","packages.price")
+        $query->select("payments.*", "polls.poll_title", "polls.pay_status AS poll_status", "packages.packageName", "packages.price")
             ->orderBy("payments.created_at");
         $payments = $query->get();
         return view('backend.pages.viewpoll', compact('payments'));
     }
 
-    public function approvedPoll($pollId = null){
-        if($pollId != null && intval($pollId) > 0){
-            $poll = Poll::where('id', "=", intval($pollId))->where("pay_status","=","completed")->first();
-            if($poll != null){
+    public function approvedPoll($pollId = null)
+    {
+        if ($pollId != null && intval($pollId) > 0) {
+            $poll = Poll::where('id', "=", intval($pollId))->where("pay_status", "=", "completed")->first();
+            if ($poll != null) {
                 $poll->pay_status = "approved";
                 $poll->save();
-                return redirect()->back()->with("message","Poll Approved Successfully!");
-            }else{
-                return redirect()->back()->with("message","Poll Not Actived");
+                return redirect()->back()->with("message", "Poll Approved Successfully!");
+            } else {
+                return redirect()->back()->with("message", "Poll Not Actived");
             }
-        }else{
-            return redirect()->back()->with("message","Invalid Poll id");
+        } else {
+            return redirect()->back()->with("message", "Invalid Poll id");
         }
     }
 
