@@ -101,9 +101,12 @@
                      <li><a href="{{ url('/all-packages') }}">All Packages</a> </li>
                 </ul>
                 <!-- <li><a href="{{ url('/view-poll') }}" class="waves-effect waves-block"><i class="zmdi zmdi-label col-green"></i><span>View polls</span></a></li> -->
-            </li> 
-            <!-- <li><a href="{{ url('/create-poll') }}" class="waves-effect waves-block"><i class="zmdi zmdi-label col-green"></i><span>Create polls</span></a></li>
-            </li> --> 
+            </li>
+            <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-label col-red"></i><span>Polls</span> </a>
+                <ul class="ml-menu">
+                    <li><a href="{{ url('/all-poll') }}">All Polls</a> </li>
+                </ul>
+            </li>
         </ul>
     </div>
     <!-- #Menu --> 

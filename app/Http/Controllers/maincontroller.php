@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Poll;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -45,9 +47,36 @@ class MainController extends Controller
         }
 
         if ($this->attempt($request)) {
-            return redirect()->intended("admin.default");
+            return redirect()->route("admin.default");
         } else {
             return redirect()->back()->with('message', 'invalid password or email.');
+        }
+    }
+
+    public function viewPoll()
+    {
+        $query = DB::table("payments")
+            ->join("polls", "payments.poll_id","=", "polls.id")
+            ->join("packages", "payments.package_id","=", "packages.id");
+
+        $query->select("payments.*","polls.poll_title","polls.pay_status AS poll_status", "packages.packageName","packages.price")
+            ->orderBy("payments.created_at");
+        $payments = $query->get();
+        return view('backend.pages.viewpoll', compact('payments'));
+    }
+
+    public function approvedPoll($pollId = null){
+        if($pollId != null && intval($pollId) > 0){
+            $poll = Poll::where('id', "=", intval($pollId))->where("pay_status","=","completed")->first();
+            if($poll != null){
+                $poll->pay_status = "approved";
+                $poll->save();
+                return redirect()->back()->with("message","Poll Approved Successfully!");
+            }else{
+                return redirect()->back()->with("message","Poll Not Actived");
+            }
+        }else{
+            return redirect()->back()->with("message","Invalid Poll id");
         }
     }
 

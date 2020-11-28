@@ -15,8 +15,12 @@ class StripePaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function stripe()
+    public function stripe($pkg=null, $poll_id=null)
     {
+        if($pkg != null && intval($pkg) > 0)
+            Session::put("pkg", intval($pkg));
+        if($poll_id != null && intval($poll_id) > 0)
+            Session::put("poll_id", intval($poll_id));
         return view('frontend.pages.stripe');
     }
   

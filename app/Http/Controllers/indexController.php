@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Register;
 use App\Package;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -92,7 +91,7 @@ class IndexController extends Controller
             return redirect()->back()->withInput($request->only(["email"]))->withErrors($validator);
         }
 
-        if ($this->attempt($request)) {
+        if ($this->attempt($request)){
             if(Session::has("pkg"))
                 return redirect()->route("poll.add",['pkg' => Session::get("pkg")]);
             else
@@ -100,28 +99,6 @@ class IndexController extends Controller
         } else {
             return redirect()->back()->with('message', 'invalid password or email.');
         }
-
-//        $email = $request->email;
-//        $password = $request->password;
-//
-//        $userlogin = Register::where('email', '=', $email)
-//            ->where('password', '=', $password)
-//            ->first();
-//
-//        if ($userlogin) {
-//            Session::put('userid', $userlogin->id);
-//            Session::put('user_firstname', $userlogin->firstname);
-//            Session::put('user_lastname', $userlogin->lastname);
-//            Session::put('user_email', $userlogin->email);
-//            Session::put('user_location', $userlogin->location);
-//
-//            return redirect('/addpoll');
-//
-//        } else {
-//
-//            return redirect('/userlogin')->with('message', 'invalid password or email.');
-//        }
-
     }
 
     private function attempt(Request $request)

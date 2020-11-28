@@ -23,7 +23,7 @@ Route::get('/about', 'IndexController@about');
 
 Route::post('/store-poll', 'PollController@pollStore')->name('poll.store');
 Route::get('/create-poll', 'PollController@createPoll')->name("poll.create");
-Route::get('/stripe', 'StripePaymentController@stripe')->name("stripe.get");
+Route::get('/stripe/{pkg?}/{poll_id?}', 'StripePaymentController@stripe')->name("stripe.get");
 Route::post('/stripe', 'StripePaymentController@stripePost')->name('stripe.post');
 
 // admin panel route
@@ -36,18 +36,20 @@ Route::group(['middleware' => 'logged'], function () {
     Route::post('/update/{id}', 'PackageController@update')->name('package.update');
     Route::get('/edit/{id}', 'PackageController@edit')->name('package.edit');
     Route::get('/delete/{id}', 'PackageController@delete')->name('package.delete');
-    Route::get('/view-poll', 'PollController@viewPoll');
+    Route::get('/all-poll', 'MainController@viewPoll');
+    Route::get('/poll-approved/{pollId}', 'MainController@approvedPoll');
 });
 
 
 Route::get('/login', 'MainController@login')->name("admin.login");
-Route::get('/login-store', 'MainController@loginStore')->name("admin.login.store");
+Route::post('/login-store', 'MainController@loginStore')->name("admin.login.store");
 
 
 // User panel route
 Route::group(['middleware' => 'Uislogged'], function () {
     Route::get('/add-poll/{pkg}', 'PollController@addPoll')->name('poll.add');
     Route::post('/user-logout', 'IndexController@userLogout')->name("home.logout");
+    Route::get('/view-poll', 'PollController@viewPoll');
 });
 
 

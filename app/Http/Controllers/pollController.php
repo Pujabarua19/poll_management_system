@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Payment;
 use Illuminate\Http\Request;
 use App\Package;
 use App\Poll;
@@ -16,6 +17,13 @@ class PollController extends Controller
         //dd($pkg);
         $packages = Package::all();
         return view('frontend.pages.addpoll', compact('packages'));
+    }
+
+    public function allPoll()
+    {
+        //dd($pkg);
+        $packages = Package::all();
+        return view('frontend.pages.allpoll', compact('packages'));
     }
 
     public function logout(Request $request)
@@ -89,6 +97,7 @@ class PollController extends Controller
                     DB::table("payments")->insert([
                         'user_id' => intval(Session::get("userid")),
                         'poll_id' => intval($addpolls->id),
+                        'package_id' => intval(Session::get("pkg"))
                     ]);
 
                     Session::put("poll_id", intval($addpolls->id));
@@ -118,8 +127,14 @@ class PollController extends Controller
 
     public function viewPoll()
     {
-        $addpolls = Poll::all();
-        return view('backend.pages.viewPoll', compact('addpolls'));
+        $query = DB::table("payments")
+            ->join("polls", "payments.poll_id","=", "polls.id")
+            ->join("packages", "payments.package_id","=", "packages.id")
+            ->where("payments.user_id","=", Session::get("userid"));
+        $query->select("payments.*","polls.poll_title","packages.packageName","packages.price")
+        ->orderBy("payments.created_at");
+        $payments = $query->get();
+        return view('frontend.pages.viewpoll', compact('payments'));
     }
 
 
