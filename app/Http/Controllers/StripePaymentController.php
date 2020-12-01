@@ -79,9 +79,9 @@ class StripePaymentController extends Controller
                         $payment->payment_response = json_encode($result);
                         $payment->save();
 
-                        $poll = Poll::where("id", intval(Session::get("poll_id")))->first();
-                        $poll->pay_status = 'completed';
-                        $poll->save();
+//                        $poll = Poll::where("id", intval(Session::get("poll_id")))->first();
+//                        $poll->pay_status = 'completed';
+//                        $poll->save();
 
                         return redirect()->route("user.polls");
                     }else{

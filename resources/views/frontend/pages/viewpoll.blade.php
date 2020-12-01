@@ -16,10 +16,9 @@
 <body>
 <div class="wrapper">
     <div class="sidebar">
-        <h2>{{\Illuminate\Support\Facades\Session::get('user_firstname')}} {{\Illuminate\Support\Facades\Session::get('user_lastname')}}</h2>
+        <h5>{{\Illuminate\Support\Facades\Session::get('user_firstname')}} {{\Illuminate\Support\Facades\Session::get('user_lastname')}}</h5>
         <ul>
             <li><a href="{{ url('/') }}"><i class="fas fa-home"></i>Home</a></li>
-           
             <li><a href="#"><i class="fas fa-envelope-open"></i>{{\Illuminate\Support\Facades\Session::get('user_email')}}</a></li>
             <li><a href="#"><i class="fas fa-location-arrow"></i>{{\Illuminate\Support\Facades\Session::get('user_location')}}</a></li>
             <li><a href="" onclick="document.getElementById('logout').submit(); return false;"><i class="fas fa-sign-out-alt"></i></i>Logout</a></li>
@@ -28,8 +27,7 @@
             <form id="logout" method="post" action="{{ \Illuminate\Support\Facades\URL::to('/user-logout') }}">
                 {{csrf_field()}}
             </form>
-        </ul> 
-    
+        </ul>
     </div>
     <div class="main_content">
         <div class="header">Welcome!! Have a nice day.</div>
@@ -46,28 +44,30 @@
                     <th>Package</th>
                     <th>Amount</th>
                     <th>Order Date</th>
-                    <th>Status</th>
+                    <th>Pay.Status</th>
+                    <th>Poll Status</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                @if(!empty($payments))
+                @if($payments->count() > 0)
                     @foreach($payments as $payment)
                         <tr>
                          <td>{{$payment->poll_title}}</td>
                          <td>{{$payment->packageName}}</td>
                          <td>{{$payment->price}}</td>
                          <td>{{$payment->created_at}}</td>
-                         <td class="{{$payment->payment_status == "succeeded" ? 'text-success' : 'text-info'}}">{{$payment->payment_status}}</td>
+                         <td style="font-weight: bold; font-style: italic" class="{{$payment->payment_status == "succeeded" ? 'text-success' : 'text-info'}}">{{$payment->payment_status == "succeeded" ? 'Paid' : 'Un-Paid'}}</td>
+                         <td style="font-weight: bold; font-style: italic" class="{{\App\Helper\Helper::getPollStatusClass($payment->poll_status)}}">{{$payment->payment_status == "succeeded" && $payment->poll_status == "approved" ? "Publishing" : $payment->poll_status}}</td>
                          <td>
-                            @if($payment->payment_status != "succeeded")
+                            @if($payment->poll_status == "approved" && $payment->payment_status != "succeeded")
                                  <a class="btn btn-primary" href="{{url("/stripe/{$payment->package_id}/{$payment->poll_id}")}}">PayNow</a>
                             @endif
                         </td>
                         </tr>
                     @endforeach
                 @else
-                    <p>Not any poll created yet !</p>
+                    <p class="text-danger">Not any poll created yet !</p>
                 @endif
                 </tbody>
             </table>

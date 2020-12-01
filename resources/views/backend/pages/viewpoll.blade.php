@@ -33,29 +33,33 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if(!empty($payments))
+                                    @if($payments->count() > 0)
                                         @foreach($payments as $payment)
                                             <tr>
                                                 <td>{{$payment->poll_title}}</td>
                                                 <td>{{$payment->packageName}}</td>
                                                 <td>{{$payment->price}}</td>
                                                 <td>{{$payment->created_at}}</td>
-                                                <td class="{{$payment->payment_status == "succeeded" ? 'text-success' : 'text-info'}}">{{$payment->payment_status}}</td>
-                                                <td class="{{$payment->poll_status == "approved" ? 'text-success' : 'text-info'}}">{{$payment->poll_status}}</td>
+                                                <td style="font-weight: bold; font-style: italic" class="{{$payment->payment_status == "succeeded" ? 'text-success' : 'text-warning'}}">{{$payment->payment_status == "succeeded" ? 'Paid' : 'Un-Paid'}}</td>
+                                                <td style="font-weight: bold; font-style: italic" class="{{\App\Helper\Helper::getPollStatusClass($payment->poll_status)}}">{{$payment->poll_status == "pending" ? 'Waiting' : $payment->poll_status}}</td>
                                                 <td>
-                                                    @if($payment->payment_status == "succeeded" && $payment->poll_status != "approved")
+                                                    @if($payment->poll_status == "pending")
+                                                        <a class="btn btn-small btn-info"
+                                                           href="{{url("/poll-change/{$payment->poll_id}/1")}}">Approve</a>
+                                                    @elseif($payment->payment_status == "succeeded" && ($payment->poll_status == "approved" || $payment->poll_status == "rejected"))
                                                         <a class="btn btn-small btn-primary"
-                                                           href="{{url("/poll-approved/{$payment->poll_id}")}}">Approve Poll</a>
+                                                           href="{{url("/poll-change/{$payment->poll_id}/2")}}">{{$payment->poll_status == "rejected" ? 'Re-Publish' : 'Publish'}}</a>
+                                                    @elseif($payment->poll_status == "published")
+                                                        <a class="btn btn-small btn-danger"
+                                                           href="{{url("/poll-change/{$payment->poll_id}/3")}}">Reject</a>
                                                     @endif
-
-{{--                                                    @if($payment->poll_status == "approved")--}}
-{{--                                                        <a class="btn btn-small btn-primary">View Poll</a>--}}
-{{--                                                    @endif--}}
+                                                        <a class="btn btn-small btn-primary"
+                                                           href="{{url("/poll-details/{$payment->poll_id}")}}">Details</a>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     @else
-                                        <p>Not any poll Requested yet !</p>
+                                        <p class="text-danger">Not any poll Requested yet !</p>
                                     @endif
                                     </tbody>
                                 </table>

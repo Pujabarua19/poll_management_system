@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Poll;
 use App\Register;
 use App\Package;
 use Illuminate\Http\Request;
@@ -18,6 +19,24 @@ class IndexController extends Controller
         return view('frontend.layouts.index', compact('packages'));
     }
 
+    public function allPoll(){
+
+         $polls = Poll::with("answers")
+             ->where("status","=","published")
+             ->where("gender","=", strtolower(Session::get("user_gender")))
+             ->where("min_age","<=" , intval(Session::get("user_age")))
+             ->where("max_age",">=" , intval(Session::get("user_age")))
+             ->orderBy("created_at","DESC")->get();
+
+         if($polls->count() > 0){
+             $polls= $polls->filter(function ($poll){
+                 $pollLocations = explode(",", $poll->location);
+                 return in_array(Session::get("user_location"), $pollLocations);
+             });
+         }
+
+        return view('frontend.pages.poll', compact('polls'));
+    }
 
     public function userLogin()
     {
@@ -97,7 +116,7 @@ class IndexController extends Controller
             if(Session::has("pkg"))
                 return redirect()->route("poll.add",['pkg' => Session::get("pkg")]);
             else
-                return redirect()->route("user.polls");
+                return redirect()->route("user.vote");
         } else {
             return redirect()->back()->with('message', 'invalid password or email.');
         }
@@ -115,6 +134,8 @@ class IndexController extends Controller
             Session::put('user_lastname', $user->lastname);
             Session::put('user_email', $user->email);
             Session::put('user_location', $user->location);
+            Session::put('user_age', $user->age);
+            Session::put('user_gender', $user->gender);
             return true;
         } else {
             return false;

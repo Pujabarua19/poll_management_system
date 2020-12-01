@@ -68,7 +68,6 @@
                                         <a href="{{url('/about')}}">About</a>
 
                                     </li>
-
                                 <!-- <li><a href="{{url('/contact')}}">Contact</a></li> -->
                                     @if(empty(Session::get("user_email")))
                                         <li><a href="{{url('/user-login')}}">Login</a></li>
@@ -78,6 +77,9 @@
                                         <li class="has-children">
                                             <a href="about.html">{{\Illuminate\Support\Facades\Session::get('user_firstname')}} {{\Illuminate\Support\Facades\Session::get('user_lastname')}}</a>
                                             <ul class="dropdown arrow-top">
+                                                <li>
+                                                    <a href="{{url('/poll')}}">Poll</a>
+                                                </li>
                                                 <!--  <li><a href="testimonials.html">Profile</a></li> -->
                                                 <li><a href=""
                                                        onclick="document.getElementById('logout').submit(); return false;"><i

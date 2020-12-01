@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
+use App\UserVote;
 use Illuminate\Http\Request;
 use App\Package;
 use App\Poll;
@@ -13,7 +15,6 @@ class PollController extends Controller
 {
     public function addPoll($pkg = null)
     {
-        //dd($pkg);
         $packages = Package::all();
         return view('frontend.pages.addpoll', compact('packages'));
     }
@@ -63,7 +64,6 @@ class PollController extends Controller
 
     public function pollStore(Request $request)
     {
-
         $this->validate($request, $this->getPollRule(), $this->getPollRuleMessage());
 
         $addpolls = new Poll();
@@ -72,9 +72,11 @@ class PollController extends Controller
         $addpolls->option_num = intval($request->option_num);
         $addpolls->option_type = trim($request->option_type);
         $addpolls->package_id = intval(Session::get("pkg"));
-        $addpolls->age = trim($request->age);
+        $age = explode("-", $request->age);
+        $addpolls->min_age = intval(trim($age[0]));
+        $addpolls->max_age = intval(trim($age[1]));
         $addpolls->gender = trim($request->gender);
-        $addpolls->location = trim($request->location);
+        $addpolls->location = implode(",", $request->location);
 
         try {
             if($addpolls->save()){
@@ -101,7 +103,7 @@ class PollController extends Controller
 
                     Session::put("poll_id", intval($addpolls->id));
 
-                    return redirect()->route("stripe.get");
+                    return redirect()->route("user.polls");
 
                 }else{
                     if($addpolls != null)
@@ -124,18 +126,81 @@ class PollController extends Controller
     }
 
 
+    public function vote(Request $request)
+    {
+        //dd(Session::get("user_age"));
+        if($request->isMethod("POST") && $request->has("poll_id")) {
+            $pollId = intval($request->input("poll_id"));
+            if ($pollId > 0 ) {
+                $poll = Poll::where("id", $pollId)->first();
+
+                //check user already voted or not
+                $userVote = DB::table("user_vote")
+                    ->where("user_id", intval(Session::get("userid")))->where("poll_id", $pollId)->first();
+
+                if($userVote != null)
+                    return redirect()->back()->with("error", "You already give vote: ". $poll->poll_title);
+
+                $options = $request->input("options");
+                $optionType = $request->input("option_type");
+                //dd($options);
+                try {
+                    if($optionType == "radio" || $optionType == "checkbox") {
+                        if (!empty($options)) {
+                            if (is_array($options)) {
+                                foreach ($options as $option) {
+                                    $ans = Answer::where('id', intval($option))->where('poll_id', $pollId)->first();
+                                    if ($ans != null) {
+                                        $ans->vote = $ans->vote + 1;
+                                        $ans->save();
+                                    }
+                                }
+                            } else {
+                                $ans = Answer::where('id', intval($options))->where('poll_id', $pollId)->first();
+                                if ($ans != null) {
+                                    $ans->vote = $ans->vote + 1;
+                                    $ans->save();
+                                }
+                            }
+
+                            if($userVote == null)
+                                $userVote = new UserVote();
+
+                            $userVote->user_id = intval(Session::get("userid"));
+                            $userVote->poll_id = $pollId;
+                            $userVote->save();
+                        } else {
+                            return redirect()->back()->with("error", "You must be need select a option for vote");
+                        }
+                    }
+
+                    return redirect()->back()->with("message", "vote take successfully");
+                } catch (\Exception $exception) {
+                    //dd($exception);
+                    return redirect()->back()->with("error", "Something is wrong");
+                }
+            }else{
+                return redirect()->back()->with("error", "Invalid poll select for vote");
+            }
+
+        }else{
+            return redirect()->back();
+        }
+
+    }
+
     public function viewPoll()
     {
         $query = DB::table("payments")
             ->join("polls", "payments.poll_id","=", "polls.id")
             ->join("packages", "payments.package_id","=", "packages.id")
             ->where("payments.user_id","=", Session::get("userid"));
-        $query->select("payments.*","polls.poll_title","packages.packageName","packages.price")
+        $query->select("payments.*","polls.poll_title","polls.status AS poll_status","packages.packageName","packages.price")
         ->orderBy("payments.created_at");
         $payments = $query->get();
         return view('frontend.pages.viewpoll', compact('payments'));
     }
-
+    
 
     public function stripePost(Request $request)
     {

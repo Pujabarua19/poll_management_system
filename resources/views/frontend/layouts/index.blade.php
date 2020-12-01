@@ -25,28 +25,33 @@
     </div>
 
     <div class="slant-1"></div>
-
     <div class="site-section first-section">
       <div class="container">
+          @if(\Illuminate\Support\Facades\Session::has("message"))
+              <p style="color:green;">{{\Illuminate\Support\Facades\Session::get("message")}}</p>
+          @endif
+          @if(\Illuminate\Support\Facades\Session::has("error"))
+              <p style="color:red;">{{\Illuminate\Support\Facades\Session::get("error")}}</p>
+          @endif
         <div class="row mb-5">
-          <div class="col-md-12 text-center" data-aos="fade"> 
+          <div class="col-md-12 text-center" data-aos="fade">
             <span class="caption d-block mb-2 font-secondary font-weight-bold">Outstanding Services</span>
             <h2 class="site-section-heading text-uppercase text-center font-secondary">Package Price</h2>
           </div>
         </div>
         <center>
-           @if(\Illuminate\Support\Facades\Session::has("message"))
-               <p style="color:red;">{{\Illuminate\Support\Facades\Session::get("message")}}</p>
-           @endif
+{{--           @if(\Illuminate\Support\Facades\Session::has("message"))--}}
+{{--               <p style="color:red;">{{\Illuminate\Support\Facades\Session::get("message")}}</p>--}}
+{{--           @endif--}}
        <div class="row">
-          
+
                @foreach($packages as $package)
                    <div class="container1">
                     <div class="box">
-                      <div class="icon1">  
+                      <div class="icon1">
                         </div>
                       <div class="content">
-                       
+
                         <h4>{{$package->packageName}}</h4><br>
                         <p>Quantity :{{$package->quantity}}<br>
                          Price: {{$package->price}}
@@ -56,20 +61,20 @@
                       <a href="{{url('add-poll',['pkg' => $package->id])}}">Select Package</a>
 
                     </div>
-                  
-                    </div> 
+
+                    </div>
 
                 </div>
                 @endforeach
                 </div>
 
                 <input type="hidden" name="package_id" id="selectedPackage">
-            
+
 
       </div>
     </div>
 </center>
-    
+
   <div class="site-half">
     <div class="img-bg-1" style="background-image: url('assets(a)/images/img_1.jpg');" data-aos="fade"></div>
     <div class="container">
@@ -78,9 +83,7 @@
           <span class="caption d-block mb-2 font-secondary font-weight-bold">Outstanding Services</span>
           <h2 class="site-section-heading text-uppercase font-secondary mb-5">Clean Design</h2>
           <p>Poll Management System (PMS) is a web-enabled application that facilitates creating, managing and publishing professional surveys and collecting feedback to provide assistance in business decision making process.
-
              </p>
-
             
         </div>
       </div>

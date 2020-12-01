@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\Helper;
 use App\Poll;
 use App\User;
 use Illuminate\Http\Request;
@@ -59,25 +60,35 @@ class MainController extends Controller
             ->join("polls", "payments.poll_id", "=", "polls.id")
             ->join("packages", "payments.package_id", "=", "packages.id");
 
-        $query->select("payments.*", "polls.poll_title", "polls.pay_status AS poll_status", "packages.packageName", "packages.price")
+        $query->select("payments.*", "polls.poll_title","polls.status AS poll_status", "packages.packageName", "packages.price")
             ->orderBy("payments.created_at");
         $payments = $query->get();
         return view('backend.pages.viewpoll', compact('payments'));
     }
 
-    public function approvedPoll($pollId = null)
+    public function changePoll($pollId = null, $status = null)
     {
-        if ($pollId != null && intval($pollId) > 0) {
-            $poll = Poll::where('id', "=", intval($pollId))->where("pay_status", "=", "completed")->first();
+        if ($pollId != null && intval($pollId) > 0 && $status != null && intval($status) > 0) {
+            $poll = Poll::where('id', "=", intval($pollId))->first();
             if ($poll != null) {
-                $poll->pay_status = "approved";
+                $status = Helper::getPollStatus(intval($status));
+                $poll->status = $status ;
                 $poll->save();
-                return redirect()->back()->with("message", "Poll Approved Successfully!");
+                return redirect()->back()->with("message", "Poll {$status} Successfully!");
             } else {
                 return redirect()->back()->with("message", "Poll Not Actived");
             }
         } else {
             return redirect()->back()->with("message", "Invalid Poll id");
+        }
+    }
+
+    public function detailsPoll($pollid){
+        if(intval($pollid) > 0) {
+            $poll = Poll::with("answers","package","user")->where("id", intval($pollid))->first();
+            return view('backend.pages.details', compact('poll'));
+        }else{
+            return redirect()->back()->with("message", "Invalid id:{$pollid}");
         }
     }
 

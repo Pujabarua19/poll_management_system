@@ -118,7 +118,7 @@
                   </div>
                   <div class="form-group">
                         <label ><strong>Select location: </strong></label>
-                        <select class="form-control show-tick" id="location" name="location" multiple="multiple">
+                        <select class="form-control show-tick" id="location" name="location[]" multiple="multiple">
                           <option value="">--Please select--</option>
                           <option value="Chawkbazar">Chawkbazar</option>
                           <option value="Muradpur">Muradpur </option>
