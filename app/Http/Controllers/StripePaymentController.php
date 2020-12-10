@@ -13,7 +13,7 @@ use Stripe;
 class StripePaymentController extends Controller
 {
     /**
-     * success response method.
+     * succeeded response method.
      *
      * @return \Illuminate\Http\Response
      */
@@ -55,7 +55,7 @@ class StripePaymentController extends Controller
                     if ($result['amount_refunded'] == 0
                         && empty($result['failure_code'])
                         && $result['paid'] == 1
-                        && $result['captured'] == 1 && $result['status'] == 'succeeded') {
+                        && $result['captured'] == 1 && $result['status'] == 'succeded') {
 
                         $payment  = Payment::where("user_id", intval(Session::get("userid")))
                                     ->where("poll_id", intval(Session::get("poll_id")))
@@ -68,11 +68,11 @@ class StripePaymentController extends Controller
                             $payment->package_id = $package->id;
                         }
 
-                        $payment->card_name = trim(strip_tags($request->get("card_name")));
-                        $payment->card_num = trim(strip_tags($request->get("card_number")));
-                        $payment->cvc = trim(strip_tags($request->get("card_cvc")));
-                        $payment->month = trim(strip_tags($request->get("card_expire_month")));
-                        $payment->year = trim(strip_tags($request->get("card_expire_year")));
+                        //$payment->card_name = trim(strip_tags($request->get("card_name")));
+                        //$payment->card_num = trim(strip_tags($request->get("card_number")));
+                        //$payment->cvc = trim(strip_tags($request->get("card_cvc")));
+                        //$payment->month = trim(strip_tags($request->get("card_expire_month")));
+                        //$payment->year = trim(strip_tags($request->get("card_expire_year")));
                         $payment->currency_code = $currencyCode;
                         $payment->txn_id = $result["balance_transaction"];
                         $payment->payment_status = $result["status"];
