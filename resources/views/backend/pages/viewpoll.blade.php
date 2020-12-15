@@ -20,13 +20,14 @@
                                 </div>
                             @endif
                             <div class="table-responsive">
-                                <table class="table">
+                               <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                     <tr>
                                         <th>Poll Title</th>
                                         <th>Package</th>
                                         <th>Amount</th>
                                         <th>Order Date</th>
+                                        <!-- <th>age</th> -->
                                         <th>Pay. Status</th>
                                         <th>Poll Status</th>
                                         <th>Action</th>

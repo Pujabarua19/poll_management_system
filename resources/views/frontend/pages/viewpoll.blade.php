@@ -7,8 +7,7 @@
     <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
     <link rel="stylesheet" href="{{asset('asset1/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('asset1/fonts/material-icon/css/material-design-iconic-font.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/css/package1.css')}}">
-
+   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
@@ -16,14 +15,13 @@
 <body>
 <div class="wrapper">
     <div class="sidebar">
-        <h5>{{\Illuminate\Support\Facades\Session::get('user_firstname')}} {{\Illuminate\Support\Facades\Session::get('user_lastname')}}</h5>
+        <h2>{{\Illuminate\Support\Facades\Session::get('user_firstname')}} {{\Illuminate\Support\Facades\Session::get('user_lastname')}}</h2>
         <ul>
             <li><a href="{{ url('/') }}"><i class="fas fa-home"></i>Home</a></li>
             <li><a href="#"><i class="fas fa-envelope-open"></i>{{\Illuminate\Support\Facades\Session::get('user_email')}}</a></li>
             <li><a href="#"><i class="fas fa-location-arrow"></i>{{\Illuminate\Support\Facades\Session::get('user_location')}}</a></li>
             <li><a href="" onclick="document.getElementById('logout').submit(); return false;"><i class="fas fa-sign-out-alt"></i></i>Logout</a></li>
-            <li><a href="{{ url('/stripe') }}"><i class="fas fa-sign-out-alt"></i></i>Payment</a></li>
-            <li><a><i class="fas fa-sign-out-alt"></i></i>My Poll</a></li>
+        
             <form id="logout" method="post" action="{{ \Illuminate\Support\Facades\URL::to('/user-logout') }}">
                 {{csrf_field()}}
             </form>
@@ -61,7 +59,7 @@
                          <td style="font-weight: bold; font-style: italic" class="{{\App\Helper\Helper::getPollStatusClass($payment->poll_status)}}">{{$payment->payment_status == "succeeded" && $payment->poll_status == "approved" ? "Publishing" : $payment->poll_status}}</td>
                          <td>
                             @if($payment->poll_status == "approved" && $payment->payment_status != "succeeded")
-                                 <a class="btn btn-primary" href="{{url("/stripe/{$payment->package_id}/{$payment->poll_id}")}}">PayNow</a>
+                                 <a class="btn btn-primary" href="{{url('/stripe/{$payment->package_id}/{$payment->poll_id}')}}">PayNow</a>
                             @endif
                         </td>
                         </tr>

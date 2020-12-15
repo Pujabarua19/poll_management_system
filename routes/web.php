@@ -28,7 +28,7 @@ Route::post('/stripe', 'StripePaymentController@stripePost')->name('stripe.post'
 
 // admin panel route
 Route::group(['middleware' => 'logged'], function () {
-// Route::get('default', 'mainController@default');
+
     Route::get('/default', 'MainController@default')->name("admin.default");
     Route::get('/add-package', 'PackageController@addPackage')->name("package.add");
     Route::post('/store-package', 'PackageController@store')->name("package.store");

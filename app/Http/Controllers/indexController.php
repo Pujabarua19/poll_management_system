@@ -93,6 +93,7 @@ class IndexController extends Controller
                 'lastname' => trim(strip_tags($request->lastname)),
                 'location' => trim(strip_tags($request->location)),
                 'email' => trim(strip_tags($request->email)),
+                'gender' => trim(strip_tags($request->gender)),
                 'date_of_birth' => trim(strip_tags($request->date_of_birth)),
                 'password' => Hash::make(trim(strip_tags($request->password))),
             ]);
@@ -116,7 +117,7 @@ class IndexController extends Controller
             if(Session::has("pkg"))
                 return redirect()->route("poll.add",['pkg' => Session::get("pkg")]);
             else
-                return redirect()->route("user.vote");
+                return redirect()->route("user.polls");
         } else {
             return redirect()->back()->with('message', 'invalid password or email.');
         }
@@ -134,7 +135,7 @@ class IndexController extends Controller
             Session::put('user_lastname', $user->lastname);
             Session::put('user_email', $user->email);
             Session::put('user_location', $user->location);
-            Session::put('user_age', $user->age);
+            Session::put('user_age', $user->date_of_birth);
             Session::put('user_gender', $user->gender);
             return true;
         } else {
@@ -161,4 +162,8 @@ class IndexController extends Controller
     }
 
 
+    
+
+
 }
+      

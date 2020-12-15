@@ -48,8 +48,7 @@
                         </div>
                     @endif
   
-                    <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation"
-                                                     data-cc-on-file="false"
+                    <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation" data-cc-on-file="false"
                                                     data-stripe-publishable-key="{{ env('STRIPE_PUBLISHABLE_KEY') }}"
                                                     id="payment-form">
                         @csrf
@@ -108,6 +107,11 @@
                     </div>
                 </div>
                 </div>
+
+
+        
+
+
             </div>        
         </div>
     </div>

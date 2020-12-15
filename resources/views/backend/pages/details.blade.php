@@ -25,7 +25,8 @@
                                         <th>Order Date</th>
                                         <th>Age</th>
                                         <th>Gender</th>
-                                        <th>Status</th>
+                                        <th>Location</th>
+                                        
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -34,9 +35,10 @@
                                         <th>{{$poll->option_num}}</th>
                                         <th>{{$poll->option_type}}</th>
                                         <th>{{$poll->created_at}}</th>
-                                        <th>{{$poll->age}}</th>
+                                        <th>{{$poll->min_age}} - {{$poll->max_age}}</th>
                                         <th>{{$poll->gender}}</th>
-                                        <th class="{{\App\Helper\Helper::getPollStatusClass($poll->status)}}">{{$poll->status}}</th>
+                                        <th>{{$poll->location}}</th>
+                                       <!--  <th class="{{\App\Helper\Helper::getPollStatusClass($poll->status)}}">{{$poll->status}}</th> -->
                                     </tr>
                                     </tbody>
                                 </table>
@@ -62,10 +64,11 @@
                             @if($poll->package != null)
                                 <h4>Package info:</h4>
                                 <p>Package name: {{$poll->package->packageName}}</p>
-                                <p>Price: {{$poll->package->price}}</p>
+                                <p>Quantity: {{$poll->package->quantity}}</p>
+                                 <p>Price: {{$poll->package->price}}</p>
                             @endif
                         </div>
-                        <a href="{{route("admin.polls")}}"class="btn btn-primary">Back</a>
+                        <a href="{{route('admin.polls')}}"class="btn btn-primary">Back</a>
                     </div>
                 </div>
             </div>

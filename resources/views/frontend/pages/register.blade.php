@@ -42,6 +42,13 @@
                                 <label class="form-label">Last Name</label>
                             </div>
                         </div>
+                        <div class="form-group">
+                                <input type="radio" name="gender" value="male" id="male" class="with-gap">
+                                <label for="male">Male</label>
+                                <input type="radio" name="gender" id="female" value="female" class="with-gap">
+                                <label for="female" class="m-l-20">Female</label>
+                            </div>
+                        
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <input type="text" class="form-control" id="location" name="location" required>
@@ -56,7 +63,7 @@
                         </div>
                          <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
+                                <input type="text" class="form-control" id="date_of_birth" name="date_of_birth" required>
                                 <label class="form-label">Date of Birth</label>
                             </div>
                         </div>
