@@ -18,7 +18,7 @@
                     <div class="col-sm-4 py-2">
                     <div class="card" style="width: 18rem;">
                         <div class="card-body py-2">
-                            <h6 class="card-title text-info">Left: {{abs(intval($poll->package->quantity) - \App\Helper\Helper::getTotalVote($poll))}}</h6>
+                            <h6 class="card-title text-info">Left: {{abs(intval($poll->package->quantity) - \App\Helper\Helper::getTotalVote($poll))}} Vote available</h6>
                             <h5 class="card-title">{{strip_tags($poll->poll_title)}}</h5>
                             @if($poll->answers->count() > 0 && ($totalVote = \App\Helper\Helper::getTotalVote($poll)) < intval($poll->package->quantity))
                                 <form action="{{route("user.vote")}}" method="post">
