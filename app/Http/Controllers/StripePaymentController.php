@@ -55,7 +55,7 @@ class StripePaymentController extends Controller
                     if ($result['amount_refunded'] == 0
                         && empty($result['failure_code'])
                         && $result['paid'] == 1
-                        && $result['captured'] == 1 && $result['status'] == 'succeded') {
+                        && $result['captured'] == 1 && $result['status'] == 'succeeded') {
 
                         $payment  = Payment::where("user_id", intval(Session::get("userid")))
                                     ->where("poll_id", intval(Session::get("poll_id")))
