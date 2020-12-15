@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Poll;
 use App\Register;
 use App\Package;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -21,11 +22,19 @@ class IndexController extends Controller
 
     public function allPoll(){
 
-         $polls = Poll::with("answers")
+        $age = Session::get("user_age");
+        //dd($age);
+        try {
+            $age = Carbon::now()->year - Carbon::parse($age)->year;
+        } catch (\Exception $e) {
+            return redirect()->back()->with("message", "Invalid Date");
+        }
+
+         $polls = Poll::with("answers","package")
              ->where("status","=","published")
              ->where("gender","=", strtolower(Session::get("user_gender")))
-             ->where("min_age","<=" , intval(Session::get("user_age")))
-             ->where("max_age",">=" , intval(Session::get("user_age")))
+             ->where("min_age","<=" , intval($age))
+             ->where("max_age",">=" , intval($age))
              ->orderBy("created_at","DESC")->get();
 
          if($polls->count() > 0){
@@ -93,6 +102,7 @@ class IndexController extends Controller
                 'lastname' => trim(strip_tags($request->lastname)),
                 'location' => trim(strip_tags($request->location)),
                 'email' => trim(strip_tags($request->email)),
+                'gender' => trim(strip_tags($request->gender)),
                 'date_of_birth' => trim(strip_tags($request->date_of_birth)),
                 'password' => Hash::make(trim(strip_tags($request->password))),
             ]);
@@ -106,6 +116,7 @@ class IndexController extends Controller
 
     public function userLoginStore(Request $request)
     {
+
         $validator = Validator::make($request->all(), ['email' => 'required|email','password' => 'required|min:8']);
 
         if ($validator->fails()) {
@@ -113,10 +124,11 @@ class IndexController extends Controller
         }
 
         if ($this->attempt($request)){
+            //dd($request->all());
             if(Session::has("pkg"))
                 return redirect()->route("poll.add",['pkg' => Session::get("pkg")]);
             else
-                return redirect()->route("user.vote");
+                return redirect()->route("user.polls");
         } else {
             return redirect()->back()->with('message', 'invalid password or email.');
         }
@@ -134,7 +146,7 @@ class IndexController extends Controller
             Session::put('user_lastname', $user->lastname);
             Session::put('user_email', $user->email);
             Session::put('user_location', $user->location);
-            Session::put('user_age', $user->age);
+            Session::put('user_age', $user->date_of_birth);
             Session::put('user_gender', $user->gender);
             return true;
         } else {
@@ -161,4 +173,8 @@ class IndexController extends Controller
     }
 
 
+    
+
+
 }
+      

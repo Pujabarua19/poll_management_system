@@ -18,8 +18,9 @@
                     <div class="col-sm-4 py-2">
                     <div class="card" style="width: 18rem;">
                         <div class="card-body py-2">
+                            <h6 class="card-title text-info">Left: {{abs(intval($poll->package->quantity) - \App\Helper\Helper::getTotalVote($poll))}}</h6>
                             <h5 class="card-title">{{strip_tags($poll->poll_title)}}</h5>
-                            @if($poll->answers->count() > 0)
+                            @if($poll->answers->count() > 0 && ($totalVote = \App\Helper\Helper::getTotalVote($poll)) < intval($poll->package->quantity))
                                 <form action="{{route("user.vote")}}" method="post">
                                     {{csrf_field()}}
                                     <input type="hidden" name="poll_id" value="{{$poll->id}}">
@@ -28,9 +29,12 @@
                                     <button type="submit" name="vote" class="btn btn-primary">Vote</button>
                                 </form>
                                 <br/>
-                                <h6>Total Vote <span class="badge badge-secondary">{{\App\Helper\Helper::getTotalVote($poll)}}</span></h6>
+                                <h6>Total Vote <span class="badge badge-secondary">{{$totalVote}}</span></h6>
                                 <hr/>
                                 {!!  \App\Helper\Helper::getSingleVote($poll) !!}
+                            @else
+                                <p class="text-danger">Vote aren't accept more.</p>
+                                <h6>Total Vote <span class="badge badge-secondary">{{$totalVote}}</span></h6>
                             @endif
                         </div>
                     </div>

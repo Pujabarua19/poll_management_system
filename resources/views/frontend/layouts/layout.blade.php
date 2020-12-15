@@ -59,7 +59,7 @@
                         <nav class="site-navigation text-right" role="navigation">
                             <div class="container">
                                 <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3"><a href="#"
-                                                                                              class="site-menu-toggle js-menu-toggle text-black"><span
+                          class="site-menu-toggle js-menu-toggle text-black"><span
                                                 class="icon-menu h3"></span></a></div>
 
                                 <ul class="site-menu js-clone-nav d-none d-lg-block">
@@ -77,10 +77,7 @@
                                         <li class="has-children">
                                             <a href="about.html">{{\Illuminate\Support\Facades\Session::get('user_firstname')}} {{\Illuminate\Support\Facades\Session::get('user_lastname')}}</a>
                                             <ul class="dropdown arrow-top">
-                                                <li>
-                                                    <a href="{{url('/poll')}}">Poll</a>
-                                                </li>
-                                                <!--  <li><a href="testimonials.html">Profile</a></li> -->
+                                                 <li><a href="{{url('/view-poll')}}">Dashboard</a></li>
                                                 <li><a href=""
                                                        onclick="document.getElementById('logout').submit(); return false;"><i
                                                                 class="fas fa-sign-out-alt"></i></i>Logout</a></li>

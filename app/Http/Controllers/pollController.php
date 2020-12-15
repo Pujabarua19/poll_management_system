@@ -134,12 +134,21 @@ class PollController extends Controller
             if ($pollId > 0 ) {
                 $poll = Poll::where("id", $pollId)->first();
 
+                $totalVote = DB::table("answeres")->where("poll_id", 21)
+                    ->selectRaw("poll_id, SUM(vote) AS totalVote")
+                    ->groupBy("poll_id")->first()->totalVote;
+                $package = $poll->package;
+
+                if(intval($package->quantity) == intval($totalVote))
+                    return redirect()->back()->with("error", "Vote is not accepted : " . $poll->poll_title);
+
                 //check user already voted or not
                 $userVote = DB::table("user_vote")
                     ->where("user_id", intval(Session::get("userid")))->where("poll_id", $pollId)->first();
 
-                if($userVote != null)
-                    return redirect()->back()->with("error", "You already give vote: ". $poll->poll_title);
+                if($userVote != null) {
+                    return redirect()->back()->with("error", "You already give vote: " . $poll->poll_title);
+                }
 
                 $options = $request->input("options");
                 $optionType = $request->input("option_type");
@@ -195,6 +204,7 @@ class PollController extends Controller
             ->join("polls", "payments.poll_id","=", "polls.id")
             ->join("packages", "payments.package_id","=", "packages.id")
             ->where("payments.user_id","=", Session::get("userid"));
+
         $query->select("payments.*","polls.poll_title","polls.status AS poll_status","packages.packageName","packages.price")
         ->orderBy("payments.created_at");
         $payments = $query->get();

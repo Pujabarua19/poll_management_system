@@ -41,7 +41,7 @@
                                      <td>{{$package->quantity}} </td>
                                       <td>{{$package->price}} </td>
                                     <td>
-                                        <a href="{{  route('edit',$package->id) }}" class="btn btn-default waves-effect waves-float waves-green"><i class="zmdi zmdi-edit"></i></a>|
+                                <a href="{{  route('package.edit',$package->id) }}" class="btn btn-default waves-effect waves-float waves-green"><i class="zmdi zmdi-edit"></i></a>|
                                         <a data-toggle="modal" data-target="#{{$package->id }}" class="btn btn-default waves-effect waves-float waves-red"><i class="zmdi zmdi-delete"></i></a>
                                        
   
@@ -59,7 +59,7 @@
         <p>Are you sure you want to delete this?</p>
       </div>
       <div class="modal-footer">
-        <a href="{{  route('delete',$package->id) }}" class="btn btn-default waves-effect m-r-20" >yes</a>
+        <a href="{{  route('package.delete',$package->id) }}" class="btn btn-default waves-effect m-r-20" >yes</a>
 
       
         <button type="button" class="btn btn-default waves-effect m-r-20" data-dismiss="modal">Close</button>
