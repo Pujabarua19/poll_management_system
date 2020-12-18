@@ -21,7 +21,6 @@ class IndexController extends Controller
     }
 
     public function allPoll(){
-
         $age = Session::get("user_age");
         //dd($age);
         try {
@@ -30,7 +29,7 @@ class IndexController extends Controller
             return redirect()->back()->with("message", "Invalid Date");
         }
 
-         $polls = Poll::with("answers","package")
+         $polls = Poll::with("answers","textanswers","package")
              ->where("status","=","published")
              ->where("gender","=", strtolower(Session::get("user_gender")))
              ->where("min_age","<=" , intval($age))
@@ -43,7 +42,7 @@ class IndexController extends Controller
                  return in_array(Session::get("user_location"), $pollLocations);
              });
          }
-
+       //dd($polls);
         return view('frontend.pages.poll', compact('polls'));
     }
 

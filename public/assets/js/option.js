@@ -1,19 +1,23 @@
 $(document).ready(function(){
-    $("#section_poll_type").hide();
+    $("#section_poll_num").hide();
     // option number change
-    $("#option_num").change(function(){
-      var option_num_val = $("#option_num").val();
+    $("#option_type").change(function(){
+      var option_num_val = $(this).val();
       $("#options").html("");
-      $("#option_type option:selected").removeAttr("selected");
-      if(option_num_val !=""){
-        $("#section_poll_type").show();
-      }
-      else {
-        $("#section_poll_type").hide();
+      if(option_num_val === 'checkbox' || option_num_val === 'radio') {
+        $("#option_num option:selected").removeAttr("selected");
+        if (option_num_val !== "") {
+          $("#section_poll_num").show();
+        } else {
+          option_num_val ='';
+          $("#section_poll_num").hide();
+        }
+      }else {
+          $("#section_poll_num").hide();
       }
     });
     // option type change
-    $("#option_type").change(function() {
+    $("#option_num").change(function() {
       var option_type = $("#option_type").val();
       var option_num_val = $("#option_num").val();
       if(option_type=="checkbox") {
@@ -22,12 +26,12 @@ $(document).ready(function(){
       else if(option_type=="radio") {
         generateRadio(option_num_val)
       }
-      else if(option_type=="textbox") {
-        generateTextbox(option_num_val)
-      }
-      else if(option_type=="textarea") {
-        generateTextarea(option_num_val)
-      }
+      // else if(option_type=="textbox") {
+      //   generateTextbox(option_num_val)
+      // }
+      // else if(option_type=="textarea") {
+      //   generateTextarea(option_num_val)
+      // }
     });
   });
   function generateCheckboxOptions(options_number) {

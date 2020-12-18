@@ -59,6 +59,16 @@ class Helper
                     $html .= '</div>';
                 endforeach;
                 break;
+            case 'textbox':
+                    $html .= '<div class="form-group">';
+                    $html .= '<input class="form-control" type="text" value="" placeholder="type your comment" name="ans" />';
+                    $html .= '</div>';
+                break;
+            case 'textarea':
+                    $html .= '<div class="form-group">';
+                    $html .= '<textarea rows="5" class="form-control" placeholder="type your comment" name="ans" ></textarea>';
+                    $html .= '</div>';
+                break;
             default:
                 break;
 
@@ -69,10 +79,21 @@ class Helper
 
     public static function getTotalVote($poll){
         $total = 0;
-        if($poll != null && $poll->answers->count() > 0){
-            foreach ($poll->answers as $ans):
-                $total += intval($ans->vote);
-            endforeach;
+        if($poll->option_type == 'radio'|| $poll->option_type == 'checkbox') {
+            if ($poll != null && $poll->answers->count() > 0) {
+                foreach ($poll->answers as $ans):
+                    $total += intval($ans->vote);
+                endforeach;
+            }
+        }else{
+            switch (trim($poll->option_type)){
+                case 'textbox':
+                    $total = $poll->textanswers()->whereNotNull('short_ans')->count();
+                    break;
+                case 'textarea':
+                    $total = $poll->textanswers()->whereNotNull('big_ans')->count();
+                    break;
+            }
         }
 
         return $total;

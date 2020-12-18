@@ -59,7 +59,7 @@
                          <td style="font-weight: bold; font-style: italic" class="{{\App\Helper\Helper::getPollStatusClass($payment->poll_status)}}">{{$payment->payment_status == "succeeded" && $payment->poll_status == "approved" ? "Publishing" : $payment->poll_status}}</td>
                          <td>
                             @if($payment->poll_status == "approved" && $payment->payment_status != "succeeded")
-                                 <a class="btn btn-primary" href="{{url('/stripe/{$payment->package_id}/{$payment->poll_id}')}}">PayNow</a>
+                                 <a class="btn btn-primary" href="{{url("/stripe/{$payment->package_id}/{$payment->poll_id}")}}">PayNow</a>
                             @endif
                         </td>
                         </tr>

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Answer;
+use App\TextAnswer;
 use App\UserVote;
 use Illuminate\Http\Request;
 use App\Package;
 use App\Poll;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -64,13 +66,16 @@ class PollController extends Controller
 
     public function pollStore(Request $request)
     {
-        $this->validate($request, $this->getPollRule(), $this->getPollRuleMessage());
+        $optionType = trim($request->input("option_type"));
+        //dd($request->all());
+        $rules = $optionType == "textbox" || $optionType == "textarea" ? Arr::except($this->getPollRule(),['option_num']) : $this->getPollRule();
+        $this->validate($request, $rules, $this->getPollRuleMessage());
 
         $addpolls = new Poll();
         $addpolls->user_id = intval(Session::get("userid"));
         $addpolls->poll_title = $this->filter($request->poll_title);
-        $addpolls->option_num = intval($request->option_num);
-        $addpolls->option_type = trim($request->option_type);
+        $addpolls->option_num = $optionType == "textbox" || $optionType == "textarea" ? 0 : intval($request->option_num);
+        $addpolls->option_type = $optionType;
         $addpolls->package_id = intval(Session::get("pkg"));
         $age = explode("-", $request->age);
         $addpolls->min_age = intval(trim($age[0]));
@@ -78,39 +83,48 @@ class PollController extends Controller
         $addpolls->gender = trim($request->gender);
         $addpolls->location = implode(",", $request->location);
 
+        $isSuccess = false;
         try {
             if($addpolls->save()){
-                $options = $request->options;
-                $ans = [];
-                foreach ($options as $option){
-                    if(trim($option) != '')
-                        $ans[] = $option;
-                }
-
-                if(count($ans) == intval($request->option_num)){
-                    foreach ($ans as $ansTitle){
-                        DB::table("answeres")->insert([
-                           'poll_id' => $addpolls->id,
-                           'ans_title' => $ansTitle
-                        ]);
+                if($optionType == "radio" || $optionType == "checkbox") {
+                    $options = $request->options;
+                    $ans = [];
+                    foreach ($options as $option) {
+                        if (trim($option) != '')
+                            $ans[] = $option;
                     }
 
+                    if (count($ans) == intval($request->option_num)) {
+                        foreach ($ans as $ansTitle) {
+                            DB::table("answeres")->insert([
+                                'poll_id' => $addpolls->id,
+                                'ans_title' => $ansTitle
+                            ]);
+                        }
+                        $isSuccess = true;
+                    } else {
+                        $isSuccess = false;
+                    }
+                }else if($optionType == "textbox" || $optionType == "textarea"){
+                    DB::table("text_answeres")->insert([
+                        'poll_id' => $addpolls->id
+                    ]);
+                    $isSuccess = true;
+                }
+
+                if($isSuccess){
                     DB::table("payments")->insert([
                         'user_id' => intval(Session::get("userid")),
                         'poll_id' => intval($addpolls->id),
                         'package_id' => intval(Session::get("pkg"))
                     ]);
-
                     Session::put("poll_id", intval($addpolls->id));
-
                     return redirect()->route("user.polls");
-
                 }else{
-                    if($addpolls != null)
+                    if ($addpolls != null)
                         $addpolls->delete();
                     return redirect()->back()->with('error', 'Option at least 2 required Or Not match your options num and options');
                 }
-
             }else{
                 return redirect()->back()->with('error', 'Inserted failed');
             }
@@ -128,19 +142,28 @@ class PollController extends Controller
 
     public function vote(Request $request)
     {
-        //dd(Session::get("user_age"));
+        //dd($request->all());
         if($request->isMethod("POST") && $request->has("poll_id")) {
             $pollId = intval($request->input("poll_id"));
             if ($pollId > 0 ) {
                 $poll = Poll::where("id", $pollId)->first();
-
-                $totalVote = DB::table("answeres")->where("poll_id", 21)
-                    ->selectRaw("poll_id, SUM(vote) AS totalVote")
-                    ->groupBy("poll_id")->first()->totalVote;
-                $package = $poll->package;
-
-                if(intval($package->quantity) == intval($totalVote))
-                    return redirect()->back()->with("error", "Vote is not accepted : " . $poll->poll_title);
+                if($poll == null)
+                    return redirect()->back()->with("error", "Poll not available for vote");
+//                if($poll->option_type == 'radio' || $poll->option_type == 'checkbox') {
+//                    $totalVote = DB::table("answeres")->where("poll_id", $pollId)
+//                        ->selectRaw("poll_id, SUM(vote) AS totalVote")
+//                        ->groupBy("poll_id")->first()->totalVote;
+//                }else{
+//                    switch (trim($poll->option_type))
+//                    $totalVote =  DB::table("text_answeres")->where("poll_id", $pollId)
+//                        ->selectRaw("poll_id, COUNT(id) AS totalVote")
+//                        ->groupBy("poll_id")->first()->totalVote;
+//                }
+//
+//                $package = $poll->package;
+//
+//                if(intval($package->quantity) == intval($totalVote))
+//                    return redirect()->back()->with("error", "Vote is not more accepted : " . $poll->poll_title);
 
                 //check user already voted or not
                 $userVote = DB::table("user_vote")
@@ -150,11 +173,11 @@ class PollController extends Controller
                     return redirect()->back()->with("error", "You already give vote: " . $poll->poll_title);
                 }
 
-                $options = $request->input("options");
                 $optionType = $request->input("option_type");
                 //dd($options);
                 try {
                     if($optionType == "radio" || $optionType == "checkbox") {
+                        $options = $request->input("options");
                         if (!empty($options)) {
                             if (is_array($options)) {
                                 foreach ($options as $option) {
@@ -172,20 +195,32 @@ class PollController extends Controller
                                 }
                             }
 
-                            if($userVote == null)
-                                $userVote = new UserVote();
-
-                            $userVote->user_id = intval(Session::get("userid"));
-                            $userVote->poll_id = $pollId;
-                            $userVote->save();
                         } else {
                             return redirect()->back()->with("error", "You must be need select a option for vote");
                         }
+                    }else if($optionType == "textbox" || $optionType == "textarea"){
+                        $ans = new TextAnswer();
+                        switch (trim($optionType)){
+                            case 'textbox':
+                                $ans->short_ans = trim(strip_tags($request->input("ans")));
+                                break;
+                            case 'textarea':
+                                $ans->big_ans = trim(strip_tags($request->input("ans")));
+                                break;
+                        }
+                        $ans->poll_id = $pollId;
+                        $ans->save();
                     }
 
+                    if($userVote == null)
+                        $userVote = new UserVote();
+
+                    $userVote->user_id = intval(Session::get("userid"));
+                    $userVote->poll_id = $pollId;
+                    $userVote->save();
                     return redirect()->back()->with("message", "vote take successfully");
                 } catch (\Exception $exception) {
-                    //dd($exception);
+                    dd($exception->getMessage());
                     return redirect()->back()->with("error", "Something is wrong");
                 }
             }else{

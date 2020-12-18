@@ -20,7 +20,7 @@
             <li><a href="#"><i class="fas fa-envelope-open"></i>{{\Illuminate\Support\Facades\Session::get('user_email')}}</a></li>
             <li><a href="#"><i class="fas fa-location-arrow"></i>{{\Illuminate\Support\Facades\Session::get('user_location')}}</a></li>
             <li><a href="" onclick="document.getElementById('logout').submit(); return false;"><i class="fas fa-sign-out-alt"></i></i>Logout</a></li>
-            
+            <li><a href="{{url('/poll')}}"><i class="fas fa-location-arrow"></i>Available Poll</a></li>
             <li><a href="{{ url('/view-poll') }}"><i class="fas fa-sign-out-alt"></i></i>My Poll</a></li>
             <form id="logout" method="post" action="{{ \Illuminate\Support\Facades\URL::to('/user-logout') }}">
                 {{csrf_field()}}
@@ -55,7 +55,17 @@
                       <label for="poll_title">Enter Title:</label>
                       <input type="text" class="form-control" id="poll_title" name="poll_title">
                   </div>
-                  <div class="form-group form-float">
+                  <div class="form-group" class="col-sm-5">
+                      <label>Option Type:</label>
+                      <select class="form-control show-tick" id="option_type" name="option_type">
+                          <option value="">--Please select--</option>
+                          <option value="checkbox">Checkbox</option>
+                          <option value="radio">Radio Button</option>
+                          <option value="textbox">Textbox</option>
+                          <option value="textarea">Textarea</option>
+                      </select>
+                  </div>
+                  <div class="form-group form-float" id="section_poll_num">
                       <label for="sel1">No of Options:</label>
                       <select class="form-control show-tick" id="option_num" name="option_num" >
                         <option value="">--Please select--</option>
@@ -68,16 +78,6 @@
                         <option value="8">8</option>
                         <option value="9">9</option>
                         <option value="10">10</option>
-                      </select>
-                  </div>
-                  <div class="form-group" class="col-sm-5" id="section_poll_type">
-                      <label>Option Type:</label>
-                      <select class="form-control show-tick" id="option_type" name="option_type">
-                        <option value="">--Please select--</option>
-                        <option value="checkbox">Checkbox</option>
-                        <option value="radio">Radio Button</option>
-                        <option value="textbox">Textbox</option>
-                        <option value="textarea">Textarea</option>
                       </select>
                   </div>
 

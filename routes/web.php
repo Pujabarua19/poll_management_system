@@ -20,15 +20,13 @@ Route::post('/register-store', 'IndexController@registerStore')->name("home.regi
 Route::get('/contact', 'IndexController@contact');
 Route::get('/about', 'IndexController@about');
 
-
 Route::post('/store-poll', 'PollController@pollStore')->name('poll.store');
 Route::get('/create-poll', 'PollController@createPoll')->name("poll.create");
 Route::get('/stripe/{pkg?}/{poll_id?}', 'StripePaymentController@stripe')->name("stripe.get");
 Route::post('/stripe', 'StripePaymentController@stripePost')->name('stripe.post');
 
-// admin panel route
+//admin panel route
 Route::group(['middleware' => 'logged'], function () {
-
     Route::get('/default', 'MainController@default')->name("admin.default");
     Route::get('/add-package', 'PackageController@addPackage')->name("package.add");
     Route::post('/store-package', 'PackageController@store')->name("package.store");
@@ -42,17 +40,15 @@ Route::group(['middleware' => 'logged'], function () {
     Route::post('/logout', 'MainController@logout')->name("admin.logout");
 });
 
-
 Route::get('/login', 'MainController@login')->name("admin.login");
 Route::post('/login-store', 'MainController@loginStore')->name("admin.login.store");
-
 
 // User panel route
 Route::group(['middleware' => 'Uislogged'], function () {
     Route::get('/add-poll/{pkg}', 'PollController@addPoll')->name('poll.add');
     Route::post('/user-logout', 'IndexController@userLogout')->name("home.logout");
     Route::get('/view-poll', 'PollController@viewPoll')->name("user.polls");
-    Route::post('/vote', 'PollController@vote')->name("user.vote");
+    Route::post('/vote', 'PollController@vote')->name("user.vote.post");
     Route::get('/poll', 'IndexController@allPoll')->name("user.vote");
 });
 
