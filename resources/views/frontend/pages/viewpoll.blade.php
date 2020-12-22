@@ -18,8 +18,7 @@
         <h2>{{\Illuminate\Support\Facades\Session::get('user_firstname')}} {{\Illuminate\Support\Facades\Session::get('user_lastname')}}</h2>
         <ul>
             <li><a href="{{ url('/') }}"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="#"><i class="fas fa-envelope-open"></i>{{\Illuminate\Support\Facades\Session::get('user_email')}}</a></li>
-            <li><a href="#"><i class="fas fa-location-arrow"></i>{{\Illuminate\Support\Facades\Session::get('user_location')}}</a></li>
+            <li><a href="{{ url('/profile') }}"><i class="fas fa-sign-out-alt"></i></i>Profile</a></li>
             <li><a href="{{url('/poll')}}"><i class="fas fa-location-arrow"></i>Available Poll</a></li>
             <li><a href="" onclick="document.getElementById('logout').submit(); return false;"><i class="fas fa-sign-out-alt"></i></i>Logout</a></li>
             <form id="logout" method="post" action="{{ \Illuminate\Support\Facades\URL::to('/user-logout') }}">
@@ -62,6 +61,9 @@
                                  <a class="btn btn-primary" href="{{url("/stripe/{$payment->package_id}/{$payment->poll_id}")}}">PayNow</a>
                             @endif
                         </td>
+                            <td>
+                                <a class="btn btn-primary" href="{{url("/details/{$payment->poll_id}")}}">View</a>
+                            </td>
                         </tr>
                     @endforeach
                 @else

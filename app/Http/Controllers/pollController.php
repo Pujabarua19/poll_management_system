@@ -245,7 +245,21 @@ class PollController extends Controller
         $payments = $query->get();
         return view('frontend.pages.viewpoll', compact('payments'));
     }
-    
+
+    public function detailsPoll($id)
+    {
+        if(intval($id) > 0) {
+            $query = Poll::with("answers","textanswers","package")->where("polls.id","=", intval($id));
+            $poll = $query->first();
+            //dd($poll);
+            if($poll != null)
+                return view('frontend.pages.details', compact('poll'));
+            else
+                return redirect()->back("error","Poll not available");
+        }else{
+            return redirect()->back("error","Invalid poll");
+        }
+    }
 
     public function stripePost(Request $request)
     {

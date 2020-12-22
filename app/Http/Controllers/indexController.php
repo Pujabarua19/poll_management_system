@@ -153,6 +153,10 @@ class IndexController extends Controller
         }
     }
 
+    public function profile(){
+        return view('frontend.pages.profile');
+    }
+
     public function userLogout(Request $request){
         $request->session()->invalidate();
         $request->session()->flush();

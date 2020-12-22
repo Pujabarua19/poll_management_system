@@ -19,11 +19,26 @@
                             <div class="card" style="width: 18rem;">
                                 <div class="card-body py-2">
                                     <h6 class="card-title text-info">
-                                        Left: {{abs(intval($poll->package->quantity) - \App\Helper\Helper::getTotalVote($poll))}}
-                                        Vote available</h6>
+                                        @if($poll->option_type == 'checkbox')
+                                            @php
+                                                $diff = 0;
+                                                $totalVote = intval(\App\Helper\Helper::getTotalVote($poll));
+                                                $votePick = intval(\App\Helper\Helper::getCheckBoxVote($poll));
+                                                if($totalVote - $votePick > 0){
+                                                    $diff =  abs($totalVote - $votePick);
+                                                }
+                                                if($diff > 0)
+                                                  $totalVote = abs($totalVote - $diff);
+                                            @endphp
+                                        @else
+                                            @php
+                                                $totalVote = \App\Helper\Helper::getTotalVote($poll)
+                                            @endphp
+                                        @endif
+                                        Left: {{abs(intval($poll->package->quantity) - $totalVote )}} Vote available</h6>
                                     <h5 class="card-title">{{strip_tags($poll->poll_title)}}</h5>
                                     @if($poll->option_type == 'radio' || $poll->option_type == 'checkbox')
-                                        @if($poll->answers->count() > 0 && ($totalVote = \App\Helper\Helper::getTotalVote($poll)) < intval($poll->package->quantity))
+                                        @if($poll->answers->count() > 0 && $totalVote < intval($poll->package->quantity))
                                             <form action="{{route("user.vote.post")}}" method="post">
                                                 {{csrf_field()}}
                                                 <input type="hidden" name="poll_id" value="{{$poll->id}}">
@@ -64,7 +79,7 @@
                                             @if($poll->textanswers->count() > 0 )
                                                 <p>Comments: </p>
                                                 @foreach($poll->textanswers as $comment)
-                                                    <p>{{ $poll->option_type == 'textbox' && !empty($comment->short_ans) ? strip_tags($comment->short_ans) : ($poll->option_type == 'textarea' && !empty($comment->big_ans) ? strip_tags($comment->big_ans) : 'No Comments yet')}} <span class="badge badge-secondary">{{$comment->poll->user->lastname}}</span></p>
+                                                    <p>{{ $poll->option_type == 'textbox' && !empty($comment->short_ans) ? strip_tags($comment->short_ans) : ($poll->option_type == 'textarea' && !empty($comment->big_ans) ? strip_tags($comment->big_ans) : 'No Comments yet')}} <span class="badge badge-secondary">{{$comment->user->lastname}}</span></p>
                                                 @endforeach
                                             @endif
                                         </div>

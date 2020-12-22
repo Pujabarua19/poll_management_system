@@ -48,8 +48,11 @@ Route::group(['middleware' => 'Uislogged'], function () {
     Route::get('/add-poll/{pkg}', 'PollController@addPoll')->name('poll.add');
     Route::post('/user-logout', 'IndexController@userLogout')->name("home.logout");
     Route::get('/view-poll', 'PollController@viewPoll')->name("user.polls");
+    Route::get('/details/{id}', 'PollController@detailsPoll')->name("poll.details");
     Route::post('/vote', 'PollController@vote')->name("user.vote.post");
     Route::get('/poll', 'IndexController@allPoll')->name("user.vote");
+    Route::get('/profile', 'IndexController@profile')->name("user.profile");
+
 });
 
 

@@ -11,4 +11,8 @@ class TextAnswer extends Model
     public function poll(){
         return $this->belongsTo(Poll::class, "poll_id", "id");
     }
+
+    public function user(){
+        return $this->belongsTo(Register::class, "user_id", "id");
+    }
 }
