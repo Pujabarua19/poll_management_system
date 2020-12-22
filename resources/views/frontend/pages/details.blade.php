@@ -55,16 +55,16 @@
                                 <hr/>
                                 @if($poll->option_type == 'checkbox')
                                     @php
-                                    $diff = 0;
-                                    $total = intval(\App\Helper\Helper::getTotalVote($poll));
-                                    $votePick = intval(\App\Helper\Helper::getCheckBoxVote($poll));
-                                    if($total  > $votePick){
-                                        $diff =  $total - $votePick;
-                                        $total = abs($total - $diff);
-                                    }elseif ($total < $votePick ){
-                                         $diff =  $votePick - $total;
-                                         $total = $total + $diff;
-                                    }
+                                        $diff = 0;
+                                        $total = intval(\App\Helper\Helper::getTotalVote($poll));
+                                        $votePick = intval(\App\Helper\Helper::getCheckBoxVote($poll));
+                                        if($total  > $votePick){
+                                            $diff =  $total - $votePick;
+                                            $total = abs($total - $diff);
+                                        }elseif ($total < $votePick ){
+                                             $diff =  $votePick - $total;
+                                             $total = $total + $diff;
+                                        }
                                     @endphp
                                 @else
                                     @php

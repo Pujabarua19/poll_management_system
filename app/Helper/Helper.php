@@ -139,7 +139,8 @@ class Helper
                     break;
             }
         }
-        if($poll->option_type == 'checkbox'){
+
+        if($poll->option_type == 'checkbox' && $total > 0){
             $total = ceil( $total / $poll->option_num);
         }
 
@@ -151,15 +152,17 @@ class Helper
         if($poll != null && $poll->answers->count() > 0){
             foreach ($poll->answers as $ans):
                 if($poll->option_type == 'radio' && !$isReport)
-                    $html .= "<h6>{$ans->ans_title} <span class=\"badge badge-secondary\">".round(($ans->vote / $total) * 100,2)."%</span></h6>";
+                    $html .= "<h6>{$ans->ans_title} <span class=\"badge badge-secondary\">". ($total > 0 ? round(($ans->vote / $total) * 100,2) : 0) ."%</span></h6>";
                 else
                     if($poll->option_type == 'checkbox'){
                         $total = floor($ans->vote);
                         if(!$isReport) {
-                            $total = round((abs( ($total / $poll->option_num)) * 100) / 100,2);
+                            if($total > 0)
+                                $total = round((abs( ($total / $poll->option_num)) * 100) / 100,2);
                             $html .= "<h6>{$ans->ans_title} <span class=\"badge badge-secondary\">" . $total . "%</span></h6>";
                         }else {
-                            $total = round((abs( ($total / $poll->option_num)) * 100) / 100,2);
+                            if($total > 0)
+                                $total = round((abs( ($total / $poll->option_num)) * 100) / 100,2);
                             $html .= "<h6>{$ans->ans_title} <span class=\"badge badge-secondary\">" . ceil($total) . "</span></h6>";
                         }
                     }elseif($poll->option_type == 'radio' && $isReport){
