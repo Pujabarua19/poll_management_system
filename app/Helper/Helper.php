@@ -173,6 +173,7 @@ class Helper
         }
         return $html;
     }
+
     public static function getCheckBoxVote($poll){
         $total = self::getTotalVote($poll);
         foreach ($poll->answers as $ans):

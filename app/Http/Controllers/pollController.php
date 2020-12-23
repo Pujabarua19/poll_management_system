@@ -208,6 +208,7 @@ class PollController extends Controller
                                 $ans->big_ans = trim(strip_tags($request->input("ans")));
                                 break;
                         }
+                        $ans->user_id = intval(Session::get("userid"));
                         $ans->poll_id = $pollId;
                         $ans->save();
                     }

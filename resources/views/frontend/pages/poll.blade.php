@@ -44,7 +44,9 @@
                                                 <input type="hidden" name="poll_id" value="{{$poll->id}}">
                                                 <input type="hidden" name="option_type" value="{{$poll->option_type}}">
                                                 {!! \App\Helper\Helper::buildAns($poll) !!}
-                                                <button type="submit" name="vote" class="btn btn-primary">Vote</button>
+                                                @if(!in_array($poll->id, $votedIds))
+                                                    <button type="submit" name="vote" class="btn btn-primary">Vote</button>
+                                                @endif
                                             </form>
                                             <br/>
                                             <h6>Total Vote <span class="badge badge-secondary">{{$totalVote}}</span>
@@ -63,7 +65,9 @@
                                                 <input type="hidden" name="poll_id" value="{{$poll->id}}">
                                                 <input type="hidden" name="option_type" value="{{$poll->option_type}}">
                                                 {!! \App\Helper\Helper::buildAns($poll) !!}
-                                                <button type="submit" name="vote" class="btn btn-primary">Vote</button>
+                                                @if(!in_array($poll->id, $votedIds))
+                                                    <button type="submit" name="vote" class="btn btn-primary">Post</button>
+                                                @endif
                                             </form>
                                             <br/>
                                             <h6>Total Comment(s) <span

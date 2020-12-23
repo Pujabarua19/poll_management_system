@@ -42,8 +42,12 @@ class IndexController extends Controller
                  return in_array(Session::get("user_location"), $pollLocations);
              });
          }
+         $votedIds = DB::table("user_vote")
+                ->join("polls","user_vote.poll_id","=","polls.id")
+                ->join("users","user_vote.user_id","=","users.id")
+                ->where("users.id","=",intval(Session::get("userid")))->get()->pluck("poll_id")->toArray();
        //dd($polls);
-        return view('frontend.pages.poll', compact('polls'));
+        return view('frontend.pages.poll', compact('polls','votedIds'));
     }
 
     public function userLogin()
