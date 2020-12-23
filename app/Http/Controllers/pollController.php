@@ -107,7 +107,8 @@ class PollController extends Controller
                     }
                 }else if($optionType == "textbox" || $optionType == "textarea"){
                     DB::table("text_answeres")->insert([
-                        'poll_id' => $addpolls->id
+                        'poll_id' => $addpolls->id,
+                        'user_id' => intval(Session::get("userid")),
                     ]);
                     $isSuccess = true;
                 }
