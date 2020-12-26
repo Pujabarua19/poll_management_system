@@ -103,7 +103,7 @@
                       <option value="18-25">18-25</option>
                       <option value="26-35">26-35</option>
                       <option value="36-45">36-45</option>
-                      <option value="above 45">above 45</option>
+                      <option value="45-150">above 45</option>
                     </select>
                   </div>
                   <div class="form-group">

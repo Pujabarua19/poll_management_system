@@ -7,5 +7,4 @@ use Illuminate\Database\Eloquent\Model;
 class UserVote extends Model
 {
     protected $table ="user_vote";
-
 }

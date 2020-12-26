@@ -226,12 +226,14 @@ class PollController extends Controller
 
                     $userVote->user_id = intval(Session::get("userid"));
                     $userVote->poll_id = $pollId;
-                    if($request->has("options")){
-                        $options = $request->input("options");
-                        if (is_array($options))
-                            $userVote->voted_option = implode(",", $options);
-                        else
-                            $userVote->voted_option = $options;
+                    if($optionType == "radio" || $optionType == "checkbox") {
+                        if ($request->has("options")) {
+                            $options = $request->input("options");
+                            if (is_array($options))
+                                $userVote->voted_option = implode(",", $options);
+                            else
+                                $userVote->voted_option = $options;
+                        }
                     }
                     $userVote->save();
                     return redirect()->back()->with("message", "vote take successfully");
