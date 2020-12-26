@@ -22,31 +22,60 @@ class IndexController extends Controller
 
     public function allPoll(){
         $age = Session::get("user_age");
-        //dd($age);
         try {
             $age = Carbon::now()->year - Carbon::parse($age)->year;
         } catch (\Exception $e) {
             return redirect()->back()->with("message", "Invalid Date");
         }
+//        $q->where("gender","=", strtolower(Session::get("user_gender")))
+//            ->orWhere("gender","")
+//            ->where("min_age","<=" , intval($age))
+//            ->where("max_age",">=" , intval($age))
 
          $polls = Poll::with("answers","textanswers","package")
              ->where("status","=","published")
-             ->where("gender","=", strtolower(Session::get("user_gender")))
-             ->where("min_age","<=" , intval($age))
-             ->where("max_age",">=" , intval($age))
-             ->orderBy("created_at","DESC")->get();
+             ->orderBy("created_at","ASC")->get();
+
+//             ->where(function($q) use($age){
+//                 $q->whereRaw("`gender` ='". strtolower(Session::get("user_gender")."' OR `gender` IS NULL"))
+//                     ->orWhereRaw("`min_age` <= ".intval($age) ." OR `min_age` IS NULL")
+//                     ->orWhereRaw("`max_age` >=". intval($age)." OR `max_age` IS NULL");
+//             })->orderBy("created_at","ASC")->get();
+
+            if($polls->count() > 0){
+                $polls = $polls->filter(function ($poll){
+                    if(!empty($poll->gender)){
+                        return ($poll->gender == strtolower(Session::get("user_gender")));
+                    } else
+                        return true;
+                });
+            }
+
+        if($polls->count() > 0){
+            $polls = $polls->filter(function ($poll) use($age){
+                if (!is_null($poll->min_age)){
+                    return ($poll->min_age <= intval($age) && $poll->max_age >= intval($age));
+                }else
+                    return true;
+            });
+        }
 
          if($polls->count() > 0){
              $polls= $polls->filter(function ($poll){
-                 $pollLocations = explode(",", $poll->location);
-                 return in_array(Session::get("user_location"), $pollLocations);
+                 if(!is_null($poll->location)) {
+                     $pollLocations = explode(",", $poll->location);
+                     return in_array(Session::get("user_location"), $pollLocations);
+                 }else
+                    return true;
              });
          }
+
          $votedIds = DB::table("user_vote")
                 ->join("polls","user_vote.poll_id","=","polls.id")
-                ->join("users","user_vote.user_id","=","users.id")
-                ->where("users.id","=",intval(Session::get("userid")))->get()->pluck("poll_id")->toArray();
-       //dd($polls);
+                ->join("registers","user_vote.user_id","=","registers.id")
+                ->where("registers.id","=",intval(Session::get("userid")))
+                ->get()->pluck("poll_id")->toArray();
+       //dd($votedIds);
         return view('frontend.pages.poll', compact('polls','votedIds'));
     }
 

@@ -44,9 +44,9 @@ class PollController extends Controller
             'poll_title' => 'required|max:120',
             'option_num' => 'required',
             'option_type' => 'required',
-            'age' =>'required',
-            'gender' => 'required',
-            'location' => 'required',
+//            'age' =>'required',
+//            'gender' => 'required',
+//            'location' => 'required',
         ];
 
     }
@@ -58,9 +58,9 @@ class PollController extends Controller
             'poll_title.max' => 'Title max 120 character Long',
             'option_num.required' => 'Option number is required',
             'option_type' => 'Option type is required',
-            'age' => 'Age is required',
-            'gender' => 'gender is required',
-            'location' => 'location is required',
+//            'age' => 'Age is required',
+//            'gender' => 'gender is required',
+//            'location' => 'location is required',
         ];
     }
 
@@ -77,11 +77,18 @@ class PollController extends Controller
         $addpolls->option_num = $optionType == "textbox" || $optionType == "textarea" ? 0 : intval($request->option_num);
         $addpolls->option_type = $optionType;
         $addpolls->package_id = intval(Session::get("pkg"));
-        $age = explode("-", $request->age);
-        $addpolls->min_age = intval(trim($age[0]));
-        $addpolls->max_age = intval(trim($age[1]));
-        $addpolls->gender = trim($request->gender);
-        $addpolls->location = implode(",", $request->location);
+
+        if($request->has("age") && !empty($request->get("age"))) {
+            $age = explode("-", $request->age);
+            $addpolls->min_age = intval(trim($age[0]));
+            $addpolls->max_age = intval(trim($age[1]));
+        }
+
+        if($request->has("gender") && !empty($request->get("gender")))
+            $addpolls->gender = trim($request->gender);
+
+        if($request->has("location") && !empty($request->get("location")))
+            $addpolls->location = implode(",", $request->location);
 
         $isSuccess = false;
         try {
@@ -96,7 +103,7 @@ class PollController extends Controller
 
                     if (count($ans) == intval($request->option_num)) {
                         foreach ($ans as $ansTitle) {
-                            DB::table("answeres")->insert([
+                            DB::table("poll_options")->insert([
                                 'poll_id' => $addpolls->id,
                                 'ans_title' => $ansTitle
                             ]);
@@ -219,6 +226,13 @@ class PollController extends Controller
 
                     $userVote->user_id = intval(Session::get("userid"));
                     $userVote->poll_id = $pollId;
+                    if($request->has("options")){
+                        $options = $request->input("options");
+                        if (is_array($options))
+                            $userVote->voted_option = implode(",", $options);
+                        else
+                            $userVote->voted_option = $options;
+                    }
                     $userVote->save();
                     return redirect()->back()->with("message", "vote take successfully");
                 } catch (\Exception $exception) {
