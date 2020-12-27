@@ -38,7 +38,7 @@
                                         Left: {{abs(intval($poll->package->quantity) - $totalVote )}} Vote available</h6>
                                     <h5 class="card-title">{{strip_tags($poll->poll_title)}}</h5>
                                     @if($poll->option_type == 'radio' || $poll->option_type == 'checkbox')
-                                        @if($poll->answers->count() > 0 && $totalVote < intval($poll->package->quantity))
+                                        @if($totalVote < intval($poll->package->quantity))
                                             <form action="{{route("user.vote.post")}}" method="post">
                                                 {{csrf_field()}}
                                                 <input type="hidden" name="poll_id" value="{{$poll->id}}">
@@ -59,7 +59,7 @@
                                             </h6>
                                         @endif
                                     @elseif($poll->option_type == 'textbox' || $poll->option_type == 'textarea')
-                                        @if($poll->textanswers->count() > 0 && ($totalVote = \App\Helper\Helper::getTotalVote($poll)) < intval($poll->package->quantity))
+                                        @if(($totalVote = \App\Helper\Helper::getTotalVote($poll)) < intval($poll->package->quantity))
                                             <form action="{{route("user.vote.post")}}" method="post">
                                                 {{csrf_field()}}
                                                 <input type="hidden" name="poll_id" value="{{$poll->id}}">

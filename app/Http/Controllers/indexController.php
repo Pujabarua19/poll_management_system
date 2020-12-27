@@ -69,7 +69,7 @@ class IndexController extends Controller
                     return true;
              });
          }
-
+        //dd($polls);
          $votedIds = DB::table("user_vote")
                 ->join("polls","user_vote.poll_id","=","polls.id")
                 ->join("registers","user_vote.user_id","=","registers.id")
