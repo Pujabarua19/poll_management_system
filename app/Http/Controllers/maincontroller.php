@@ -85,7 +85,7 @@ class MainController extends Controller
 
     public function detailsPoll($pollid){
         if(intval($pollid) > 0) {
-            $poll = Poll::with("answers","package","user")->where("id", intval($pollid))->first();
+            $poll = Poll::with("answers","textanswers","package","user")->where("polls.id", intval($pollid))->first();
             return view('backend.pages.details', compact('poll'));
         }else{
             return redirect()->back()->with("message", "Invalid id:{$pollid}");

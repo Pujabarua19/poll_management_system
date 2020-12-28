@@ -42,7 +42,7 @@
                                 <h4 class="card-text">Poll Options:</h4>
                                 <div class="card-title" style="padding: 20px">
                                     @if($poll->option_type == 'radio' || $poll->option_type == 'checkbox')
-                                    {!! \App\Helper\Helper::getSingleVote($poll, true ) !!}
+                                    {!! \App\Helper\Helper::getSingleVote($poll) !!}
                                     @elseif($poll->option_type == 'textbox' || $poll->option_type == 'textarea')
                                         @if($poll->textanswers->count() > 0 )
                                             <p>Comments: </p>
@@ -53,24 +53,42 @@
                                     @endif
                                 </div>
                                 <hr/>
+{{--                                @if($poll->option_type == 'checkbox')--}}
+{{--                                    @php--}}
+{{--                                        $diff = 0;--}}
+{{--                                        $total = intval(\App\Helper\Helper::getTotalVote($poll));--}}
+{{--                                        $votePick = intval(\App\Helper\Helper::getCheckBoxVote($poll));--}}
+{{--                                        if($total  > $votePick){--}}
+{{--                                            $diff =  $total - $votePick;--}}
+{{--                                            $total = abs($total - $diff);--}}
+{{--                                        }elseif ($total < $votePick ){--}}
+{{--                                             $diff =  $votePick - $total;--}}
+{{--                                             $total = $total + $diff;--}}
+{{--                                        }--}}
+{{--                                    @endphp--}}
+{{--                                @else--}}
+{{--                                   --}}
+{{--                                @endif--}}
                                 @if($poll->option_type == 'checkbox')
                                     @php
-                                        $diff = 0;
-                                        $total = intval(\App\Helper\Helper::getTotalVote($poll));
-                                        $votePick = intval(\App\Helper\Helper::getCheckBoxVote($poll));
-                                        if($total  > $votePick){
-                                            $diff =  $total - $votePick;
-                                            $total = abs($total - $diff);
-                                        }elseif ($total < $votePick ){
-                                             $diff =  $votePick - $total;
-                                             $total = $total + $diff;
-                                        }
+                                        $total = $poll->total_vote
                                     @endphp
                                 @else
                                     @php
                                         $total = \App\Helper\Helper::getTotalVote($poll)
                                     @endphp
                                 @endif
+                                @if(!empty($poll->location))
+                                    <h6>Vote Location(s): <span class="badge badge-primary">{{strip_tags($poll->location)}}</span>
+                                @endif
+                                @if(!empty($poll->gender))
+                                 <hr/>
+                                            <h6>Female Vote(s): <span class="badge badge-primary">{{\App\Helper\Helper::getVoteByGender($poll)['female']}}</span></h6>
+                                            <h6>Male Vote(s): <span class="badge badge-primary">{{\App\Helper\Helper::getVoteByGender($poll)['male']}}</span></h6>
+                                 @endif
+                                      <hr/>
+                                <h3 class="card-title text-info">
+                                    {{$poll->option_type == 'textbox' || $poll->option_type == 'textarea' ? 'Give Comment' : 'Give Vote'}}: {{abs(intval($total))}} person(s)</h3>
                                 <h3 class="card-text">{{$poll->option_type == 'radio' || $poll->option_type == 'checkbox' ? 'Total Vote' : 'Total Comments'}}: {{$total}}</h3>
                                 <h3 class="card-text">{{$poll->option_type == 'radio' || $poll->option_type == 'checkbox' ? 'Available Vote' : 'Available Comments'}}: {{intval($poll->package->quantity) - $total }}</h3>
                                 <p class="card-text">Poll Type: {{$poll->option_type}}</p>

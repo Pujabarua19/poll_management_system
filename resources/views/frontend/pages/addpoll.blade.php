@@ -52,6 +52,17 @@
                   @if(\Illuminate\Support\Facades\Session::has("error"))
                       <p style="color: red;">{{\Illuminate\Support\Facades\Session::get("error")}}</p>
                   @endif
+                  <div class="form-group" class="col-sm-5">
+                      <label>Category:</label>
+                      <select class="form-control show-tick" id="category" name="category[]" multiple="multiple" required>
+                          <option value="">--Select category--</option>
+                          @if(!empty($categorys))
+                              @foreach($categorys as $category)
+                                  <option value="{{$category->id}}">{{$category->name}}</option>
+                              @endforeach
+                          @endif
+                      </select>
+                  </div>
                   <div class="form-group">
                       <label for="poll_title">Enter Title:</label>
                       <input type="text" class="form-control" id="poll_title" name="poll_title">

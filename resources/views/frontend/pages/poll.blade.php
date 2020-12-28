@@ -18,24 +18,37 @@
                         <div class="col-sm-4 py-2">
                             <div class="card" style="width: 18rem;">
                                 <div class="card-body py-2">
-                                    <h6 class="card-title text-info">
-                                        @if($poll->option_type == 'checkbox')
-                                            @php
-                                                $diff = 0;
-                                                $totalVote = intval(\App\Helper\Helper::getTotalVote($poll));
-                                                $votePick = intval(\App\Helper\Helper::getCheckBoxVote($poll));
-                                                if($totalVote - $votePick > 0){
-                                                    $diff =  abs($totalVote - $votePick);
-                                                }
-                                                if($diff > 0)
-                                                  $totalVote = abs($totalVote - $diff);
-                                            @endphp
+{{--                                    @if($poll->option_type == 'checkbox')--}}
+{{--                                        @php--}}
+{{--                                            $diff = 0;--}}
+{{--                                            $totalVote = intval(\App\Helper\Helper::getTotalVote($poll));--}}
+{{--                                            $votePick = intval(\App\Helper\Helper::getCheckBoxVote($poll));--}}
+{{--                                            if($totalVote - $votePick > 0){--}}
+{{--                                                $diff =  abs($totalVote - $votePick);--}}
+{{--                                            }--}}
+{{--                                            if($diff > 0)--}}
+{{--                                              $totalVote = abs($totalVote - $diff);--}}
+{{--                                        @endphp--}}
+{{--                                    @else--}}
+{{--                                        @php--}}
+{{--                                            $totalVote = \App\Helper\Helper::getTotalVote($poll)--}}
+{{--                                        @endphp--}}
+{{--                                    @endif--}}
+                                    @if($poll->option_type == 'checkbox')
+                                        @php
+                                            $totalVote = $poll->total_vote
+                                        @endphp
                                         @else
                                             @php
                                                 $totalVote = \App\Helper\Helper::getTotalVote($poll)
                                             @endphp
-                                        @endif
-                                        Left: {{abs(intval($poll->package->quantity) - $totalVote )}} Vote available</h6>
+                                    @endif
+                                        <h6 class="card-title text-info">
+                                            Available Vote: {{abs(intval($poll->package->quantity))}}</h6>
+                                        <h6 class="card-title text-info">
+                                            {{$poll->option_type == 'textbox' || $poll->option_type == 'textarea' ? 'Give Comment' : 'Give Vote'}}: {{abs(intval($totalVote))}} person(s)</h6>
+                                    <h6 class="card-title text-info">
+                                            Left Vote: {{abs(intval($poll->package->quantity) - $totalVote )}}</h6>
                                     <h5 class="card-title">{{strip_tags($poll->poll_title)}}</h5>
                                     @if($poll->option_type == 'radio' || $poll->option_type == 'checkbox')
                                         @if($totalVote < intval($poll->package->quantity))
@@ -49,7 +62,15 @@
                                                 @endif
                                             </form>
                                             <br/>
-                                            <h6>Total Vote <span class="badge badge-secondary">{{$totalVote}}</span>
+                                            <h6>Total Vote: <span class="badge badge-primary">{{$totalVote}}</span>
+                                                @if(!empty($poll->location))
+                                                    <h6>Vote Location: <span class="badge badge-primary">{{strip_tags($poll->location)}}</span>
+                                                @endif
+                                                @if(!empty($poll->gender))
+                                                    <hr/>
+                                                    <h6>Female Vote: <span class="badge badge-primary">{{\App\Helper\Helper::getVoteByGender($poll)['female']}}</span>
+                                                    <h6>Male Vote: <span class="badge badge-primary">{{\App\Helper\Helper::getVoteByGender($poll)['male']}}</span>
+                                                 @endif
                                             </h6>
                                             <hr/>
                                             {!!  \App\Helper\Helper::getSingleVote($poll) !!}
@@ -73,6 +94,14 @@
                                             <h6>Total Comment(s) <span
                                                         class="badge badge-secondary">{{\App\Helper\Helper::getTotalVote($poll)}}</span>
                                             </h6>
+                                                        @if(!empty($poll->location))
+                                                            <h6>Vote Location: <span class="badge badge-primary">{{strip_tags($poll->location)}}</span>
+                                                        @endif
+                                                        @if(!empty($poll->gender))
+                                                            <hr/>
+                                                            <h6>Female Vote: <span class="badge badge-primary">{{\App\Helper\Helper::getVoteByGender($poll)['female']}} vote(S)</span>
+                                                            <h6>Male Vote: <span class="badge badge-primary">{{\App\Helper\Helper::getVoteByGender($poll)['male']}} vote(S<)/span>
+                                                        @endif
                                             <hr/>
                                         @else
                                             <p class="text-danger">Vote aren't accept more.</p>

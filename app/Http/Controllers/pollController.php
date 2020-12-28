@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Answer;
+use App\Category;
 use App\TextAnswer;
 use App\UserVote;
 use Illuminate\Http\Request;
@@ -18,7 +19,8 @@ class PollController extends Controller
     public function addPoll($pkg = null)
     {
         $packages = Package::all();
-        return view('frontend.pages.addpoll', compact('packages'));
+        $categorys = Category::all();
+        return view('frontend.pages.addpoll', compact('packages','categorys'));
     }
 
     public function allPoll()
@@ -67,7 +69,6 @@ class PollController extends Controller
     public function pollStore(Request $request)
     {
         $optionType = trim($request->input("option_type"));
-        //dd($request->all());
         $rules = $optionType == "textbox" || $optionType == "textarea" ? Arr::except($this->getPollRule(),['option_num']) : $this->getPollRule();
         $this->validate($request, $rules, $this->getPollRuleMessage());
 
@@ -90,9 +91,20 @@ class PollController extends Controller
         if($request->has("location") && !empty($request->get("location")))
             $addpolls->location = implode(",", $request->location);
 
+
         $isSuccess = false;
         try {
             if($addpolls->save()){
+                if($request->has("category") && !empty($request->get("category")))
+                    $categories  =  $request->category;
+                if(!empty($categories)){
+                    foreach ($categories as $category){
+                        DB::table("category_poll")->insert([
+                            'category_id' => intval($category),
+                            'poll_id' => $addpolls->id,
+                        ]);
+                    }
+                }
                 if($optionType == "radio" || $optionType == "checkbox") {
                     $options = $request->options;
                     $ans = [];
@@ -112,6 +124,7 @@ class PollController extends Controller
                     } else {
                         $isSuccess = false;
                     }
+
                 }else if($optionType == "textbox" || $optionType == "textarea"){
 //                    DB::table("text_answeres")->insert([
 //                        'poll_id' => $addpolls->id,
@@ -236,6 +249,8 @@ class PollController extends Controller
                         }
                     }
                     $userVote->save();
+                    $poll->total_vote = $poll->total_vote + 1;
+                    $poll->save();
                     return redirect()->back()->with("message", "vote take successfully");
                 } catch (\Exception $exception) {
                     dd($exception->getMessage());

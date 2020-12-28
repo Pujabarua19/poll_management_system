@@ -1,23 +1,37 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Poll;
 use App\Register;
 use App\Package;
 use Carbon\Carbon;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 class IndexController extends Controller
 {
     public function index()
     {
         $packages = Package::all();
-        return view('frontend.layouts.index', compact('packages'));
+        $popularCategories = DB::table("category_poll")
+            ->join("polls","category_poll.poll_id","=","polls.id")
+            ->join("categorys","category_poll.category_id","=","categorys.id")
+            ->selectRaw("categorys.id, categorys.name, COUNT(polls.id) AS total")
+            ->orderByRaw("total DESC")
+            ->groupBy("categorys.id","categorys.name")
+            ->get();
+        //dd($popularCategories);
+        return view('frontend.layouts.index', compact('packages','popularCategories'));
     }
 
     public function allPoll(){
@@ -34,13 +48,16 @@ class IndexController extends Controller
 
          $polls = Poll::with("answers","textanswers","package")
              ->where("status","=","published")
-             ->orderBy("created_at","ASC")->get();
+             ->where("user_id","!=", intval(Session::get("userid")))
+             ->orderBy("created_at","DESC")->get();
+
 
 //             ->where(function($q) use($age){
 //                 $q->whereRaw("`gender` ='". strtolower(Session::get("user_gender")."' OR `gender` IS NULL"))
 //                     ->orWhereRaw("`min_age` <= ".intval($age) ." OR `min_age` IS NULL")
 //                     ->orWhereRaw("`max_age` >=". intval($age)." OR `max_age` IS NULL");
 //             })->orderBy("created_at","ASC")->get();
+
 
             if($polls->count() > 0){
                 $polls = $polls->filter(function ($poll){
@@ -75,6 +92,7 @@ class IndexController extends Controller
                 ->join("registers","user_vote.user_id","=","registers.id")
                 ->where("registers.id","=",intval(Session::get("userid")))
                 ->get()->pluck("poll_id")->toArray();
+
        //dd($votedIds);
         return view('frontend.pages.poll', compact('polls','votedIds'));
     }
@@ -90,6 +108,9 @@ class IndexController extends Controller
         return view('frontend.pages.userlogin');
     }
 
+    public function forgotPassword(){
+        return view('frontend.pages.forgot');
+    }
 
     public function register()
     {
@@ -145,16 +166,24 @@ class IndexController extends Controller
             return redirect()->back()->with('message', 'Insertion failed. due to server disconnection');
     }
 
+    public function generateOTP()
+    {
+        $OTP = rand(100000, 999999);
+        return $OTP;
+    }
+
+    public function setCache($key, $opt, $time)
+    {
+        Cache::put($key, $opt, now()->addSeconds(60 * $time));
+    }
 
     public function userLoginStore(Request $request)
     {
-
         $validator = Validator::make($request->all(), ['email' => 'required|email','password' => 'required|min:8']);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput($request->only(["email"]))->withErrors($validator);
         }
-
         if ($this->attempt($request)){
             //dd($request->all());
             if(Session::has("pkg"))
@@ -163,6 +192,106 @@ class IndexController extends Controller
                 return redirect()->route("user.polls");
         } else {
             return redirect()->back()->with('message', 'invalid password or email.');
+        }
+    }
+
+    public function forgotPasswordRequest(Request $request){
+        $validator = Validator::make($request->all(), ['email' => 'required|email']);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput($request->only(["email"]))->withErrors($validator);
+        }
+        if (($user = $this->checkUser($request)) != null){
+            $token = $this->generateOTP();
+            $email  = $user->email;
+            $url = route("home.confirm.code",['code'=>$token,'token'=> Hash::make($email)]);
+            $this->setCache("forgot-token", $token, 60);
+            $this->setCache("forgot-email", $email, 60);
+            $html ='<p>Please click to verify your email address. <a dir="ltr" id="iAccount" class="link" style="color:#2672ec; text-decoration:none" href="'. $url.'">Verify Email Address</a></p>'; //view("mail.forgot",compact('url'))->render();
+            $mail = new PHPMailer(true);
+            try {
+                //Server settings
+                //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
+                $mail->isSMTP();
+                $mail->Host       ='smtp.mailtrap.io';
+                $mail->SMTPAuth   = true;
+                $mail->Username   ='78a3077dd99965';
+                $mail->Password   ='8384af4c417488';
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port       = 587;
+
+                //Recipients
+                $mail->setFrom('noreplay@gmail.com', 'Poll Management');
+                $mail->addAddress($email, $user->firstname.' '. $user->lastname);
+
+                //Content
+                $mail->isHTML(true);
+                $mail->Subject = 'Forgot Password';
+                $mail->msgHTML(trim($html));
+                $mail->AltBody = 'Forgot password verification mail';
+
+                $mail->send();
+                //echo "Message sent.:";
+
+                return redirect()->back()->with('message', 'Password notification send your email');
+            } catch (Exception $e) {
+                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                //return redirect()->back()->with('message', 'invalid email.');
+            }
+
+        } else {
+            return redirect()->back()->with('message', 'invalid email.');
+        }
+    }
+
+    public function verifyCode(Request $request){
+        if($request->isMethod("post")){
+            $validator = Validator::make($request->all(), ['email' => 'required|email','password' => 'required|min:8','c_password' => 'required|min:8|same:password']);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator);
+            }
+            if(($user = $this->checkUser($request)) != null){
+                $user->password = Hash::make(trim(strip_tags($request->input("password"))));
+                try{
+                    $user->save();
+                    Cache::forget("forgot-token");
+                    Cache::forget("forgot-email");
+                    return redirect("/user-login")->with("message","Password changed successfully");
+                }catch (\Exception $exception){
+                    return redirect()->back()->with("message","Password changed error");
+                }
+            }else{
+                return redirect()->back()->with("error","Invalid user");
+            }
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws AuthorizationException
+     */
+    public function confirmPassword(Request $request){
+        $email = trim(Cache::get("forgot-email"));
+        $code = trim(Cache::get("forgot-token"));
+
+        if(!Hash::check($email, $request->get("token"))){
+            abort(404,"Expired");
+        }
+        if($request->get("code") != $code){
+            abort(404,"Expired");
+        }
+
+        return view('frontend.pages.confirm',compact('email'));
+    }
+
+    private function checkUser(Request $request)
+    {
+        $email = trim(strip_tags($request->input("email")));
+        $user = Register::where('email', '=', $email)->first();
+        if ($user != null && $user->email == $email) {
+            return $user;
+        } else {
+            return null;
         }
     }
 

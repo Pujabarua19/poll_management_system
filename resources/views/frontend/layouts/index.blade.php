@@ -44,14 +44,12 @@
 {{--               <p style="color:red;">{{\Illuminate\Support\Facades\Session::get("message")}}</p>--}}
 {{--           @endif--}}
        <div class="row">
-
                @foreach($packages as $package)
                    <div class="container1">
                     <div class="box">
                       <div class="icon1">
                         </div>
                       <div class="content">
-
                         <h4>{{$package->packageName}}</h4><br>
                         <p>Quantity :{{$package->quantity}}<br>
                          Price: {{$package->price}}
@@ -66,13 +64,25 @@
 
                 </div>
                 @endforeach
+                   <input type="hidden" name="package_id" id="selectedPackage">
+            <div class="col-md-2">
+                <div class="box">
+                    <div class="container1">
+                    <div class="content">
+                        <h6>Popular Category(s)</h6><br>
+                        @if(!empty($popularCategories))
+                             @foreach($popularCategories as $popularCategory)
+                                <h6>{{$popularCategory->name}}: <span class="badge badge-primary">{{$popularCategory->total}} poll(s)</span>
+                             @endforeach
+                         @else
+                                        <h6 class="badge badge-primary">NA</h6>
+                        @endif
+                        <br>
+                    </div>
+                    </div>
                 </div>
-
-                <input type="hidden" name="package_id" id="selectedPackage">
-
-
-      </div>
-    </div>
+            </div>
+       </div>
 </center>
 
   <div class="site-half">

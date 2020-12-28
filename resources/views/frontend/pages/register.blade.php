@@ -89,7 +89,7 @@
                     <a href="{{ url('/user-login') }}"  class="btn btn-raised btn-default waves-effect">SIGN IN</a>
                 </div>
                 <div class="col-lg-12 m-t-20">
-                    <a class="" href="forgot-password.html">Forgot Password?</a>
+                    <a class="" href="{{url('/forgot-pass')}}">Forgot Password?</a>
                 </div>  
 
                 </form>
