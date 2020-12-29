@@ -61,7 +61,7 @@ class MainController extends Controller
             ->join("packages", "payments.package_id", "=", "packages.id");
 
         $query->select("payments.*", "polls.poll_title","polls.status AS poll_status", "packages.packageName", "packages.price")
-            ->orderBy("payments.created_at");
+            ->orderBy("payments.created_at","DESC");
         $payments = $query->get();
         return view('backend.pages.viewpoll', compact('payments'));
     }

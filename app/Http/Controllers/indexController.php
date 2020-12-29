@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Category;
 use App\Poll;
 use App\Register;
 use App\Package;
@@ -15,7 +14,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 class IndexController extends Controller
@@ -45,19 +43,17 @@ class IndexController extends Controller
 //            ->orWhere("gender","")
 //            ->where("min_age","<=" , intval($age))
 //            ->where("max_age",">=" , intval($age))
-
          $polls = Poll::with("answers","textanswers","package")
+             ->join("packages","polls.package_id","packages.id")
              ->where("status","=","published")
              ->where("user_id","!=", intval(Session::get("userid")))
-             ->orderBy("created_at","DESC")->get();
-
-
+             ->whereRaw("polls.total_vote < packages.quantity")
+             ->orderBy("polls.created_at","DESC")->get();
 //             ->where(function($q) use($age){
 //                 $q->whereRaw("`gender` ='". strtolower(Session::get("user_gender")."' OR `gender` IS NULL"))
 //                     ->orWhereRaw("`min_age` <= ".intval($age) ." OR `min_age` IS NULL")
 //                     ->orWhereRaw("`max_age` >=". intval($age)." OR `max_age` IS NULL");
 //             })->orderBy("created_at","ASC")->get();
-
 
             if($polls->count() > 0){
                 $polls = $polls->filter(function ($poll){
@@ -68,24 +64,25 @@ class IndexController extends Controller
                 });
             }
 
-        if($polls->count() > 0){
-            $polls = $polls->filter(function ($poll) use($age){
-                if (!is_null($poll->min_age)){
-                    return ($poll->min_age <= intval($age) && $poll->max_age >= intval($age));
-                }else
-                    return true;
-            });
-        }
+            if($polls->count() > 0){
+                $polls = $polls->filter(function ($poll) use($age){
+                    if (!is_null($poll->min_age)){
+                        return ($poll->min_age <= intval($age) && $poll->max_age >= intval($age));
+                    }else
+                        return true;
+                });
+            }
 
-         if($polls->count() > 0){
-             $polls= $polls->filter(function ($poll){
-                 if(!is_null($poll->location)) {
-                     $pollLocations = explode(",", $poll->location);
-                     return in_array(Session::get("user_location"), $pollLocations);
-                 }else
-                    return true;
-             });
-         }
+             if($polls->count() > 0){
+                 $polls= $polls->filter(function ($poll){
+                     if(!is_null($poll->location)) {
+                         $pollLocations = explode(",", $poll->location);
+                         return in_array(Session::get("user_location"), $pollLocations);
+                     }else
+                        return true;
+                 });
+             }
+
         //dd($polls);
          $votedIds = DB::table("user_vote")
                 ->join("polls","user_vote.poll_id","=","polls.id")
@@ -195,6 +192,7 @@ class IndexController extends Controller
         }
     }
 
+
     public function forgotPasswordRequest(Request $request){
         $validator = Validator::make($request->all(), ['email' => 'required|email']);
         if ($validator->fails()) {
@@ -265,11 +263,6 @@ class IndexController extends Controller
         }
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * @throws AuthorizationException
-     */
     public function confirmPassword(Request $request){
         $email = trim(Cache::get("forgot-email"));
         $code = trim(Cache::get("forgot-token"));
@@ -294,6 +287,7 @@ class IndexController extends Controller
             return null;
         }
     }
+
 
     private function attempt(Request $request)
     {

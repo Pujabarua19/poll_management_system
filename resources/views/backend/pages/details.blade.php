@@ -65,13 +65,17 @@
                                     $total = \App\Helper\Helper::getTotalVote($poll)
                                 @endphp
                             @endif
+
                             @if(!empty($poll->location))
                               <h6>Vote Location(s): <span class="badge badge-primary">{{$poll->location}}</span>
                             @endif
                             @if(!empty($poll->gender))
+                                      @php
+                                          $genderVote = \App\Helper\Helper::getVoteByGender($poll);
+                                      @endphp
                                 <hr/>
-                                <h6>Female Vote(s): <span class="badge badge-primary">{{\App\Helper\Helper::getVoteByGender($poll)['female'] ?? 'NA'}}</span>
-                                <h6>Male Vote(s): <span class="badge badge-primary">{{\App\Helper\Helper::getVoteByGender($poll)['male'] ?? 'NA'}} </span>
+                                <h6>Female Vote(s): <span class="badge badge-primary">{{ $genderVote['female'] ?? 'NA'}}</span>
+                                <h6>Male Vote(s): <span class="badge badge-primary">{{ $genderVote['male'] ?? 'NA'}} </span>
                             @endif
                                     <h3 class="card-title text-info">
                                         {{$poll->option_type == 'textbox' || $poll->option_type == 'textarea' ? 'Give Comment' : 'Give Vote'}}: {{abs(intval($total))}} person(s)</h3>

@@ -125,6 +125,7 @@ class Helper
 
         return $html;
     }
+
     public static function getTotalVote($poll){
         $total = 0;
         if($poll->option_type == 'radio'|| $poll->option_type == 'checkbox') {
