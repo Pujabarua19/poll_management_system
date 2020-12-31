@@ -201,10 +201,13 @@ class IndexController extends Controller
 
 
     public function forgotPasswordRequest(Request $request){
+
         $validator = Validator::make($request->all(), ['email' => 'required|email']);
+
         if ($validator->fails()) {
             return redirect()->back()->withInput($request->only(["email"]))->withErrors($validator);
         }
+
         if (($user = $this->checkUser($request)) != null){
             $token = $this->generateOTP();
             $email  = $user->email;
@@ -216,6 +219,7 @@ class IndexController extends Controller
             try {
                 //Server settings
                 //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
+
                 $mail->isSMTP();
                 $mail->Host       ='smtp.gmail.com'; //'smtp.mailtrap.io';
                 $mail->SMTPAuth   = true;
@@ -226,7 +230,7 @@ class IndexController extends Controller
 
                 //Recipients
                 $mail->setFrom('noreplay@gmail.com', 'Poll Management');
-                $mail->addAddress('baruapuja619@gmail.com', $user->firstname.' '. $user->lastname);
+                $mail->addAddress($email, $user->firstname.' '. $user->lastname);
 
                 //Content
                 $mail->isHTML(true);
