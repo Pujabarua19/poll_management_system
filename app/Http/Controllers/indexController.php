@@ -5,7 +5,6 @@ use App\Poll;
 use App\Register;
 use App\Package;
 use Carbon\Carbon;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -44,11 +43,19 @@ class IndexController extends Controller
 //            ->where("min_age","<=" , intval($age))
 //            ->where("max_age",">=" , intval($age))
          $polls = Poll::with("answers","textanswers","package")
-             ->join("packages","polls.package_id","packages.id")
+//             ->join("packages","polls.package_id","packages.id")
              ->where("status","=","published")
              ->where("user_id","!=", intval(Session::get("userid")))
-             ->whereRaw("polls.total_vote < packages.quantity")
+//             ->whereRaw("polls.total_vote < packages.quantity")
              ->orderBy("polls.created_at","DESC")->get();
+
+        if($polls->count() > 0){
+            $polls = $polls->filter(function ($poll){
+                return $poll->package->quantity > $poll->total_vote;
+
+            });
+        }
+        //dd($polls);
 //             ->where(function($q) use($age){
 //                 $q->whereRaw("`gender` ='". strtolower(Session::get("user_gender")."' OR `gender` IS NULL"))
 //                     ->orWhereRaw("`min_age` <= ".intval($age) ." OR `min_age` IS NULL")
@@ -210,16 +217,16 @@ class IndexController extends Controller
                 //Server settings
                 //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
                 $mail->isSMTP();
-                $mail->Host       ='smtp.mailtrap.io';
+                $mail->Host       ='smtp.gmail.com'; //'smtp.mailtrap.io';
                 $mail->SMTPAuth   = true;
-                $mail->Username   ='78a3077dd99965';
-                $mail->Password   ='8384af4c417488';
+                $mail->Username ='baruapuja2020@gmail.com';
+                $mail->Password ='kvwnctzfxnfwrkdy';
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port       = 587;
 
                 //Recipients
                 $mail->setFrom('noreplay@gmail.com', 'Poll Management');
-                $mail->addAddress($email, $user->firstname.' '. $user->lastname);
+                $mail->addAddress('baruapuja619@gmail.com', $user->firstname.' '. $user->lastname);
 
                 //Content
                 $mail->isHTML(true);

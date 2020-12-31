@@ -92,7 +92,6 @@ class MainController extends Controller
         }
     }
 
-
     private function attempt(Request $request)
     {
         $email = strip_tags($request->input("email"));
