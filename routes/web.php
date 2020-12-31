@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'IndexController@index')->name("home.index");
 Route::get('/user-login', 'IndexController@userLogin')->name("home.login");
 Route::get('/forgot-pass', 'IndexController@forgotPassword')->name("home.forgot.pass");
-Route::get('/confirm-code/{code}/{email}', 'IndexController@confirmPassword')->name("home.confirm.code");
+Route::get('/confirm-code', 'IndexController@confirmPassword')->name("home.confirm.code");
 Route::post('/verify', 'IndexController@verifyCode')->name("home.verify.code");
 Route::post('/user-login-store', 'IndexController@userLoginStore')->name("home.login.store");
 Route::post('/forgot-pass-send', 'IndexController@forgotPasswordRequest')->name("home.forgot.pass.post");

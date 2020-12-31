@@ -34,8 +34,7 @@ class ForgotPasswordMail extends Mailable
     public function build()
     {
         $url = $this->verificationUrl();
-        dd($url);
-        return $this->subject("Password Change Email")
+        return $this->subject("Forgot Password Email")
             ->view('mail.forgot')
             ->with(['email' => $this->email, 'url'=> $url]);
 
@@ -43,6 +42,8 @@ class ForgotPasswordMail extends Mailable
 
     protected function verificationUrl()
     {
-        return route("home.confirm.code",['code'=>$this->token,'token'=> Hash::make($this->email)]);
+        $url =  route("home.confirm.code");
+        $url .= "?code=".$this->token."&token=".Hash::make($this->email);
+        return $url;
     }
 }

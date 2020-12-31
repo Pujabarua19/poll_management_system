@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Mail\ForgotPasswordMail;
 use App\Poll;
 use App\Register;
 use App\Package;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -199,8 +201,32 @@ class IndexController extends Controller
         }
     }
 
-
     public function forgotPasswordRequest(Request $request){
+
+        $validator = Validator::make($request->all(), ['email' => 'required|email']);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withInput($request->only(["email"]))->withErrors($validator);
+        }
+
+        if (($user = $this->checkUser($request)) != null){
+            $token = $this->generateOTP();
+            $email  = $user->email;
+            $this->setCache("forgot-token", $token, 60);
+            $this->setCache("forgot-email", $email, 60);
+            try {
+                Mail::to($email)->send(new ForgotPasswordMail($email, $token));
+                return redirect()->back()->with('message', 'Password notification send your email');
+            } catch (\Exception $e) {
+                //echo "Message could not be sent. Mailer Error: {$e->getMessage()}";
+                return redirect()->back()->with('message', 'invalid email.');
+            }
+
+        } else {
+            return redirect()->back()->with('message', 'invalid email.');
+        }
+    }
+    public function forgotPasswordRequestDep(Request $request){
 
         $validator = Validator::make($request->all(), ['email' => 'required|email']);
 
@@ -243,7 +269,7 @@ class IndexController extends Controller
 
                 return redirect()->back()->with('message', 'Password notification send your email');
             } catch (Exception $e) {
-                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                //echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
                 //return redirect()->back()->with('message', 'invalid email.');
             }
 
@@ -275,13 +301,14 @@ class IndexController extends Controller
     }
 
     public function confirmPassword(Request $request){
+        //dd($request->all());
         $email = trim(Cache::get("forgot-email"));
         $code = trim(Cache::get("forgot-token"));
 
-        if(!Hash::check($email, $request->get("token"))){
+        if(!Hash::check($email, trim(strip_tags($request->get("token"))))){
             abort(404,"Expired");
         }
-        if($request->get("code") != $code){
+        if(strip_tags(trim($request->get("code"))) != $code){
             abort(404,"Expired");
         }
 
