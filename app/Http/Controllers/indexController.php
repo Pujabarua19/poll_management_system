@@ -25,8 +25,8 @@ class IndexController extends Controller
         $popularCategories = DB::table("category_poll")
             ->join("polls","category_poll.poll_id","=","polls.id")
             ->join("categorys","category_poll.category_id","=","categorys.id")
-            ->selectRaw("categorys.id, categorys.name, COUNT(polls.id) AS total")
-            ->orderByRaw("total DESC")
+            ->selectRaw("categorys.id, categorys.name, SUM(polls.total_vote) AS total_vote, COUNT(polls.id) as total_poll")
+            ->orderByRaw("total_vote DESC")
             ->groupBy("categorys.id","categorys.name")
             ->get();
         //dd($popularCategories);
@@ -208,24 +208,23 @@ class IndexController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withInput($request->only(["email"]))->withErrors($validator);
         }
-
         if (($user = $this->checkUser($request)) != null){
             $token = $this->generateOTP();
             $email  = $user->email;
             $this->setCache("forgot-token", $token, 60);
             $this->setCache("forgot-email", $email, 60);
-            try {
+            try{
                 Mail::to($email)->send(new ForgotPasswordMail($email, $token));
                 return redirect()->back()->with('message', 'Password notification send your email');
             } catch (\Exception $e) {
                 //echo "Message could not be sent. Mailer Error: {$e->getMessage()}";
                 return redirect()->back()->with('message', 'invalid email.');
             }
-
         } else {
-            return redirect()->back()->with('message', 'invalid email.');
+            return redirect()->back()->with('message', 'User not found');
         }
     }
+
     public function forgotPasswordRequestDep(Request $request){
 
         $validator = Validator::make($request->all(), ['email' => 'required|email']);
@@ -326,7 +325,6 @@ class IndexController extends Controller
         }
     }
 
-
     private function attempt(Request $request)
     {
         $email = trim(strip_tags($request->input("email")));
@@ -357,21 +355,15 @@ class IndexController extends Controller
         return redirect()->route("home.index");
     }
 
-
     public function contact()
     {
         return view('frontend.pages.contact');
     }
 
-
     public function about()
     {
         return view('frontend.pages.about');
     }
-
-
-    
-
 
 }
       

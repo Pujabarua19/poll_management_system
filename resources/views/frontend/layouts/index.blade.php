@@ -69,10 +69,11 @@
                 <div class="box">
                     <div class="container1">
                     <div class="content">
-                        <h6>Popular Category(s)</h6><br>
+                        <h5>Popular Category(s)</h5><br>
                         @if(!empty($popularCategories))
                              @foreach($popularCategories as $popularCategory)
-                                <h6>{{$popularCategory->name}}: <span class="badge badge-primary">{{$popularCategory->total}} poll(s)</span>
+                                <h6 class="text-primary">{{$popularCategory->name}}</h6>
+{{--                                    <span class="badge badge-primary">{{$popularCategory->total_poll}} poll(s)/{{$popularCategory->total_vote}} vote(s)</span>--}}
                              @endforeach
                          @else
                                         <h6 class="badge badge-primary">NA</h6>
@@ -135,7 +136,7 @@
     </div>
   </div>
 
-    
+          {{--        <span class="badge badge-primary">{{$popularCategory->total_poll}} poll(s)</span>--}}
   <!--   <div class="py-5 bg-primary">
       <div class="container">
         <div class="row align-items-center justify-content-center">

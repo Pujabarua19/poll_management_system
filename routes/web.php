@@ -56,7 +56,6 @@ Route::group(['middleware' => 'Uislogged'], function () {
     Route::post('/vote', 'PollController@vote')->name("user.vote.post");
     Route::get('/poll', 'IndexController@allPoll')->name("user.vote");
     Route::get('/profile', 'IndexController@profile')->name("user.profile");
-
 });
 
 
