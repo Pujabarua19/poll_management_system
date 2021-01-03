@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Mail\ChangeProfileMail;
 use App\Mail\ForgotPasswordMail;
 use App\Poll;
 use App\Register;
@@ -208,7 +209,7 @@ class IndexController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withInput($request->only(["email"]))->withErrors($validator);
         }
-        if (($user = $this->checkUser($request)) != null){
+        if (($user = $this->checkUser($request->input("email"))) != null){
             $token = $this->generateOTP();
             $email  = $user->email;
             $this->setCache("forgot-token", $token, 60);
@@ -277,6 +278,56 @@ class IndexController extends Controller
         }
     }
 
+    public function changeProfile(Request $request){
+       //dd($request->all());
+        if($request->isMethod("POST")) {
+            $rules = [];
+            $authEmail = Session::get('user_email');
+
+            if (!empty(($email = $request->get("email"))) && $email != $authEmail)
+                $rules = array_merge($rules, ['email' => 'required|email|unique:registers,email']);
+
+            if ($request->has("password") && !empty($request->get("password")))
+                $rules = array_merge($rules, ['old_password' => 'required', 'password' => 'required|min:8', 'confirm_password' => 'required|same:password']);
+
+            //dd($rules);
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withInput($request->only(["email"]))->withErrors($validator);
+            }
+
+            if (!empty($authEmail)
+                    && ($user = $this->checkUser($authEmail)) != null
+                    && Hash::check(trim(strip_tags($request->input("old_password"))), $user->password)) {
+
+                $user->email = trim(strip_tags($request->input("email")));
+                $newPassword = trim(strip_tags($request->input("old_password")));
+
+                if (!empty($request->get("password"))) {
+                    $newPassword = trim(strip_tags($request->input("password")));
+                    $user->password = Hash::make($newPassword);
+                }
+
+                try {
+                    $user->save();
+                    Mail::to($email)->send(new ChangeProfileMail($user->email, $newPassword));
+                    $request->session()->invalidate();
+                    $request->session()->flush();
+                    return redirect('/user-login')->with('message', 'Profile info change successfully');
+                } catch (\Exception $e) {
+                    //echo "Message could not be sent. Mailer Error: {$e->getMessage()}";
+                    return redirect()->back()->with('message', 'Profile info change not successfully');
+                }
+            } else {
+                return redirect()->back()->with('message', 'User not found Or Password not match');
+            }
+        }else{
+            return redirect()->back()->with('message', 'Invalid');
+        }
+    }
+
+
     public function verifyCode(Request $request){
         if($request->isMethod("post")){
             $validator = Validator::make($request->all(), ['email' => 'required|email','password' => 'required|min:8','c_password' => 'required|min:8|same:password']);
@@ -314,10 +365,9 @@ class IndexController extends Controller
         return view('frontend.pages.confirm',compact('email'));
     }
 
-    private function checkUser(Request $request)
+    private function checkUser($email)
     {
-        $email = trim(strip_tags($request->input("email")));
-        $user = Register::where('email', '=', $email)->first();
+        $user = Register::where('email', '=', strip_tags($email))->first();
         if ($user != null && $user->email == $email) {
             return $user;
         } else {

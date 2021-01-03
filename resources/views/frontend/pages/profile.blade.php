@@ -36,10 +36,50 @@
                             <div class="card-body">
                                 <p class="card-text">First Name : <span style="font-weight: bold "> {{\Illuminate\Support\Facades\Session::get('user_firstname')}}</span></p>
                                 <p class="card-text">Last Name : {{\Illuminate\Support\Facades\Session::get('user_lastname')}}</p>
-                                <p class="card-text">Email : {{\Illuminate\Support\Facades\Session::get('user_email')}}</p>
-                                <p class="card-text">Age : {{\Illuminate\Support\Facades\Session::get('user_age')}}</p>
+                                <p class="card-text">Birth Date : {{\Illuminate\Support\Facades\Session::get('user_age')}}</p>
                                 <p class="card-text">Location : {{\Illuminate\Support\Facades\Session::get('user_location')}}</p>
                                 <p class="card-text">Gender : {{\Illuminate\Support\Facades\Session::get('user_gender')}}</p>
+                            </div>
+                            <div class="card-body">
+                                <legend>Security Information</legend>
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                                @if(\Illuminate\Support\Facades\Session::has('message'))
+                                    <div class="alert alert-success">
+                                        {{\Illuminate\Support\Facades\Session::get('message')}}
+                                    </div>
+                                @endif
+                                <form role="form" method="post" action="{{url('/change-profile')}}">
+                                    {{csrf_field()}}
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="text" class="form-control" name="email" value="{{\Illuminate\Support\Facades\Session::get('user_email')}}" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Old Password</label>
+                                        <input type="password" class="form-control" name="old_password" id="old_password" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">New Password</label>
+                                        <input type="password" class="form-control" name="password" id="password" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="c_password">Confirm Password</label>
+                                        <input type="password" class="form-control" name="confirm_password" id="confirm_password" />
+                                    </div>
+                                    <div class="form-group" style="padding: 10px; margin-top: 10px">
+                                        <div style="position: absolute; right: 0">
+                                            <button type="submit" class="btn btn-primary">Change</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                 </div>
