@@ -20,12 +20,33 @@ use PHPMailer\PHPMailer\Exception;
 
 class IndexController extends Controller
 {
+
+    public function default()
+    {
+        //calculate all
+        $totalPolls = Poll::where("user_id", Session::get("userid"))->count();
+
+        $allPollsByStatus = DB::table("polls")
+            ->where("user_id", Session::get("userid"))
+            ->selectRaw("polls.status, COUNT(polls.id) as total_poll")
+            ->groupBy("polls.status")
+            ->get();
+
+        $rejectedCount = $allPollsByStatus->where("status","=", "rejected")->first() != null ?$allPollsByStatus->where("status","=", "pending")->first()->total_poll : 0;
+        $approvedCount = $allPollsByStatus->where("status","=", "approved")->first() != null ?  $allPollsByStatus->where("status","=", "approved")->first()->total_poll : 0;
+        $publishedCount =$allPollsByStatus->where("status","=", "published")->first() != null ? $allPollsByStatus->where("status","=", "published")->first()->total_poll : 0;
+        $pendingCount = $allPollsByStatus->where("status","=", "pending")->first() ? $allPollsByStatus->where("status","=", "pending")->first()->total_poll : 0;
+
+        return view('frontend.pages.dashbord', compact('totalPolls','rejectedCount','approvedCount','publishedCount','pendingCount'));
+    }
+
     public function index()
     {
         $packages = Package::all();
         $popularCategories = DB::table("category_poll")
             ->join("polls","category_poll.poll_id","=","polls.id")
             ->join("categorys","category_poll.category_id","=","categorys.id")
+            ->whereRaw("polls.total_vote > 0")
             ->selectRaw("categorys.id, categorys.name, SUM(polls.total_vote) AS total_vote, COUNT(polls.id) as total_poll")
             ->orderByRaw("total_vote DESC")
             ->groupBy("categorys.id","categorys.name")
@@ -196,26 +217,26 @@ class IndexController extends Controller
             if(Session::has("pkg"))
                 return redirect()->route("poll.add",['pkg' => Session::get("pkg")]);
             else
-                return redirect()->route("user.polls");
+                return redirect()->route("user.default");
         } else {
             return redirect()->back()->with('message', 'invalid password or email.');
         }
     }
 
     public function forgotPasswordRequest(Request $request){
-
         $validator = Validator::make($request->all(), ['email' => 'required|email']);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput($request->only(["email"]))->withErrors($validator);
         }
+
         if (($user = $this->checkUser($request->input("email"))) != null){
             $token = $this->generateOTP();
             $email  = $user->email;
             $this->setCache("forgot-token", $token, 60);
             $this->setCache("forgot-email", $email, 60);
             try{
-                Mail::to($email)->send(new ForgotPasswordMail($email, $token));
+                Mail::to("mohammadeyasin@gmail.com")->send(new ForgotPasswordMail($email, $token));
                 return redirect()->back()->with('message', 'Password notification send your email');
             } catch (\Exception $e) {
                 //echo "Message could not be sent. Mailer Error: {$e->getMessage()}";
@@ -327,7 +348,6 @@ class IndexController extends Controller
         }
     }
 
-
     public function verifyCode(Request $request){
         if($request->isMethod("post")){
             $validator = Validator::make($request->all(), ['email' => 'required|email','password' => 'required|min:8','c_password' => 'required|min:8|same:password']);
@@ -389,6 +409,9 @@ class IndexController extends Controller
             Session::put('user_location', $user->location);
             Session::put('user_age', $user->date_of_birth);
             Session::put('user_gender', $user->gender);
+            DB::table("registers")->where('email',"=", $email)->update([
+                'isLogin'=>true
+            ]);
             return true;
         } else {
             return false;
@@ -400,6 +423,10 @@ class IndexController extends Controller
     }
 
     public function userLogout(Request $request){
+        $email =  Session::get('user_email');
+        DB::table("registers")->where('email',"=", $email)->update([
+            'isLogin'=> false
+        ]);
         $request->session()->invalidate();
         $request->session()->flush();
         return redirect()->route("home.index");

@@ -1,22 +1,16 @@
 @extends('backend.layouts.default')
 @section('content')
-
-
 <section class="content">
     <div class="block-header">
         <div class="row">
-            
         </div>
     </div>
-
-    <div class="container-fluid">        
-
+    <div class="container-fluid">
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="header">
                         <h2> ADD NEW PACKAGE</h2>
-                       
                     </div>
                     <div class="body">
                         <form id="addPackage" method="post" action={{ \Illuminate\Support\Facades\URL::to('/store-package') }}>
@@ -70,13 +64,10 @@
                 </div>
             </div>
         </div>
-       
     </div>
     @if(Session::has('message'))
-<div class="alert alert-success">
-  {{Session::get('message')}}
-  
-
+        <div class="alert alert-success">
+      {{Session::get('message')}}
 </div>
 @endif
 </section>

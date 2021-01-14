@@ -17,9 +17,11 @@
     <div class="sidebar">
         <h2>{{\Illuminate\Support\Facades\Session::get('user_firstname')}} {{\Illuminate\Support\Facades\Session::get('user_lastname')}}</h2>
         <ul>
+            <li><a href="{{ url('/dashbord') }}"><i class="fas fa-home"></i>Dashbord</a></li>
             <li><a href="{{ url('/') }}"><i class="fas fa-home"></i>Home</a></li>
             <li><a><i class="fas fa-sign-out-alt"></i></i>Profile</a></li>
             <li><a href="{{url('/poll')}}"><i class="fas fa-location-arrow"></i>Available Poll</a></li>
+            <li><a href="{{url('/view-poll')}}"><i class="fas fa-location-arrow"></i>My Poll</a></li>
             <li><a href="" onclick="document.getElementById('logout').submit(); return false;"><i class="fas fa-sign-out-alt"></i></i>Logout</a></li>
             <form id="logout" method="post" action="{{ \Illuminate\Support\Facades\URL::to('/user-logout') }}">
                 {{csrf_field()}}

@@ -27,7 +27,6 @@
                                 <tr>
                                     <th data-breakpoints="sm xs">Id</th>
                                     <th>Package Name</th>
-                                   
                                     <th data-breakpoints="sm xs">Quantity</th>
                                     <th data-breakpoints="sm xs">Price</th>
                                     <th data-breakpoints="sm xs">Action</th>
@@ -40,37 +39,28 @@
                                     <td>{{$package->packageName}} </td>
                                      <td>{{$package->quantity}} </td>
                                       <td>{{$package->price}} </td>
-                                    <td>
-                                <a href="{{  route('package.edit',$package->id) }}" class="btn btn-default waves-effect waves-float waves-green"><i class="zmdi zmdi-edit"></i></a>|
-                                        <a data-toggle="modal" data-target="#{{$package->id }}" class="btn btn-default waves-effect waves-float waves-red"><i class="zmdi zmdi-delete"></i></a>
-                                       
-  
-
-   <div id="{{$package->id}}" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">delete confirmation</h4>
-      </div>
-      <div class="modal-body">
-        <p>Are you sure you want to delete this?</p>
-      </div>
-      <div class="modal-footer">
-        <a href="{{  route('package.delete',$package->id) }}" class="btn btn-default waves-effect m-r-20" >yes</a>
-
-      
-        <button type="button" class="btn btn-default waves-effect m-r-20" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-                   </td>
-                                  </tr>  
-
+                                      <td>
+                                          <a href="{{route('package.edit',$package->id) }}" class="btn btn-default waves-effect waves-float waves-green"><i class="zmdi zmdi-edit"></i></a>|
+                                          <a href="{{route('package.delete',$package->id)}}" onclick="return confirm('Are you sure ?')" class="btn btn-default waves-effect waves-float waves-red"><i class="zmdi zmdi-delete"></i></a>
+                                      </td>
+                                  </tr>
+{{--                                  <div id="{{$package->id}}" class="modal fade" role="dialog">--}}
+{{--                                      <div class="modal-dialog">--}}
+{{--                                          <div class="modal-content">--}}
+{{--                                              <div class="modal-header">--}}
+{{--                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+{{--                                                  <h4 class="modal-title">delete confirmation</h4>--}}
+{{--                                              </div>--}}
+{{--                                              <div class="modal-body">--}}
+{{--                                                  <p>Are you sure you want to delete this?</p>--}}
+{{--                                              </div>--}}
+{{--                                              <div class="modal-footer">--}}
+{{--                                                  <a href="{{route('package.delete',$package->id)}}" class="btn btn-default waves-effect m-r-20" >yes</a>--}}
+{{--                                                  <button type="button" class="btn btn-default waves-effect m-r-20" data-dismiss="modal">Close</button>--}}
+{{--                                              </div>--}}
+{{--                                          </div>--}}
+{{--                                      </div>--}}
+{{--                                  </div>--}}
                                   @endforeach    
                             </tbody>
                         </table>

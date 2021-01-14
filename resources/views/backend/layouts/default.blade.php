@@ -22,9 +22,7 @@
 <link href="{{asset('assets/plugins/bootstrap-select/css/bootstrap-select.css')}}" rel="stylesheet" />
 
 <link rel="stylesheet" href="{{asset('assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css')}}">
-
-
-
+    @yield("style", false);
 </head>
 <body class="theme-blush">
 <!-- Page Loader -->
@@ -75,7 +73,7 @@
         <div class="image"> <img src="{{asset('assets/images/black.jpg')}}" width="48" height="48" alt="User" /> </div>
         <div class="info-container">
             <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Admin</div>
-            <div class="email">{{\Illuminate\Support\Facades\Session::get('u_email')}}</div>
+            <div class="email">{{\Illuminate\Support\Facades\Session::get('a_email')}}</div>
              <div class="btn-group user-helper-dropdown"> <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="button"> keyboard_arrow_down </i>
                 <ul class="dropdown-menu pull-right">
                     <li class="divider"></li>
@@ -132,16 +130,9 @@
 
 <!-- Jquery Core Js --> 
 <script src="{{asset('assets/bundles/libscripts.bundle.js')}}"></script> <!-- Lib Scripts Plugin Js --> 
-<script src="{{asset('assets/bundles/vendorscripts.bundle.js')}}"></script> <!-- Lib Scripts Plugin Js --> 
-
-
-
-
-
+<script src="{{asset('assets/bundles/vendorscripts.bundle.js')}}"></script> <!-- Lib Scripts Plugin Js -->
 <script src="{{asset('assets/plugins/jquery-validation/jquery.validate.js')}}"></script> <!-- Jquery Validation Plugin Css -->
 <script src="{{asset('assets/plugins/jquery-steps/jquery.steps.js')}}"></script> <!-- JQuery Steps Plugin Js -->
-
-
 <script src="{{asset('assets/js/pages/forms/form-wizard.js')}}"></script>
 <!-- <script src="{{asset('assets/js/pages/payment/payment.js')}}"></script> -->
 <!-- Custom Js --> 
@@ -153,11 +144,10 @@
 <script src="{{asset('assets/plugins/jquery-datatable/buttons/buttons.html5.min.js')}}"></script>
 <script src="{{asset('assets/plugins/jquery-datatable/buttons/buttons.print.min.js')}}"></script>
 
+
 <script src="{{asset('assets/bundles/mainscripts.bundle.js')}}"></script><!-- Custom Js --> 
 <script src="{{asset('assets/js/pages/tables/jquery-datatable.js')}}"></script>
-
-
-
+@yield("script", false);
 
 
 <!--  --> 

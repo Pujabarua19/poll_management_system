@@ -17,7 +17,7 @@ class IsLoggedIn
      */
     public function handle($request, Closure $next)
     {
-          if(!Session::has('u_email')){
+          if(!Session::has('a_email')){
            return redirect('/login');
         }
         return $next($request);

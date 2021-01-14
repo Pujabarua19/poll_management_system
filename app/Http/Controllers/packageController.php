@@ -57,9 +57,13 @@ class PackageController extends Controller
 
     public function delete($id)
     {
-        $packages = Package::find($id);
-        if ($packages->delete()) {
-            return redirect()->route("package.all");
+        if(intval($id) > 0) {
+            $packages = Package::find($id);
+            if ($packages->delete()) {
+                return redirect()->route("package.all");
+            }
+        }else{
+            return redirect()->route("package.all")->with("message", "Invalid id# ". $id);
         }
     }
 }

@@ -49,6 +49,7 @@ Route::post('/login-store', 'MainController@loginStore')->name("admin.login.stor
 
 // User panel route
 Route::group(['middleware' => 'Uislogged'], function () {
+    Route::get('/dashbord', 'IndexController@default')->name("user.default");
     Route::get('/add-poll/{pkg}', 'PollController@addPoll')->name('poll.add');
     Route::post('/user-logout', 'IndexController@userLogout')->name("home.logout");
     Route::get('/view-poll', 'PollController@viewPoll')->name("user.polls");

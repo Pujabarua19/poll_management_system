@@ -77,7 +77,7 @@
                                         <li class="has-children">
                                             <a href="about.html">{{\Illuminate\Support\Facades\Session::get('user_firstname')}} {{\Illuminate\Support\Facades\Session::get('user_lastname')}}</a>
                                             <ul class="dropdown arrow-top">
-                                                 <li><a href="{{url('/view-poll')}}">Dashboard</a></li>
+                                                 <li><a href="{{url('/dashbord')}}">Dashboard</a></li>
                                                 <li><a href=""
                                                        onclick="document.getElementById('logout').submit(); return false;"><i
                                                                 class="fas fa-sign-out-alt"></i></i>Logout</a></li>
@@ -86,7 +86,6 @@
                                                     {{csrf_field()}}
                                                 </form>
                                                 @endif
-
                                             </ul>
                             </div>
                         </nav>
