@@ -378,6 +378,8 @@
                                                                                 </div>
                                                                                 <div class="product-info">
                                                                                     <a href="javascript::;" class="product-title">{{$recentUser->firstname .' '. $recentUser->lastname}} <span class="label label-warning pull-right">{{$recentUser->location}}</span></a>
+                                                                                    <br/>
+                                                                                    <a href="javascript::;" class="product-title">Last Login: {{\Carbon\Carbon::parse($recentUser->updated_at)->format("h:m A")}}</a>
                                                                                     <span class="product-description">{{$recentUser->email}}</span>
                                                                                 </div>
                                                                             </li><!-- /.item -->

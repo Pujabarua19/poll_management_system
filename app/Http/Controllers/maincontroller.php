@@ -92,11 +92,11 @@ class MainController extends Controller
 
         //recent Active User
         $recentActiveUsers = DB::table("registers")
-            ->whereDay("updated_at",date('d'))
-            ->where("isLogin","=", 1)
-            ->selectRaw("firstname, lastname, email, location, gender")
-            ->orderByRaw("registers.updated_at DESC")
-            ->get();
+        ->whereDay("updated_at",date('d'))
+        ->where("isLogin","=", 1)
+        ->selectRaw("firstname, lastname, email, location, gender, updated_at")
+        ->orderByRaw("registers.updated_at DESC")->offset(0)->limit(5)
+        ->get();
 
         //latest poll
 
@@ -106,13 +106,16 @@ class MainController extends Controller
             ->where("polls.status","!=", "rejected")
             ->selectRaw("polls.id, polls.poll_title, polls.status, polls.created_at, packages.price")
             ->orderByRaw("polls.created_at DESC")
-            ->get();
+            ->offset(0)
+            ->limit(5)->get();
 
         //Latest Member
         $latestUsers = DB::table("registers")
             ->where("created_at",">=", Carbon::today()->subDays(7))
             ->selectRaw("firstname, lastname, email, location, gender")
             ->orderByRaw("created_at DESC")
+            ->offset(0)
+            ->limit(5)
             ->get();
 
 
@@ -149,7 +152,6 @@ class MainController extends Controller
                 if($poll->status == "rejected"){
                     $chartData['rejected'][] = $poll->total_poll;
                 }
-
             }
         }
         //$chartData['published'] = array_values($chartData['published']);
