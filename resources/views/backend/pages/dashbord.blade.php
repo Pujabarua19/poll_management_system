@@ -295,6 +295,12 @@
                                                                                     <td>{{$user->gender}}</td>
                                                                                 </tr>
                                                                             @endforeach
+                                                                        @else
+                                                                            <tr>
+                                                                                <th>&nbsp;</th>
+                                                                                <th>No Any Latest Member</th>
+                                                                                <th>&nbsp;</th>
+                                                                            </tr>
                                                                         @endif
                                                                         </tbody>
                                                                     </table>
@@ -384,6 +390,12 @@
                                                                                 </div>
                                                                             </li><!-- /.item -->
                                                                          @endforeach
+                                                                    @else
+                                                                        <li class="item">
+                                                                            <div class="product-info">
+                                                                                <span class="product-description">No Active User</span>
+                                                                            </div>
+                                                                        </li><!-- /.item -->
                                                                     @endif
                                                                 </ul>
                                                             </div><!-- /.box-body -->
