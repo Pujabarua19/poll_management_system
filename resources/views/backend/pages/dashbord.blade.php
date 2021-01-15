@@ -205,7 +205,7 @@
                                             </div><!-- /.box-header -->
                                             <div class="box-body">
                                                 <div class="row">
-                                                    <div class="col-md-9">
+                                                    <div class="col-md-10">
                                                         <p class="text-center">
                                                             <strong>Polls: 1 Jan, {{\Carbon\Carbon::now()->year}} - 31 Dec, {{\Carbon\Carbon::now()->year}}</strong>
                                                         </p>
@@ -214,7 +214,7 @@
                                                             <canvas id="salesChart" style="height: 300px;"></canvas>
                                                         </div><!-- /.chart-responsive -->
                                                     </div><!-- /.col -->
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-2">
                                                         <div class="progress-group" style="margin: 2px">
                                                             <div class="sm">
                                                                 <div class="sm">
