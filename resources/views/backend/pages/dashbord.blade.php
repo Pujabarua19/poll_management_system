@@ -202,24 +202,10 @@
                                         <div class="box">
                                             <div class="box-header with-border">
                                                 <h3 class="box-title">Monthly Recap Report</h3>
-{{--                                                <div class="box-tools pull-right">--}}
-{{--                                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>--}}
-{{--                                                    <div class="btn-group">--}}
-{{--                                                        <button class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i></button>--}}
-{{--                                                        <ul class="dropdown-menu" role="menu">--}}
-{{--                                                            <li><a href="#">Action</a></li>--}}
-{{--                                                            <li><a href="#">Another action</a></li>--}}
-{{--                                                            <li><a href="#">Something else here</a></li>--}}
-{{--                                                            <li class="divider"></li>--}}
-{{--                                                            <li><a href="#">Separated link</a></li>--}}
-{{--                                                        </ul>--}}
-{{--                                                    </div>--}}
-{{--                                                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>--}}
-{{--                                                </div>--}}
                                             </div><!-- /.box-header -->
                                             <div class="box-body">
                                                 <div class="row">
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-9">
                                                         <p class="text-center">
                                                             <strong>Polls: 1 Jan, {{\Carbon\Carbon::now()->year}} - 31 Dec, {{\Carbon\Carbon::now()->year}}</strong>
                                                         </p>
@@ -227,6 +213,34 @@
                                                             <!-- Sales Chart Canvas -->
                                                             <canvas id="salesChart" style="height: 300px;"></canvas>
                                                         </div><!-- /.chart-responsive -->
+                                                    </div><!-- /.col -->
+                                                    <div class="col-md-3">
+                                                        <div class="progress-group" style="margin: 2px">
+                                                            <div class="sm">
+                                                                <div class="sm">
+                                                                    <div style="width: 20px; height: 20px;float: left; padding: 5px; background-color: #3b8bba"></div><span style="padding-left: 5px">Published</span>
+                                                                </div>
+                                                            </div>
+                                                        </div><!-- /.progress-group -->
+                                                        <div class="progress-group" style="margin: 2px">
+                                                            <div class="sm">
+                                                                <div class="sm">
+                                                                    <div style="width: 20px; height: 20px;float: left; padding: 5px;  background-color: #29bc27;"></div><span style="padding-left: 5px">Approved</span>
+                                                                </div>
+                                                            </div>
+                                                        </div><!-- /.progress-group -->
+                                                        <div class="progress-group" style="margin: 2px">
+                                                            <div class="sm">
+                                                                <div style="width: 20px; height: 20px;float: left; padding: 5px;  background-color: #FFCF64"></div><span style="padding-left: 5px">Pending</span>
+                                                            </div>
+                                                        </div><!-- /.progress-group -->
+                                                        <div class="progress-group" style="margin: 2px">
+                                                            <div class="sm">
+                                                                <div class="sm">
+                                                                    <div style="width: 20px; height: 20px;float: left; padding: 5px;background-color: #ff3e31"></div><span style="padding-left: 5px">Rejected</span>
+                                                                </div>
+                                                            </div>
+                                                        </div><!-- /.progress-group -->
                                                     </div><!-- /.col -->
                                                 </div><!-- /.row -->
                                                 <!-- Main row -->
