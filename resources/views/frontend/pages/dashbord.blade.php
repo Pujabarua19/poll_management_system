@@ -98,6 +98,18 @@
                                 <a href="#" class="small-box-footer">All Rejected Poll <i class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div><!-- ./col -->
+                        <div class="col-lg-3 col-xs-6">
+                            <!-- small box -->
+                            <div class="small-box bg-light-blue">
+                                <div class="inner align-center">
+                                    <h3>${{$totalIncome}}</h3>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-pie-graph"></i>
+                                </div>
+                                <a href="#" class="small-box-footer">Total Payment <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div><!-- ./col -->
                     </div><!-- /.row -->
                 </div>
                 </div>

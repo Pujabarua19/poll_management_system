@@ -37,7 +37,14 @@ class IndexController extends Controller
         $publishedCount =$allPollsByStatus->where("status","=", "published")->first() != null ? $allPollsByStatus->where("status","=", "published")->first()->total_poll : 0;
         $pendingCount = $allPollsByStatus->where("status","=", "pending")->first() ? $allPollsByStatus->where("status","=", "pending")->first()->total_poll : 0;
 
-        return view('frontend.pages.dashbord', compact('totalPolls','rejectedCount','approvedCount','publishedCount','pendingCount'));
+        $totalIncome = DB::table("polls")
+            ->join("packages", "polls.package_id","=", "packages.id")
+            ->join("payments","payments.poll_id","=", "polls.id")
+            ->where("payments.payment_status","=","succeeded")
+            ->where("polls.user_id","=",Session::get('userid'))
+            ->selectRaw("SUM(Packages.price) AS Total")->first()->Total;
+
+        return view('frontend.pages.dashbord', compact('totalPolls','rejectedCount','approvedCount','publishedCount','pendingCount','totalIncome'));
     }
 
     public function index()
